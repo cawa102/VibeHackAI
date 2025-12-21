@@ -1,99 +1,58 @@
 {
   "mcpServers": {
-    "filesystem": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "/path/to/your/workspace"
-      ]
-    },
     "nmap": {
       "command": "npx",
-      "args": [
-        "-y",
-        "mcp-nmap-server"
-      ]
+      "args": ["-y", "mcp-nmap-server"]
     },
     "shodan": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@burtthecoder/mcp-shodan"
-      ],
+      "args": ["-y", "@burtthecoder/mcp-shodan"],
       "env": {
-        "SHODAN_API_KEY": "YOUR_SHODAN_API_KEY"
+        "SHODAN_API_KEY": "<YOUR_SHODAN_API_KEY>"
       }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
     },
     "whoisxmlapi": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@whoisxmlapidotcom/mcp-whoisxmlapi"
-      ],
+      "args": ["-y", "@whoisxmlapidotcom/mcp-whoisxmlapi"],
       "env": {
-        "WHOISXMLAPI_API_KEY": "YOUR_WHOISXMLAPI_API_KEY"
+        "WHOISXMLAPI_API_KEY": "<YOUR_WHOISXMLAPI_API_KEY>"
       }
-    },
-    "burpsuite": {
-      "command": "java",
-      "args": [
-        "-jar",
-        "${BURP_MCP_PROXY_JAR_PATH}",
-        "--sse-url",
-        "http://127.0.0.1:9876"
-      ]
     },
     "snyk": {
       "command": "snyk",
-      "args": [
-        "test",
-        "--json"
-      ],
+      "args": ["test", "--json"],
       "env": {
-        "SNYK_TOKEN": "YOUR_SNYK_TOKEN"
+        "SNYK_TOKEN": "<YOUR_SNYK_TOKEN>"
       }
-    },
-    "cve-search": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "${CVE_SEARCH_MCP_DIR}",
-        "run",
-        "main.py"
-      ]
     },
     "github": {
       "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--rm",
-        "-e",
-        "GITHUB_PERSONAL_ACCESS_TOKEN",
-        "ghcr.io/github/github-mcp-server"
-      ],
+      "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"],
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_GITHUB_TOKEN>"
       }
     },
     "gitlab": {
       "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://gitlab.com/api/v4/mcp"
-      ]
+      "args": ["-y", "mcp-remote", "https://gitlab.com/api/v4/mcp"]
+    },
+    "burpsuite": {
+      "command": "java",
+      "args": ["-jar", "<PATH_TO_BURP_MCP_PROXY_JAR>", "--sse-url", "http://127.0.0.1:9876"]
+    },
+    "cve-search": {
+      "command": "uv",
+      "args": ["--directory", "<PATH_TO_CVE_SEARCH_MCP>", "run", "main.py"]
     },
     "metasploit": {
       "command": "python",
-      "args": [
-        "${METASPLOIT_MCP_DIR}/MetasploitMCP.py",
-        "--transport",
-        "stdio"
-      ],
+      "args": ["<PATH_TO_METASPLOIT_MCP>/MetasploitMCP.py", "--transport", "stdio"],
       "env": {
-        "MSF_PASSWORD": "YOUR_MSF_PASSWORD",
+        "MSF_PASSWORD": "<YOUR_MSF_PASSWORD>",
         "MSF_SERVER": "127.0.0.1",
         "MSF_PORT": "55553",
         "MSF_SSL": "false"
@@ -101,12 +60,7 @@
     },
     "kali": {
       "command": "mcp-server",
-      "args": [
-        "--server",
-        "http://localhost:5000",
-        "--timeout",
-        "300"
-      ]
+      "args": ["--server", "http://localhost:5000", "--timeout", "300"]
     }
   }
 }

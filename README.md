@@ -196,25 +196,31 @@ cd VibeHackAI
 
 ### Step 2: Configure MCP Servers
 
-Copy `.mcp.json` to your Claude Code configuration directory and update the API keys:
+Edit `.mcp.json` in the repository root. The table below shows what you need to configure:
 
-**Required API Keys:**
+#### MCP Configuration Reference
 
-| Service | Get API Key | Purpose |
-|---------|-------------|---------|
-| Shodan | [account.shodan.io](https://account.shodan.io/) | Passive reconnaissance |
-| Snyk | [app.snyk.io/account](https://app.snyk.io/account) | Vulnerability database |
-| GitHub | [github.com/settings/tokens](https://github.com/settings/tokens) | Repository analysis |
+| Server | User Action Required | Prerequisites |
+|--------|---------------------|---------------|
+| **nmap** | None (works as-is) | Install nmap on system |
+| **gitlab** | None (works as-is) | None |
+| **shodan** | Replace `YOUR_SHODAN_API_KEY` | [Get API key](https://account.shodan.io/) |
+| **whoisxmlapi** | Replace `YOUR_WHOISXMLAPI_API_KEY` | [Get API key](https://whoisxmlapi.com/) |
+| **snyk** | Replace `YOUR_SNYK_TOKEN` | Install snyk CLI: `npm i -g snyk` |
+| **github** | Replace `YOUR_GITHUB_PERSONAL_ACCESS_TOKEN` | Install Docker |
+| **filesystem** | Replace `/path/to/your/workspace` | None |
+| **burpsuite** | Replace `${BURP_MCP_PROXY_JAR_PATH}` | Burp Suite Pro + Java 11+ |
+| **cve-search** | Replace `${CVE_SEARCH_MCP_DIR}` | Clone CVE-search MCP + uv |
+| **metasploit** | Replace `${METASPLOIT_MCP_DIR}` and `YOUR_MSF_PASSWORD` | Metasploit + msfrpcd running |
+| **kali** | Full setup required | Kali Linux + mcp-server |
 
-**Minimal `.mcp.json` configuration:**
+#### Minimal Setup (Recommended for beginners)
+
+For basic reconnaissance, configure only these 3 servers in `.mcp.json`:
 
 ```json
 {
   "mcpServers": {
-    "filesystem": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/workspace"]
-    },
     "nmap": {
       "command": "npx",
       "args": ["-y", "mcp-nmap-server"]
@@ -223,14 +229,20 @@ Copy `.mcp.json` to your Claude Code configuration directory and update the API 
       "command": "npx",
       "args": ["-y", "@burtthecoder/mcp-shodan"],
       "env": {
-        "SHODAN_API_KEY": "your-api-key-here"
+        "SHODAN_API_KEY": "paste-your-api-key-here"
       }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
     }
   }
 }
 ```
 
-See `.mcp.json` in this repository for full configuration including Metasploit, Burp Suite, and other tools.
+> **Note**: The full `.mcp.json` in this repository contains all servers. Delete or comment out servers you don't need.
+
+See [INSTALLATION.md](INSTALLATION.md) for detailed setup instructions for each server.
 
 ### Step 3: Start Penetration Test
 
