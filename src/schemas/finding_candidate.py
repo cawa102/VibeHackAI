@@ -147,7 +147,7 @@ class FindingCandidate(BaseSchema):
             raise ValueError("remediation cannot be empty")
         return v.strip()
 
-    @root_validator
+    @root_validator(skip_on_failure=True)
     def validate_evidence_for_severity(cls, values):
         """
         Validate that high/critical findings have sufficient evidence.

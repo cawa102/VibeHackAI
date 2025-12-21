@@ -448,9 +448,7 @@ class ReportingAgent(BaseAgent):
             "by_severity": by_severity,
             "risk_score": risk_score,
             "risk_level": risk_level,
-            "components_affected": len(
-                {f.affected_component for f in self._findings}
-            ),
+            "components_affected": len({f.affected_component for f in self._findings}),
             "cves_referenced": len([f for f in self._findings if f.cve_id]),
         }
 
