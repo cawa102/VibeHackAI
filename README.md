@@ -463,6 +463,24 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) for detai
 - Built on [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) by Anthropic
 - Inspired by [PentestGPT](https://github.com/GreyDGL/PentestGPT)
 
+### MCP Servers
+
+This project integrates with the following open-source MCP servers:
+
+| Server | Repository | Description |
+|--------|-----------|-------------|
+| **GitHub MCP** | [github/github-mcp-server](https://github.com/github/github-mcp-server) | GitHub's official MCP server |
+| **Filesystem MCP** | [@modelcontextprotocol/server-filesystem](https://github.com/modelcontextprotocol/servers) | Anthropic's official filesystem server |
+| **Shodan MCP** | [BurtTheCoder/mcp-shodan](https://github.com/BurtTheCoder/mcp-shodan) | Shodan API integration |
+| **WhoisXML API MCP** | [@whoisxmlapidotcom/mcp-whoisxmlapi](https://www.npmjs.com/package/@whoisxmlapidotcom/mcp-whoisxmlapi) | Domain intelligence and OSINT |
+| **Nmap MCP** | [sideffect263/nmap-mcp-server](https://github.com/sideffect263/nmap-mcp-server) | Network scanning with Nmap |
+| **Burp Suite MCP** | [PortSwigger/mcp-server](https://github.com/PortSwigger/mcp-server) | PortSwigger's official Burp integration |
+| **CVE Search MCP** | [roadwy/cve-search_mcp](https://github.com/roadwy/cve-search_mcp) | CVE database queries |
+| **Metasploit MCP** | [GH05TCREW/MetasploitMCP](https://github.com/GH05TCREW/MetasploitMCP) | Metasploit Framework integration |
+| **Kali MCP** | [Wh0am123/MCP-Kali-Server](https://github.com/Wh0am123/MCP-Kali-Server) | Kali Linux tool execution |
+
+We thank all the developers and maintainers of these projects for their contributions to the security community.
+
 ---
 
 <div align="center">
