@@ -1,183 +1,250 @@
 <div align="center">
 
-# VibeHackAI
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:1a1a2e,50:16213e,100:0f3460&height=200&section=header&text=VibeHackAI&fontSize=80&fontColor=e94560&fontAlignY=35&desc=AI%20That%20Listens.%20Humans%20Who%20Decide.&descSize=20&descAlignY=55&descAlign=50" width="100%"/>
 
-### AI That Listens. Humans Who Decide.
+[![CI](https://img.shields.io/github/actions/workflow/status/cawa102/VibeHackAI/ci.yml?style=for-the-badge&logo=github&label=CI)](https://github.com/cawa102/VibeHackAI/actions)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![MCP](https://img.shields.io/badge/MCP-Integrated-blueviolet?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQyIDAtOC0zLjU4LTgtOHMzLjU4LTggOC04IDggMy41OCA4IDgtMy41OCA4LTggOHoiLz48L3N2Zz4=)](https://modelcontextprotocol.io/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-[![CI](https://github.com/cawa102/VibeHackAI/actions/workflows/ci.yml/badge.svg)](https://github.com/cawa102/VibeHackAI/actions/workflows/ci.yml)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
-[![MCP](https://img.shields.io/badge/MCP-Integrated-blueviolet?style=flat-square)](https://modelcontextprotocol.io/)
+<br>
 
 **Conversational AI pentest system where AI proposes and humans approve.**
 
-[Quick Start](#-quick-start) • [How It Works](#-how-it-works) • [Documentation](docs/) • [Contributing](CONTRIBUTING.md)
+<br>
+
+[<kbd> <br> Quick Start <br> </kbd>](#-quick-start)&nbsp;&nbsp;
+[<kbd> <br> How It Works <br> </kbd>](#-how-it-works)&nbsp;&nbsp;
+[<kbd> <br> Documentation <br> </kbd>](docs/)&nbsp;&nbsp;
+[<kbd> <br> Contributing <br> </kbd>](CONTRIBUTING.md)
 
 </div>
 
----
+<br>
 
-## Why VibeHackAI?
+## The Problem
 
-Autonomous AI pentest tools have a problem: **they don't know when they're wrong.**
+> Autonomous AI pentest tools don't know when they're wrong.
 
-They scan wrong targets, chase rabbit holes, execute dangerous payloads without understanding consequences, and report false positives with full confidence.
+They scan wrong targets. Chase rabbit holes. Execute dangerous payloads without understanding consequences. Report false positives with full confidence.
 
-VibeHackAI is different. Instead of replacing human judgment, it **augments** it:
+**VibeHackAI is different.** AI proposes. You review. You correct. You approve.
 
-- AI analyzes and suggests next steps
-- You review in natural language
-- You correct when AI strays
-- You approve before any dangerous action
-
----
+<br>
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/cawa102/VibeHackAI.git
-cd VibeHackAI
-pip install -e .
-pentest-agent
+cd VibeHackAI && pip install -e . && pentest-agent
 ```
 
-```
-vibehack> start webapp-assessment
-
-  What targets am I authorized to test?
-
-vibehack> testphp.vulnweb.com
-
-  Scope set. Starting passive reconnaissance...
-```
-
----
+<br>
 
 ## How It Works
 
+<table>
+<tr>
+<td>
+
 ```
- AI: Found port 8080 running Apache Struts 2.3.31.
-      Vulnerable to CVE-2017-5638 (RCE).
-      Should I enumerate the /admin path?
-
-You: Yes, but check /api first - that's the priority.
-
- AI: Understood. Focusing on /api endpoints.
-
-      [Enumeration complete]
-
-      Confirmed exploitable. I can verify with a safe,
-      non-destructive payload.
-
-      This requires your approval.
-
-You: What exactly will the payload do?
-
- AI: 1. Send crafted Content-Type header
-      2. Execute: echo "VIBEHACK_TEST_$(date +%s)"
-      3. Check if response contains our string
-
-      No file writes. No persistence. Read-only.
-
-You: Approved.
-
- AI: [EXECUTING with approval ID: APR-2025-0142]
-
-      Vulnerability CONFIRMED
-      Evidence saved: evidence/CVE-2017-5638-verify-001/
-      SHA256: a3f2b8c9d4e5f6...
+┌────────────────────────────────────────┐
+│  $ vibehack                            │
+├────────────────────────────────────────┤
+│                                        │
+│  🤖 Found Apache Struts 2.3.31         │
+│     on 192.168.1.50:8080               │
+│                                        │
+│     Vulnerable to CVE-2017-5638        │
+│     Should I enumerate /admin?         │
+│                                        │
+│  ▌                                     │
+└────────────────────────────────────────┘
 ```
 
-**When AI suggests something wrong, you simply tell it.** No restarting. No config edits. Just conversation.
+</td>
+<td>
 
----
+```
+┌────────────────────────────────────────┐
+│  $ vibehack                            │
+├────────────────────────────────────────┤
+│                                        │
+│  👤 Check /api first, that's priority  │
+│                                        │
+│  🤖 Understood. Focusing on /api.      │
+│                                        │
+│     [Confirmed exploitable]            │
+│                                        │
+│     ⚠️  Requires your approval         │
+│                                        │
+└────────────────────────────────────────┘
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+```
+┌────────────────────────────────────────┐
+│  $ vibehack                            │
+├────────────────────────────────────────┤
+│                                        │
+│  👤 What will the payload do?          │
+│                                        │
+│  🤖 1. Send crafted header             │
+│     2. Execute: echo "TEST_$(date)"    │
+│     3. Check response                  │
+│                                        │
+│     No writes. No persistence.         │
+│     Read-only verification.            │
+│                                        │
+└────────────────────────────────────────┘
+```
+
+</td>
+<td>
+
+```
+┌────────────────────────────────────────┐
+│  $ vibehack                            │
+├────────────────────────────────────────┤
+│                                        │
+│  👤 Approved.                          │
+│                                        │
+│  🤖 [EXECUTING: APR-2025-0142]         │
+│                                        │
+│     ✅ Vulnerability CONFIRMED         │
+│                                        │
+│     Evidence: evidence/CVE-2017-5638/  │
+│     SHA256: a3f2b8c9d4e5f6...          │
+│                                        │
+└────────────────────────────────────────┘
+```
+
+</td>
+</tr>
+</table>
+
+<p align="center"><b>When AI is wrong, you simply tell it. No restart. No config. Just conversation.</b></p>
+
+<br>
 
 ## Architecture
 
 ```
-                         ┌─────────────────────┐
-                         │     YOU (Human)     │
-                         │  Review • Correct   │
-                         │      Approve        │
-                         └──────────┬──────────┘
-                                    │
-                    ╔═══════════════╧═══════════════╗
-                    ║        ORCHESTRATOR           ║
-                    ║  Conversation • Approval Gate ║
-                    ║  Context • Safety Controls    ║
-                    ╚═══════════════╤═══════════════╝
-                                    │
-        ┌───────────┬───────────┬───┴───┬───────────┬───────────┐
-        ▼           ▼           ▼       ▼           ▼           ▼
-   ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐
-   │  RECON  │ │  ENUM   │ │ PLANNER │ │ EXPLOIT │ │ REPORT  │
-   └─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘
-        │           │           │           │           │
-        └───────────┴───────────┴─────┬─────┴───────────┘
-                                      │
-                    ╔═════════════════╧═════════════════╗
-                    ║   EVIDENCE STORE (Append-only)    ║
-                    ╚═══════════════════════════════════╝
+                    ╭──────────────────────────────────────╮
+                    │            👤 YOU                    │
+                    │      Review · Correct · Approve      │
+                    ╰──────────────────┬───────────────────╯
+                                       │
+                    ╔══════════════════╧══════════════════╗
+                    ║          ORCHESTRATOR               ║
+                    ║   ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐   ║
+                    ║   │ 💬  │ │ 🔒  │ │ 🧠  │ │ ⛔  │   ║
+                    ║   │Talk │ │Gate │ │State│ │Stop │   ║
+                    ║   └─────┘ └─────┘ └─────┘ └─────┘   ║
+                    ╚══════════════════╤══════════════════╝
+                                       │
+          ┌────────────┬───────────┬───┴───┬────────────┬────────────┐
+          ▼            ▼           ▼       ▼            ▼            ▼
+     ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐
+     │  🔍     │  │  🎯     │  │  📋     │  │  💥     │  │  📄     │
+     │  Recon  │  │  Enum   │  │ Planner │  │ Exploit │  │ Report  │
+     └─────────┘  └─────────┘  └─────────┘  └─────────┘  └─────────┘
+          │            │           │            │            │
+          └────────────┴───────────┴─────┬──────┴────────────┘
+                                         │
+                    ╔════════════════════╧════════════════════╗
+                    ║       🗄️  EVIDENCE STORE                ║
+                    ║       Append-only · SHA256 · Audit      ║
+                    ╚═════════════════════════════════════════╝
 ```
 
-**5 Specialized Agents** — Recon, Enumeration, Planner, Exploitation, Reporting
+<br>
 
-**11+ Tool Integrations** — Nmap, Shodan, Burp Suite, Metasploit, Kali, Snyk, CVE-Search, GitHub, GitLab, and more via [MCP](https://modelcontextprotocol.io/)
+<table>
+<tr>
+<td align="center" width="33%">
 
-**Court-Ready Evidence** — SHA256 hashes, complete audit trails, reproducible attack chains
+### 🤖 5 Agents
 
----
+Recon · Enum · Planner<br>
+Exploit · Report
 
-## Safety Controls
+</td>
+<td align="center" width="33%">
 
-| Control | How It Works |
-|---------|--------------|
-| **Approval Gates** | Dangerous actions (Metasploit, payloads) require explicit approval |
-| **Scope Enforcement** | Out-of-scope targets blocked automatically |
-| **Course Correction** | Tell AI when it's wrong — it adjusts immediately |
-| **Auto-Stop** | Consecutive errors pause execution, await your decision |
-| **Rollback** | Failed exploits can roll back to earlier phases |
+### 🔌 11+ Tools
 
----
+Nmap · Shodan · Burp<br>
+Metasploit · Kali · Snyk
+
+</td>
+<td align="center" width="33%">
+
+### 🔐 Evidence
+
+SHA256 verified<br>
+Court-ready audit trail
+
+</td>
+</tr>
+</table>
+
+<br>
+
+## Safety
+
+| | Control | Description |
+|:--:|---------|-------------|
+| 🚦 | **Approval Gates** | Dangerous actions require explicit approval |
+| 🎯 | **Scope Lock** | Out-of-scope targets blocked automatically |
+| 💬 | **Course Correct** | Tell AI when it's wrong — instant adjustment |
+| ⛔ | **Auto-Stop** | Consecutive errors pause for your decision |
+| ↩️ | **Rollback** | Failed exploits roll back to earlier phases |
+
+<br>
 
 ## Documentation
 
-| Resource | Description |
-|----------|-------------|
-| [INSTALLATION.md](INSTALLATION.md) | Full setup guide with MCP configuration |
-| [docs/](docs/) | Technical specifications |
-| [examples/](examples/) | Tutorials and use cases |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines |
-| [SECURITY.md](SECURITY.md) | Security policy |
+| | Resource | Description |
+|:--:|----------|-------------|
+| 📦 | [INSTALLATION.md](INSTALLATION.md) | Setup guide with MCP config |
+| 📚 | [docs/](docs/) | Technical specifications |
+| 🎓 | [examples/](examples/) | Tutorials and use cases |
+| 🤝 | [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines |
+| 🔒 | [SECURITY.md](SECURITY.md) | Security policy |
 
----
+<br>
 
 ## Contributing
 
 ```bash
-git checkout -b feature/your-feature
-pytest
-# Submit PR
+git checkout -b feature/your-feature && pytest
 ```
 
-**Wanted:** MCP adapters (Nuclei, SQLMap), i18n, reporting templates, test coverage
+**Wanted:** MCP adapters · i18n · Report templates · Test coverage
 
----
+<br>
 
 ## Legal
 
-**Authorized security testing only.**
+**Authorized security testing only.** You are responsible for every action you approve.
 
-- Use on systems you own or have written permission to test
-- Follow responsible disclosure practices
-- You are responsible for every action you approve
+<br>
 
 ---
 
 <div align="center">
 
-MIT License • Built on [MCP](https://modelcontextprotocol.io/) by Anthropic • Inspired by [PentestGPT](https://github.com/GreyDGL/PentestGPT)
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:1a1a2e,50:16213e,100:0f3460&height=100&section=footer" width="100%"/>
 
-**[Star this repo](https://github.com/cawa102/VibeHackAI)** if you believe in human-AI collaboration.
+MIT License · Built on [MCP](https://modelcontextprotocol.io/) · Inspired by [PentestGPT](https://github.com/GreyDGL/PentestGPT)
+
+<br>
+
+[![Star](https://img.shields.io/github/stars/cawa102/VibeHackAI?style=social)](https://github.com/cawa102/VibeHackAI)
 
 </div>
