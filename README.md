@@ -9,24 +9,23 @@
    ╚═══╝  ╚═╝╚═════╝ ╚══════╝    ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝    ╚═╝  ╚═╝╚═╝
 ```
 
-# The Future of Penetration Testing is Here.
+# AI That Listens. Humans Who Decide.
 
-### AI-Powered Multi-Agent System with Human-in-the-Loop Safety
+### Conversational AI Pentest System with Human-in-the-Loop Control
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-762%20passing-brightgreen?style=for-the-badge)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-Integrated-blueviolet?style=for-the-badge)](https://modelcontextprotocol.io/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge)](CONTRIBUTING.md)
 
 <br>
 
-**VibeHackAI** orchestrates 4 specialized AI agents that think like expert pentesters,<br>
-while keeping **you** in control of every critical decision.
+**VibeHackAI** is not another "autonomous" AI pentest tool.<br>
+It's a **collaborative system** where AI proposes and humans approve — through natural conversation.
 
 [Getting Started](#-quick-start) •
-[Features](#-why-vibehackai) •
-[Documentation](docs/) •
+[The Problem We Solve](#-the-problem-ai-that-goes-rogue) •
+[How It Works](#-how-we-solve-it-conversation-not-automation) •
 [Contributing](CONTRIBUTING.md)
 
 <br>
@@ -35,78 +34,279 @@ while keeping **you** in control of every critical decision.
 
 </div>
 
-## The Problem
+## 🚨 The Problem: AI That Goes Rogue
 
-Traditional penetration testing tools are either:
-- **Too manual** — You spend hours configuring and running individual tools
-- **Too automated** — Black-box scanners that miss context and generate false positives
-- **Too dangerous** — Fully autonomous systems that can cause unintended damage
+The rise of AI in penetration testing brought a critical issue:
 
-**Security professionals deserve better.**
+<div align="center">
 
-## The Solution
+### **Autonomous AI agents don't know when they're wrong.**
 
-VibeHackAI brings the power of **collaborative AI agents** to penetration testing — each specialized in a critical phase of the assessment, coordinated by an intelligent orchestrator, and always under your supervision.
+</div>
+
+| Issue | What Happens |
+|-------|--------------|
+| **Wrong Target** | AI scans unrelated hosts, causing scope violations |
+| **Rabbit Holes** | AI wastes hours on low-value findings while missing critical vulns |
+| **Dangerous Actions** | AI executes destructive payloads without understanding consequences |
+| **False Confidence** | AI reports "confirmed" vulnerabilities that don't actually exist |
+| **Context Loss** | AI forgets previous findings, repeating failed approaches |
+
+**Traditional AI pentest tools treat humans as observers.** You watch the AI run, hoping it makes the right choices. When it doesn't, you start over.
+
+This is not AI-assisted pentesting. This is **AI gambling**.
+
+## 💡 How We Solve It: Conversation, Not Automation
+
+VibeHackAI flips the paradigm:
+
+<div align="center">
+
+### **AI proposes. You guide. Together, you succeed.**
+
+</div>
+
+Instead of autonomous execution, VibeHackAI creates a **conversational workflow** where:
+
+1. **AI analyzes** the target and suggests next steps
+2. **You review** the suggestions in natural language
+3. **You correct** if AI is heading in the wrong direction
+4. **AI learns** from your feedback and adjusts
+5. **You approve** before any dangerous action executes
+
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                        REAL CONVERSATION EXAMPLE                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+🤖 AI: I've completed reconnaissance on 192.168.1.0/24.
+       Found 23 hosts, 147 open ports.
+
+       I noticed port 8080 on 192.168.1.50 running Apache Struts 2.3.31.
+       This version is vulnerable to CVE-2017-5638 (S2-045, RCE).
+
+       Recommended next step: Enumerate the Struts endpoint to confirm
+       the vulnerability before attempting exploitation.
+
+       Should I proceed with enumeration?
+
+👤 You: Yes, but focus on the /admin path first - that's the priority target.
+
+🤖 AI: Understood. Focusing enumeration on /admin path.
+
+       [Enumeration complete]
+
+       Confirmed: /admin/struts2-showcase/ is accessible.
+       The application appears to be a demo instance.
+
+       I can attempt a safe verification of CVE-2017-5638 using a
+       non-destructive payload. This will confirm exploitability
+       without causing any changes to the target.
+
+       ⚠️  This requires your approval as it involves active exploitation.
+
+👤 You: What exactly will the verification payload do?
+
+🤖 AI: The verification payload will:
+       1. Send a crafted Content-Type header
+       2. Execute: `echo "VIBEHACK_TEST_$(date +%s)"`
+       3. Check if the response contains our unique string
+
+       This only reads output - no file writes, no persistence,
+       no lateral movement. The command is deterministic and safe.
+
+       Risk Level: LOW (read-only verification)
+       Reversibility: N/A (no changes made)
+
+👤 You: Approved. Proceed.
+
+🤖 AI: [EXECUTING with approval ID: APR-2025-0142]
+
+       ✅ Vulnerability CONFIRMED
+
+       Response contained: "VIBEHACK_TEST_1737456789"
+       Execution time: 0.3s
+
+       Evidence saved: evidence/CVE-2017-5638-verify-001/
+       - Request/Response captured
+       - SHA256: a3f2b8c9d4e5f6...
+
+       Finding created: FIND-001 (Critical)
+
+       Next recommended action: Document finding and move to next target,
+       or attempt deeper exploitation with data exfiltration proof.
+
+       What would you like to do?
+
+👤 You: Document this finding. Let's move to the Redis instance you found earlier.
+
+🤖 AI: Finding documented. Moving to 192.168.1.72:6379 (Redis 4.0.9)...
+```
+
+**This is the difference.** When AI suggests something wrong, you simply tell it. No restarting. No config file edits. Just conversation.
+
+## 🏗️ Architecture: Humans at the Center
 
 <div align="center">
 
 ```
-    ┌─────────────────────────────────────────────────────────────────┐
-    │                        YOU (Human Expert)                        │
-    │                              │                                   │
-    │                              ▼                                   │
-    │     ╔═══════════════════════════════════════════════════════╗   │
-    │     ║              🎯 ORCHESTRATOR                          ║   │
-    │     ║    Coordination • Approval Gates • Evidence Chain     ║   │
-    │     ╚═══════════════════════════════════════════════════════╝   │
-    │                              │                                   │
-    │        ┌─────────────────────┼─────────────────────┐            │
-    │        ▼                     ▼                     ▼            │
-    │   ┌─────────┐          ┌─────────┐          ┌─────────┐         │
-    │   │  🔍     │          │  🎯     │          │  💥     │         │
-    │   │ RECON   │    →     │ ENUM    │    →     │ EXPLOIT │         │
-    │   │  Agent  │          │ Agent   │          │  Agent  │         │
-    │   └─────────┘          └─────────┘          └─────────┘         │
-    │        │                     │                     │            │
-    │        └─────────────────────┼─────────────────────┘            │
-    │                              ▼                                   │
-    │              ╔═════════════════════════════╗                    │
-    │              ║  📋 PLANNER Agent           ║                    │
-    │              ║  Strategy • CVE • Exploits  ║                    │
-    │              ╚═════════════════════════════╝                    │
-    │                              │                                   │
-    │                              ▼                                   │
-    │     ┌─────────────────────────────────────────────────────┐     │
-    │     │  🔐 EVIDENCE STORE (Append-Only • SHA256 Verified)  │     │
-    │     └─────────────────────────────────────────────────────┘     │
-    └─────────────────────────────────────────────────────────────────┘
+                              ┌─────────────────────┐
+                              │    👤 YOU (Human)   │
+                              │                     │
+                              │  • Review findings  │
+                              │  • Correct course   │
+                              │  • Approve actions  │
+                              └──────────┬──────────┘
+                                         │
+                          ┌──────────────┼──────────────┐
+                          │     Conversation Layer      │
+                          │  (Natural Language I/O)     │
+                          └──────────────┬──────────────┘
+                                         │
+                    ╔════════════════════╧════════════════════╗
+                    ║           🎯 ORCHESTRATOR               ║
+                    ║                                         ║
+                    ║  • Interprets your guidance             ║
+                    ║  • Coordinates agent actions            ║
+                    ║  • Enforces approval gates              ║
+                    ║  • Maintains context across phases      ║
+                    ╚════════════════════╤════════════════════╝
+                                         │
+           ┌─────────────┬───────────────┼───────────────┬─────────────┐
+           ▼             ▼               ▼               ▼             ▼
+    ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐
+    │    🔍      │ │    🎯      │ │    📋      │ │    💥      │ │    📄      │
+    │   RECON    │ │   ENUM     │ │  PLANNER   │ │  EXPLOIT   │ │  REPORTER  │
+    │   Agent    │ │   Agent    │ │   Agent    │ │   Agent    │ │   Agent    │
+    └────────────┘ └────────────┘ └────────────┘ └────────────┘ └────────────┘
+           │             │               │               │             │
+           └─────────────┴───────────────┴───────────────┴─────────────┘
+                                         │
+                    ╔════════════════════╧════════════════════╗
+                    ║     🔐 EVIDENCE STORE                   ║
+                    ║  Append-only • SHA256 • Audit Trail     ║
+                    ╚═════════════════════════════════════════╝
 ```
 
 </div>
 
-## ✨ Why VibeHackAI?
+## 🛡️ Safety Through Conversation
+
+VibeHackAI implements **multi-layer safety** — and every layer involves you:
+
+### 1. Approval Gates (You Decide What Executes)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  ⚠️  APPROVAL REQUIRED                                              │
+│                                                                     │
+│  Action:   Metasploit module execution                              │
+│  Module:   exploit/multi/http/struts2_rest_xstream                  │
+│  Target:   192.168.1.50:8080                                        │
+│  Payload:  cmd/unix/reverse_bash                                    │
+│                                                                     │
+│  Risk Assessment:                                                   │
+│  ├─ Scope:        ✅ Within authorized range                        │
+│  ├─ Reversibility: ⚠️ Creates process on target                     │
+│  ├─ Detection:    🔴 Likely to trigger IDS                          │
+│  └─ Impact:       🔴 Full system compromise if successful           │
+│                                                                     │
+│  AI Recommendation: Proceed - high confidence in exploitability     │
+│                                                                     │
+│  Your options:                                                      │
+│  [A] Approve    [M] Modify parameters    [D] Deny    [?] Explain   │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2. Course Correction (You Guide When AI Strays)
+
+```
+🤖 AI: Based on enumeration, I recommend focusing on the MySQL database
+       on port 3306. I'll attempt default credential testing.
+
+👤 You: No, the client specifically said MySQL is out of scope.
+        Focus on web application vulnerabilities only.
+
+🤖 AI: Understood. Removing MySQL from scope.
+
+       Refocusing on web application attack surface:
+       - 3 forms with potential SQLi vectors
+       - 1 file upload endpoint
+       - 2 API endpoints with improper input validation
+
+       Should I start with the file upload vulnerability?
+       It has the highest potential impact.
+
+👤 You: Yes, that's the right priority.
+```
+
+### 3. Rollback When Things Go Wrong
+
+```
+🤖 AI: Exploitation attempt failed.
+
+       Error: Target appears to be running a patched version.
+       CVE-2017-5638 payload did not execute.
+
+       I have two options:
+       1. Try alternative payload encoding
+       2. Roll back and investigate version more thoroughly
+
+       Given the failure, I recommend option 2 - we may have
+       misidentified the Struts version during enumeration.
+
+       Should I roll back to enumeration phase?
+
+👤 You: Yes, let's verify the version first.
+
+🤖 AI: Rolling back to enumeration.
+       Previous exploitation attempt logged in evidence.
+       No changes were made to target system.
+```
+
+### 4. Automatic Stop Conditions
+
+```
+⛔ AUTOMATIC STOP TRIGGERED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Reason: Consecutive similar errors detected (3x timeout on same host)
+
+This may indicate:
+• Target is blocking our requests
+• Network issue
+• Incorrect target configuration
+
+All agents paused. No further actions will be taken.
+
+Awaiting your decision:
+[R] Resume with different approach
+[S] Skip this target
+[A] Abort session
+[I] Investigate logs
+```
+
+## ✨ Key Features
 
 <table>
 <tr>
 <td width="50%">
 
-### 🤖 Multi-Agent Intelligence
+### 🤖 4 Specialized AI Agents
 
-Four specialized AI agents work in concert:
+Each agent is an expert in its domain:
 
-- **Reconnaissance Agent** — OSINT, DNS, Shodan, passive intel
-- **Enumeration Agent** — Services, endpoints, attack surface
-- **Planner Agent** — CVE mapping, exploit selection, strategy
-- **Exploitation Agent** — Controlled attacks with approval
-
-Each agent is an expert in its domain.
+- **Reconnaissance** — OSINT, DNS, Shodan, passive intel
+- **Enumeration** — Services, endpoints, attack surface
+- **Planner** — CVE mapping, exploit selection, strategy
+- **Exploitation** — Controlled attacks with your approval
 
 </td>
 <td width="50%">
 
-### 🔌 11+ Tool Integrations
+### 🔌 11+ Security Tool Integrations
 
-Connects to your favorite security tools via MCP:
+One interface, all your tools (via MCP):
 
 ```
 Nmap        Shodan       OSINT
@@ -115,43 +315,33 @@ Snyk        CVE-Search   GitHub
 GitLab      Filesystem   + more
 ```
 
-One interface. All your tools.
-
 </td>
 </tr>
 <tr>
 <td width="50%">
 
-### 🛡️ Human-in-the-Loop Safety
+### 💬 Natural Language Control
 
-You control what matters:
+No complex commands. Just tell the AI what you want:
 
 ```
-[APPROVAL REQUIRED]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Operation: metasploit_exploit
-Module:    exploit/multi/http/struts2_rce
-Target:    192.168.1.100:8080
-Risk:      ████████░░ HIGH
-
-Approve? [y/N]: █
+"Skip port 22, it's a honeypot"
+"Focus on the API endpoints"
+"That's a false positive, ignore it"
+"Explain why you chose this exploit"
 ```
-
-No surprises. No accidents. No regrets.
 
 </td>
 <td width="50%">
 
 ### 📋 Court-Ready Evidence
 
-Every finding is backed by proof:
+Every finding backed by proof:
 
 - **Append-only** evidence storage
 - **SHA256** hash verification
 - **Complete** audit trails
 - **Reproducible** attack chains
-
-From discovery to report, everything is documented.
 
 </td>
 </tr>
@@ -172,122 +362,55 @@ pip install -e .
 pentest-agent
 ```
 
-### Your First Scan
+### Your First Session
 
 ```bash
 $ pentest-agent
 
-╔══════════════════════════════════════════════════════════════╗
-║                    🎯 VibeHackAI v0.1.0                      ║
-║           AI-Powered Penetration Testing Assistant            ║
-╚══════════════════════════════════════════════════════════════╝
+╔══════════════════════════════════════════════════════════════════╗
+║                       🎯 VibeHackAI v0.1.0                        ║
+║          Conversational AI Penetration Testing Assistant          ║
+╚══════════════════════════════════════════════════════════════════╝
 
-vibehack> start my-first-pentest
+🤖 Welcome! I'm your AI pentest assistant.
 
-[✓] Session created: my-first-pentest
-[✓] Evidence store initialized
-[✓] Audit logging enabled
+   Unlike autonomous tools, I work WITH you - proposing actions,
+   explaining my reasoning, and waiting for your guidance.
 
-vibehack> scope add 192.168.1.0/24
+   What would you like to do?
 
-[✓] Target added: 192.168.1.0/24
-[!] Scope restricted to authorized targets only
+   • "start <session-name>" - Begin a new pentest session
+   • "resume <session-id>" - Continue a previous session
+   • "help" - Learn about available commands
 
-vibehack> run
+vibehack> start webapp-assessment
 
-[▸] Phase: RECONNAISSANCE
-[▸] Agent: ReconnaissanceAgent activated
-[▸] Running: Shodan lookup...
-[▸] Running: DNS enumeration...
-[▸] Running: Port discovery...
+🤖 Session created: webapp-assessment
 
-[✓] 23 hosts discovered
-[✓] 147 open ports identified
-[✓] 12 potential vulnerabilities flagged
+   Before we begin, I need to understand the scope.
+   What targets am I authorized to test?
 
-[▸] Evidence saved: evidence/recon-2025-01-21-001/
+vibehack> The target is testphp.vulnweb.com - it's a legal test site
 
-vibehack> findings
+🤖 Understood. I've set the scope to:
+   • testphp.vulnweb.com (and subdomains)
 
-┌─────────────────────────────────────────────────────────────────┐
-│ ID       │ Severity │ Title                        │ Evidence   │
-├─────────────────────────────────────────────────────────────────┤
-│ FIND-001 │ CRITICAL │ Apache Struts2 RCE (S2-045)  │ EV-042     │
-│ FIND-002 │ HIGH     │ Redis Unauthenticated Access │ EV-038     │
-│ FIND-003 │ HIGH     │ SMB Signing Disabled         │ EV-015     │
-│ FIND-004 │ MEDIUM   │ SSL/TLS Weak Ciphers         │ EV-089     │
-└─────────────────────────────────────────────────────────────────┘
+   I'll now begin reconnaissance. I'll report my findings
+   and wait for your direction before taking any active steps.
 
-vibehack> advance   # Move to Exploitation phase...
+   Starting passive reconnaissance...
 ```
 
-## 🔐 Safety First, Always
+## 📊 How It Compares
 
-VibeHackAI is designed with **defense-in-depth**:
-
-| Layer | Protection |
-|-------|------------|
-| **Scope Enforcement** | Every operation tagged. Out-of-scope = blocked. |
-| **Approval Gates** | Dangerous ops require explicit human approval. |
-| **Auto-Stop** | Detects DoS patterns, scope violations, anomalies. |
-| **Evidence Chain** | Tamper-proof logs. Every action recorded. |
-| **Rollback Ready** | Failed exploits don't leave you stranded. |
-
-```
-⚠️  STOP CONDITION TRIGGERED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Reason: Consecutive errors detected (scope violation suspected)
-Action: All agents halted
-Status: Awaiting human review
-
-[!] No operations executed outside approved scope.
-```
-
-## 🛠️ Integrations
-
-VibeHackAI leverages **Model Context Protocol (MCP)** to unify your security toolkit:
-
-<div align="center">
-
-| Reconnaissance | Enumeration | Exploitation | Research |
-|:-------------:|:-----------:|:------------:|:--------:|
-| Shodan | Burp Suite | Metasploit | Snyk |
-| Nmap | Nmap | Kali Linux | CVE-Search |
-| OSINT | OSINT | — | GitHub |
-| WhoisXML | — | — | GitLab |
-
-</div>
-
-> **No more context switching.** VibeHackAI speaks to all your tools.
-
-## 📊 How It Works
-
-```mermaid
-graph LR
-    A[You] -->|Define Scope| B[Orchestrator]
-    B -->|Context Bundle| C[Recon Agent]
-    C -->|Findings| B
-    B -->|Context Bundle| D[Enum Agent]
-    D -->|Findings| B
-    B -->|Context Bundle| E[Planner Agent]
-    E -->|Attack Plan| B
-    B -->|Approval Request| A
-    A -->|Approve| B
-    B -->|Context Bundle| F[Exploit Agent]
-    F -->|Results| B
-    B -->|Generate| G[Report]
-
-    style A fill:#e1f5fe
-    style B fill:#fff3e0
-    style G fill:#e8f5e9
-```
-
-**Phase Workflow:**
-1. **Reconnaissance** → Gather intel, map attack surface
-2. **Enumeration** → Deep dive into services, endpoints
-3. **Planning** → CVE matching, exploit selection, strategy
-4. **Exploitation** → Controlled attacks with your approval
-5. **Reporting** → Evidence-backed findings, ready for delivery
+| Aspect | Traditional AI Pentest | VibeHackAI |
+|--------|----------------------|------------|
+| **Control Model** | Autonomous (AI decides) | Collaborative (Human + AI) |
+| **Error Handling** | Retry until timeout | Ask human for guidance |
+| **Scope Violations** | May occur silently | Blocked with explanation |
+| **Course Correction** | Restart required | Natural conversation |
+| **Transparency** | Black box | Full reasoning exposed |
+| **Learning** | Pre-trained only | Adapts to your feedback |
 
 ## 📁 Project Structure
 
@@ -295,15 +418,14 @@ graph LR
 VibeHackAI/
 ├── 🤖 src/
 │   ├── agents/           # The 4 specialized AI agents
-│   ├── orchestrator/     # Coordination & safety systems
-│   ├── cli/              # Interactive interface
+│   ├── orchestrator/     # Coordination, approval, safety systems
+│   ├── cli/              # Conversational interface
 │   ├── storage/          # State & evidence management
 │   ├── mcp_adapters/     # Tool integrations (11+)
 │   ├── passer/           # Data normalization
 │   └── schemas/          # Type definitions
 ├── 📚 docs/              # Specifications (source of truth)
-├── 🧪 tests/             # 762 tests, all passing
-├── 📦 external/          # MCP server implementations
+├── 🧪 tests/             # Comprehensive test suite
 └── 💡 examples/          # Usage examples & tutorials
 ```
 
@@ -340,7 +462,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 - 🧪 Test coverage
 - 📚 Documentation & tutorials
 
-## ⚠️ Legal Disclaimer
+## ⚠️ Legal & Ethical Use
 
 <div align="center">
 
@@ -354,13 +476,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 - ❌ Never use for unauthorized access
 - ❌ Never use for malicious purposes
 
-**The authors are not responsible for misuse. You are responsible for your actions.**
+**The human-in-the-loop design is not just for safety — it's for accountability.**
+You are responsible for every action you approve.
 
 ## 📜 License
 
 MIT License — see [LICENSE](LICENSE) for details.
-
-Free to use, modify, and distribute. Attribution appreciated.
 
 ## 🙏 Acknowledgments
 
@@ -372,13 +493,16 @@ Free to use, modify, and distribute. Attribution appreciated.
 
 <div align="center">
 
-### Ready to transform your penetration testing workflow?
+### The future of pentesting isn't about replacing humans with AI.
+### It's about making humans and AI work together — safely.
+
+<br>
 
 ```bash
 git clone https://github.com/cawa102/VibeHackAI.git && cd VibeHackAI && pip install -e . && pentest-agent
 ```
 
-**[⭐ Star this repo](https://github.com/cawa102/VibeHackAI)** if you find it useful!
+**[⭐ Star this repo](https://github.com/cawa102/VibeHackAI)** if you believe in human-AI collaboration!
 
 <br>
 
