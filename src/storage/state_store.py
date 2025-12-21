@@ -15,6 +15,7 @@ from typing import Any, Optional, Union
 
 class StateVersionError(Exception):
     """Raised when state version conflict is detected."""
+
     pass
 
 
@@ -67,8 +68,7 @@ class StateStore:
         """
         file_path = self.state_dir / filename
         file_path.write_text(
-            json.dumps(data, indent=2, ensure_ascii=False),
-            encoding="utf-8"
+            json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8"
         )
 
     def json_exists(self, filename: str) -> bool:
@@ -119,9 +119,7 @@ class StateStore:
                         records.append(json.loads(line))
                     except json.JSONDecodeError as e:
                         raise json.JSONDecodeError(
-                            f"Invalid JSON at line {line_num}: {e.msg}",
-                            e.doc,
-                            e.pos
+                            f"Invalid JSON at line {line_num}: {e.msg}", e.doc, e.pos
                         )
 
         return records
@@ -267,10 +265,7 @@ class StateStore:
     # ==================== Context Bundle Operations ====================
 
     def save_context_bundle(
-        self,
-        agent_type: str,
-        bundle: dict,
-        timestamp: Optional[str] = None
+        self, agent_type: str, bundle: dict, timestamp: Optional[str] = None
     ) -> str:
         """
         Save a context bundle for an agent.
@@ -291,8 +286,7 @@ class StateStore:
 
         bundle_file = bundle_dir / f"{timestamp}.json"
         bundle_file.write_text(
-            json.dumps(bundle, indent=2, ensure_ascii=False),
-            encoding="utf-8"
+            json.dumps(bundle, indent=2, ensure_ascii=False), encoding="utf-8"
         )
 
         return str(bundle_file)
@@ -312,10 +306,7 @@ class StateStore:
         if not bundle_dir.exists():
             return []
 
-        bundles = [
-            f.stem for f in bundle_dir.iterdir()
-            if f.suffix == ".json"
-        ]
+        bundles = [f.stem for f in bundle_dir.iterdir() if f.suffix == ".json"]
 
         return sorted(bundles, reverse=True)
 

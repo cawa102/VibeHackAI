@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
-import pytest
-from unittest.mock import MagicMock, call
 from datetime import datetime
+from unittest.mock import MagicMock, call
+
+import pytest
 
 from src.orchestrator.audit_logger import (
-    OrchestratorAuditLogger,
     AuditEvent,
     AuditEventType,
+    OrchestratorAuditLogger,
 )
 
 
@@ -151,7 +152,9 @@ class TestOrchestratorAuditLogger:
 
     def test_log_agent_completed(self, logger, mock_state_store):
         """Test logging agent completion."""
-        logger.log_agent_completed("recon_agent", "recon", success=True, duration_ms=5000)
+        logger.log_agent_completed(
+            "recon_agent", "recon", success=True, duration_ms=5000
+        )
 
         call_args = mock_state_store.append_jsonl.call_args
         event_data = call_args[0][1]

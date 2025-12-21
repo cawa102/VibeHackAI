@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-import pytest
 from unittest.mock import MagicMock
+
+import pytest
 
 from src.cli.prompts import Prompts
 
@@ -270,11 +271,13 @@ class TestPromptsScopeInput:
 
     def test_scope_input_basic(self):
         """Test basic scope input."""
-        inputs = iter([
-            "192.168.1.1",  # First target
-            "",             # Done with targets
-            "1,2,3",        # Operations
-        ])
+        inputs = iter(
+            [
+                "192.168.1.1",  # First target
+                "",  # Done with targets
+                "1,2,3",  # Operations
+            ]
+        )
         mock_input = MagicMock(side_effect=lambda x: next(inputs))
         mock_print = MagicMock()
         prompts = Prompts(input_func=mock_input, print_func=mock_print)
@@ -288,11 +291,13 @@ class TestPromptsScopeInput:
 
     def test_scope_input_cidr(self):
         """Test scope input with CIDR."""
-        inputs = iter([
-            "192.168.1.0/24",
-            "",
-            "1",
-        ])
+        inputs = iter(
+            [
+                "192.168.1.0/24",
+                "",
+                "1",
+            ]
+        )
         mock_input = MagicMock(side_effect=lambda x: next(inputs))
         mock_print = MagicMock()
         prompts = Prompts(input_func=mock_input, print_func=mock_print)
@@ -303,11 +308,13 @@ class TestPromptsScopeInput:
 
     def test_scope_input_url(self):
         """Test scope input with URL."""
-        inputs = iter([
-            "https://example.com",
-            "",
-            "1",
-        ])
+        inputs = iter(
+            [
+                "https://example.com",
+                "",
+                "1",
+            ]
+        )
         mock_input = MagicMock(side_effect=lambda x: next(inputs))
         mock_print = MagicMock()
         prompts = Prompts(input_func=mock_input, print_func=mock_print)
@@ -318,11 +325,13 @@ class TestPromptsScopeInput:
 
     def test_scope_input_domain(self):
         """Test scope input with domain."""
-        inputs = iter([
-            "example.com",
-            "",
-            "1",
-        ])
+        inputs = iter(
+            [
+                "example.com",
+                "",
+                "1",
+            ]
+        )
         mock_input = MagicMock(side_effect=lambda x: next(inputs))
         mock_print = MagicMock()
         prompts = Prompts(input_func=mock_input, print_func=mock_print)
@@ -333,10 +342,12 @@ class TestPromptsScopeInput:
 
     def test_scope_input_no_targets(self):
         """Test scope input with no targets."""
-        inputs = iter([
-            "",  # No targets
-            "1",  # Operations still asked
-        ])
+        inputs = iter(
+            [
+                "",  # No targets
+                "1",  # Operations still asked
+            ]
+        )
         mock_input = MagicMock(side_effect=lambda x: next(inputs))
         mock_print = MagicMock()
         prompts = Prompts(input_func=mock_input, print_func=mock_print)

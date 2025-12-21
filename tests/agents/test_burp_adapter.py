@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
+from src.mcp_adapters.base_adapter import MCPError, MCPResult
 from src.mcp_adapters.burp_adapter import BurpAdapter
-from src.mcp_adapters.base_adapter import MCPResult, MCPError
 
 
 class TestBurpAdapter:
@@ -116,7 +116,9 @@ class TestBurpAdapter:
         result = adapter.get_forms("https://example.com")
 
         assert result.success is True
-        file_upload_forms = [f for f in result.data["forms"] if f.get("has_file_upload")]
+        file_upload_forms = [
+            f for f in result.data["forms"] if f.get("has_file_upload")
+        ]
         assert len(file_upload_forms) > 0
 
     def test_endpoints_have_auth_info(self, adapter):

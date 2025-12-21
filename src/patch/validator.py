@@ -9,23 +9,24 @@ from __future__ import annotations
 from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from enum import Enum
-from typing import Any, Dict, List, Optional, Set, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set
 
-from .patch import Patch, PatchOperation
 from .operations import (
-    OperationType,
     APPROVAL_REQUIRED_OPERATIONS,
     OPERATION_REQUIRED_FIELDS,
+    OperationType,
 )
+from .patch import Patch, PatchOperation
 
 if TYPE_CHECKING:
-    from ..storage.state_store import StateStore
-    from ..storage.evidence_ledger import EvidenceLedger
     from ..schemas.scope import Scope
+    from ..storage.evidence_ledger import EvidenceLedger
+    from ..storage.state_store import StateStore
 
 
 class ValidationErrorType(str, Enum):
     """Types of validation errors."""
+
     VERSION_MISMATCH = "version_mismatch"
     SCOPE_VIOLATION = "scope_violation"
     MISSING_FIELD = "missing_field"
@@ -41,6 +42,7 @@ class ValidationErrorType(str, Enum):
 @dataclass
 class ValidationError:
     """A single validation error."""
+
     error_type: ValidationErrorType
     message: str
     operation_index: Optional[int] = None
@@ -51,6 +53,7 @@ class ValidationError:
 @dataclass
 class ValidationResult:
     """Result of patch validation."""
+
     valid: bool
     errors: List[ValidationError] = dataclass_field(default_factory=list)
     warnings: List[str] = dataclass_field(default_factory=list)
@@ -65,13 +68,15 @@ class ValidationResult:
     ) -> None:
         """Add a validation error."""
         self.valid = False
-        self.errors.append(ValidationError(
-            error_type=error_type,
-            message=message,
-            operation_index=operation_index,
-            field_name=field_name,
-            details=details or {},
-        ))
+        self.errors.append(
+            ValidationError(
+                error_type=error_type,
+                message=message,
+                operation_index=operation_index,
+                field_name=field_name,
+                details=details or {},
+            )
+        )
 
     def add_warning(self, message: str) -> None:
         """Add a validation warning."""

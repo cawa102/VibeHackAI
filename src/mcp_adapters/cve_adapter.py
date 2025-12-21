@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .base_adapter import BaseMCPAdapter, MCPResult, MCPError, MCPToolType
+from .base_adapter import BaseMCPAdapter, MCPError, MCPResult, MCPToolType
 
 
 class CVEAdapter(BaseMCPAdapter):
@@ -25,13 +25,13 @@ class CVEAdapter(BaseMCPAdapter):
 
     # Supported operations
     OPERATIONS = [
-        "lookup_cve",           # Lookup CVE by ID
-        "search_by_product",    # Search CVEs by product name
-        "search_by_vendor",     # Search CVEs by vendor
-        "search_by_keyword",    # Keyword search
-        "get_cve_details",      # Get detailed CVE info
-        "get_exploit_info",     # Get exploit availability info
-        "search_recent",        # Search recent CVEs
+        "lookup_cve",  # Lookup CVE by ID
+        "search_by_product",  # Search CVEs by product name
+        "search_by_vendor",  # Search CVEs by vendor
+        "search_by_keyword",  # Keyword search
+        "get_cve_details",  # Get detailed CVE info
+        "get_exploit_info",  # Get exploit availability info
+        "search_recent",  # Search recent CVEs
     ]
 
     def __init__(
@@ -157,11 +157,21 @@ class CVEAdapter(BaseMCPAdapter):
                 },
                 "cwe": ["CWE-917", "CWE-502", "CWE-400", "CWE-20"],
                 "references": [
-                    {"url": "https://logging.apache.org/log4j/2.x/security.html", "source": "CONFIRM"},
-                    {"url": "https://www.cisa.gov/uscert/apache-log4j-vulnerability-guidance", "source": "US-CERT"},
+                    {
+                        "url": "https://logging.apache.org/log4j/2.x/security.html",
+                        "source": "CONFIRM",
+                    },
+                    {
+                        "url": "https://www.cisa.gov/uscert/apache-log4j-vulnerability-guidance",
+                        "source": "US-CERT",
+                    },
                 ],
                 "affected_products": [
-                    {"vendor": "apache", "product": "log4j", "versions": "2.0-beta9 to 2.14.1"},
+                    {
+                        "vendor": "apache",
+                        "product": "log4j",
+                        "versions": "2.0-beta9 to 2.14.1",
+                    },
                 ],
             },
             metadata={"source": "cve_research", "operation": "lookup_cve"},

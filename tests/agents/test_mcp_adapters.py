@@ -4,10 +4,15 @@ from __future__ import annotations
 
 import pytest
 
-from src.mcp_adapters.base_adapter import BaseMCPAdapter, MCPResult, MCPError, MCPToolType
-from src.mcp_adapters.shodan_adapter import ShodanAdapter
-from src.mcp_adapters.osint_adapter import OSINTAdapter
+from src.mcp_adapters.base_adapter import (
+    BaseMCPAdapter,
+    MCPError,
+    MCPResult,
+    MCPToolType,
+)
 from src.mcp_adapters.nmap_adapter import NmapAdapter
+from src.mcp_adapters.osint_adapter import OSINTAdapter
+from src.mcp_adapters.shodan_adapter import ShodanAdapter
 
 
 class TestMCPResult:

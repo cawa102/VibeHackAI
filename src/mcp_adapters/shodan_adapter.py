@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .base_adapter import BaseMCPAdapter, MCPResult, MCPError, MCPToolType
+from .base_adapter import BaseMCPAdapter, MCPError, MCPResult, MCPToolType
 
 
 class ShodanAdapter(BaseMCPAdapter):
@@ -26,12 +26,12 @@ class ShodanAdapter(BaseMCPAdapter):
 
     # Supported operations
     OPERATIONS = [
-        "host_lookup",      # Look up host by IP
-        "search",           # Search Shodan database
-        "dns_resolve",      # DNS resolution
-        "reverse_dns",      # Reverse DNS lookup
-        "ports",            # Get common ports for IP
-        "vulns",            # Get known vulnerabilities
+        "host_lookup",  # Look up host by IP
+        "search",  # Search Shodan database
+        "dns_resolve",  # DNS resolution
+        "reverse_dns",  # Reverse DNS lookup
+        "ports",  # Get common ports for IP
+        "vulns",  # Get known vulnerabilities
     ]
 
     def __init__(
@@ -267,7 +267,7 @@ class ShodanAdapter(BaseMCPAdapter):
                 "ip": ip,
                 "vulns": [
                     "CVE-2021-44228",  # Log4j
-                    "CVE-2014-0160",   # Heartbleed
+                    "CVE-2014-0160",  # Heartbleed
                 ],
             },
             metadata={"source": "shodan"},

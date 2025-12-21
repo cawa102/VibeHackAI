@@ -58,13 +58,23 @@ OPERATION_REQUIRED_FIELDS = {
     OperationType.ADD_EVIDENCE: ["data", "source_tool"],
     OperationType.ADD_OBSERVATION: ["tool", "action"],
     OperationType.UPDATE_TARGET_PROFILE: [],  # No required fields, partial updates allowed
-    OperationType.ADD_VULN_CANDIDATE: ["title", "description", "affected_component", "source"],
+    OperationType.ADD_VULN_CANDIDATE: [
+        "title",
+        "description",
+        "affected_component",
+        "source",
+    ],
     OperationType.ADD_EXPLOIT_CANDIDATE: ["title", "source"],
     OperationType.PROPOSE_EXECUTION_PLAN: ["title", "description", "target"],
     OperationType.RECORD_EXECUTION_RESULT: ["plan_id", "step_index"],
     OperationType.ADD_FINDING_CANDIDATE: [
-        "title", "severity", "description", "impact",
-        "affected_component", "remediation", "evidence_ids"
+        "title",
+        "severity",
+        "description",
+        "impact",
+        "affected_component",
+        "remediation",
+        "evidence_ids",
     ],
     OperationType.PROMOTE_FINDING_CANDIDATE: ["finding_id", "promoted_by"],
     OperationType.ADD_DECISION_TRACE: ["decision_type", "context", "rationale"],

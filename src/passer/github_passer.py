@@ -10,9 +10,9 @@ import json
 import re
 from typing import Any, Dict, List, Optional, Union
 
-from .base import BasePasser, MCPType, PasserRegistry, PasserResult
 from ..schemas import ExploitCandidate, Observation
-from ..schemas.exploit_candidate import ExploitSource, ExploitReliability
+from ..schemas.exploit_candidate import ExploitReliability, ExploitSource
+from .base import BasePasser, MCPType, PasserRegistry, PasserResult
 
 
 @PasserRegistry.register
@@ -28,8 +28,15 @@ class GitHubPasser(BasePasser):
 
     # Patterns that indicate PoC/exploit code
     POC_PATTERNS = [
-        r"poc", r"proof.?of.?concept", r"exploit", r"cve-\d{4}-\d+",
-        r"vulnerability", r"rce", r"sqli", r"xss", r"payload",
+        r"poc",
+        r"proof.?of.?concept",
+        r"exploit",
+        r"cve-\d{4}-\d+",
+        r"vulnerability",
+        r"rce",
+        r"sqli",
+        r"xss",
+        r"payload",
     ]
 
     def can_handle(self, raw_output: Union[str, bytes, Dict[str, Any]]) -> bool:
@@ -40,8 +47,14 @@ class GitHubPasser(BasePasser):
 
         # Check for GitHub-specific fields
         github_indicators = [
-            "full_name", "html_url", "clone_url", "stargazers_count",
-            "items", "total_count", "repositories", "repos"
+            "full_name",
+            "html_url",
+            "clone_url",
+            "stargazers_count",
+            "items",
+            "total_count",
+            "repositories",
+            "repos",
         ]
         return any(key in data for key in github_indicators)
 
@@ -181,7 +194,11 @@ class GitHubPasser(BasePasser):
                     "updated_at": data.get("updated_at"),
                     "pushed_at": data.get("pushed_at"),
                     "owner": data.get("owner", {}).get("login"),
-                    "license": data.get("license", {}).get("key") if data.get("license") else None,
+                    "license": (
+                        data.get("license", {}).get("key")
+                        if data.get("license")
+                        else None
+                    ),
                     "default_branch": data.get("default_branch"),
                     "archived": data.get("archived", False),
                     "disabled": data.get("disabled", False),
@@ -303,7 +320,9 @@ class GitHubPasser(BasePasser):
                     "total_found": total,
                     "search_total": search_total,
                     "cve_related_count": cve_count,
-                    "exploit_candidate_ids": [ec.id for ec in result.exploit_candidates],
+                    "exploit_candidate_ids": [
+                        ec.id for ec in result.exploit_candidates
+                    ],
                 },
             )
             return observation

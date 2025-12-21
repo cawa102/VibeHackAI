@@ -11,15 +11,12 @@ import sys
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from ..orchestrator.workflow import (
-    UserProposal,
-    UserResponse,
-    WorkflowPhase,
-)
+from ..orchestrator.workflow import UserProposal, UserResponse, WorkflowPhase
 
 
 class Colors:
     """ANSI color codes for terminal output."""
+
     RESET = "\033[0m"
     BOLD = "\033[1m"
     RED = "\033[91m"
@@ -85,7 +82,9 @@ class InteractiveCLI:
             "info": Colors.BLUE,
         }
         color = colors.get(level.lower(), Colors.RESET)
-        print(f"\n{self._color('Risk Level:', Colors.BOLD)} {self._color(level.upper(), color)}")
+        print(
+            f"\n{self._color('Risk Level:', Colors.BOLD)} {self._color(level.upper(), color)}"
+        )
 
     def _print_options(self, options: list) -> None:
         """Print available options."""
@@ -143,8 +142,10 @@ class InteractiveCLI:
             if step.get("requires_approval"):
                 print(self._color("      (requires approval)", Colors.YELLOW))
 
-        print(f"\n{self._color('Estimated Success Rate:', Colors.BOLD)} "
-              f"{details.get('estimated_success_rate', 0) * 100:.0f}%")
+        print(
+            f"\n{self._color('Estimated Success Rate:', Colors.BOLD)} "
+            f"{details.get('estimated_success_rate', 0) * 100:.0f}%"
+        )
 
     def _display_step_details(self, details: Dict[str, Any]) -> None:
         """Display step details."""
@@ -209,7 +210,11 @@ class InteractiveCLI:
         while True:
             print()
             try:
-                choice = input(self._color("Select action [1-{}]: ".format(len(options)), Colors.CYAN))
+                choice = input(
+                    self._color(
+                        "Select action [1-{}]: ".format(len(options)), Colors.CYAN
+                    )
+                )
 
                 # Parse choice
                 if choice.isdigit():
@@ -247,7 +252,12 @@ class InteractiveCLI:
 
     def _get_modifications(self, proposal: UserProposal) -> Dict[str, Any]:
         """Get modifications from user."""
-        print(self._color("\nEnter modifications (JSON format or press Enter to skip):", Colors.BOLD))
+        print(
+            self._color(
+                "\nEnter modifications (JSON format or press Enter to skip):",
+                Colors.BOLD,
+            )
+        )
         try:
             mod_input = input("> ").strip()
             if mod_input:
@@ -282,7 +292,9 @@ class InteractiveCLI:
         color = phase_colors.get(phase, Colors.RESET)
 
         timestamp = datetime.now().strftime("%H:%M:%S")
-        print(f"[{timestamp}] {self._color(f'[{phase.value.upper()}]', color)} {message}")
+        print(
+            f"[{timestamp}] {self._color(f'[{phase.value.upper()}]', color)} {message}"
+        )
 
         if details:
             for key, value in details.items():

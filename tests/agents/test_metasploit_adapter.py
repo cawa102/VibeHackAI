@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
+from src.mcp_adapters.base_adapter import MCPError, MCPResult
 from src.mcp_adapters.metasploit_adapter import MetasploitAdapter
-from src.mcp_adapters.base_adapter import MCPResult, MCPError
 
 
 class TestMetasploitAdapter:
@@ -50,7 +50,9 @@ class TestMetasploitAdapter:
 
     def test_get_module_info(self, adapter):
         """Test getting module info."""
-        result = adapter.get_module_info("exploit/multi/http/log4shell_header_injection")
+        result = adapter.get_module_info(
+            "exploit/multi/http/log4shell_header_injection"
+        )
 
         assert result.success is True
         assert "name" in result.data

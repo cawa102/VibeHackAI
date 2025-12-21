@@ -9,9 +9,9 @@ from __future__ import annotations
 import json
 from typing import Any, Dict, List, Optional, Union
 
+from ..schemas import Observation, VulnCandidate
+from ..schemas.vuln_candidate import ConfidenceLevel, Severity
 from .base import BasePasser, MCPType, PasserRegistry, PasserResult
-from ..schemas import VulnCandidate, Observation
-from ..schemas.vuln_candidate import Severity, ConfidenceLevel
 
 
 @PasserRegistry.register
@@ -43,8 +43,12 @@ class SnykPasser(BasePasser):
 
         # Check for Snyk-specific fields
         snyk_indicators = [
-            "vulnerabilities", "projectName", "displayTargetFile",
-            "packageManager", "snykVersion", "uniqueCount"
+            "vulnerabilities",
+            "projectName",
+            "displayTargetFile",
+            "packageManager",
+            "snykVersion",
+            "uniqueCount",
         ]
         return any(key in data for key in snyk_indicators)
 
@@ -156,7 +160,9 @@ class SnykPasser(BasePasser):
             # Get affected package
             package_name = vuln.get("packageName", "")
             package_version = vuln.get("version", "")
-            affected_component = f"{package_name}@{package_version}" if package_name else target_file
+            affected_component = (
+                f"{package_name}@{package_version}" if package_name else target_file
+            )
 
             # Get fix info
             upgradable = vuln.get("isUpgradable", False)

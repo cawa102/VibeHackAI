@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import json
+
 import pytest
 
-from src.passer.kali_passer import KaliPasser
 from src.passer.base import MCPType
-from src.schemas.execution_result import ExecutionStatus, ErrorClass
+from src.passer.kali_passer import KaliPasser
+from src.schemas.execution_result import ErrorClass, ExecutionStatus
 
 
 class TestKaliPasser:
@@ -58,7 +59,9 @@ class TestKaliPasser:
         + 5 item(s) reported on remote host
         + 1 host(s) tested
         """
-        result = passer.normalize(output, tool_name="nikto", plan_id="test-plan", step_index=0)
+        result = passer.normalize(
+            output, tool_name="nikto", plan_id="test-plan", step_index=0
+        )
 
         assert result.success
         assert len(result.execution_results) == 1
@@ -81,7 +84,9 @@ class TestKaliPasser:
         Finished
         ===============================================================
         """
-        result = passer.normalize(output, tool_name="gobuster", plan_id="test-plan", step_index=0)
+        result = passer.normalize(
+            output, tool_name="gobuster", plan_id="test-plan", step_index=0
+        )
 
         assert result.success
         exec_result = result.execution_results[0]
@@ -99,12 +104,17 @@ class TestKaliPasser:
         sqlmap identified the following injection points
         database: users
         """
-        result = passer.normalize(output, tool_name="sqlmap", plan_id="test-plan", step_index=0)
+        result = passer.normalize(
+            output, tool_name="sqlmap", plan_id="test-plan", step_index=0
+        )
 
         assert result.success
         exec_result = result.execution_results[0]
         assert exec_result.status == ExecutionStatus.SUCCESS
-        assert "injection" in exec_result.output_summary.lower() or "database" in exec_result.output_summary.lower()
+        assert (
+            "injection" in exec_result.output_summary.lower()
+            or "database" in exec_result.output_summary.lower()
+        )
 
     def test_normalize_hydra_success(self, passer):
         """Test normalizing Hydra successful output."""
@@ -116,7 +126,9 @@ class TestKaliPasser:
         [22][ssh] host: 10.0.0.1   login: root    password: toor
         1 valid passwords found
         """
-        result = passer.normalize(output, tool_name="hydra", plan_id="test-plan", step_index=0)
+        result = passer.normalize(
+            output, tool_name="hydra", plan_id="test-plan", step_index=0
+        )
 
         assert result.success
         exec_result = result.execution_results[0]
@@ -192,7 +204,9 @@ class TestKaliPasser:
     def test_normalize_bytes_input(self, passer):
         """Test normalizing bytes input."""
         output = b"Nikto scan complete\n5 item(s) reported"
-        result = passer.normalize(output, tool_name="nikto", plan_id="test-plan", step_index=0)
+        result = passer.normalize(
+            output, tool_name="nikto", plan_id="test-plan", step_index=0
+        )
 
         assert result.success
         assert len(result.execution_results) == 1

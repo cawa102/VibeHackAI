@@ -48,6 +48,7 @@ class PatchOperation(BaseModel):
 
     class Config:
         """Pydantic config."""
+
         use_enum_values = True
 
 
@@ -198,6 +199,7 @@ class Patch(BaseModel):
 
     class Config:
         """Pydantic config."""
+
         json_encoders = {
             datetime: lambda v: v.isoformat() + "Z",
         }

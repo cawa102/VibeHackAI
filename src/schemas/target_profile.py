@@ -7,7 +7,7 @@ Defines the detailed information about targets discovered during reconnaissance.
 from __future__ import annotations
 
 from enum import Enum
-from typing import List, Optional, Dict, Any, Union
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -16,6 +16,7 @@ from .base import BaseSchema
 
 class PortState(str, Enum):
     """Port states."""
+
     OPEN = "open"
     CLOSED = "closed"
     FILTERED = "filtered"
@@ -24,6 +25,7 @@ class PortState(str, Enum):
 
 class Protocol(str, Enum):
     """Network protocols."""
+
     TCP = "tcp"
     UDP = "udp"
     SCTP = "sctp"
@@ -68,7 +70,9 @@ class PortInfo(BaseModel):
 
     port: int = Field(..., ge=1, le=65535, description="Port number")
     protocol: str = Field(default="tcp", description="Protocol (tcp, udp, sctp)")
-    state: str = Field(default="unknown", description="Port state (open, closed, filtered)")
+    state: str = Field(
+        default="unknown", description="Port state (open, closed, filtered)"
+    )
     service: Optional[ServiceInfo] = Field(None, description="Service information")
     banner: Optional[str] = Field(None, description="Service banner")
     evidence_ids: List[str] = Field(
@@ -80,7 +84,9 @@ class PortInfo(BaseModel):
 class TechnologyStack(BaseModel):
     """Technology stack information."""
 
-    category: str = Field(..., description="Category (web_server, database, framework, etc.)")
+    category: str = Field(
+        ..., description="Category (web_server, database, framework, etc.)"
+    )
     name: str = Field(..., description="Technology name")
     version: Optional[str] = Field(None, description="Version")
     evidence_ids: List[str] = Field(
@@ -163,10 +169,14 @@ class WebEndpoint(BaseModel):
 class AuthenticationInfo(BaseModel):
     """Authentication mechanism information."""
 
-    mechanism: str = Field(..., description="Auth mechanism (basic, form, oauth, jwt, etc.)")
+    mechanism: str = Field(
+        ..., description="Auth mechanism (basic, form, oauth, jwt, etc.)"
+    )
     login_url: Optional[str] = Field(None, description="Login URL")
     logout_url: Optional[str] = Field(None, description="Logout URL")
-    session_type: Optional[str] = Field(None, description="Session type (cookie, token, etc.)")
+    session_type: Optional[str] = Field(
+        None, description="Session type (cookie, token, etc.)"
+    )
     evidence_ids: List[str] = Field(
         default_factory=list,
         description="Evidence IDs",
@@ -282,7 +292,9 @@ class TargetProfile(BaseSchema):
         if self.ip_address:
             for port in self.ports:
                 if port.state == "open":
-                    ports.append((self.ip_address, port.port, port.protocol, port.service))
+                    ports.append(
+                        (self.ip_address, port.port, port.protocol, port.service)
+                    )
         return ports
 
     def to_host_info(self) -> Optional[HostInfo]:

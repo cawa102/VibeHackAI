@@ -186,9 +186,7 @@ class TestDisplayKeyValue:
 
     def test_list_key_value(self, display):
         """Test key-value with list."""
-        items = {
-            "Targets": ["192.168.1.1", "192.168.1.2"]
-        }
+        items = {"Targets": ["192.168.1.1", "192.168.1.2"]}
 
         result = display.key_value(items)
 

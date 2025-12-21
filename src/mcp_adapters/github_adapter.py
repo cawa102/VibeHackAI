@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .base_adapter import BaseMCPAdapter, MCPResult, MCPError, MCPToolType
+from .base_adapter import BaseMCPAdapter, MCPError, MCPResult, MCPToolType
 
 
 class GitHubAdapter(BaseMCPAdapter):
@@ -25,13 +25,13 @@ class GitHubAdapter(BaseMCPAdapter):
 
     # Supported operations
     OPERATIONS = [
-        "search_repos",         # Search repositories
-        "search_code",          # Search code
-        "search_pocs",          # Search PoC repositories
-        "get_repo_info",        # Get repository information
-        "get_repo_contents",    # Get repository file contents
-        "search_exploits",      # Search for exploit code
-        "evaluate_reliability", # Evaluate PoC reliability
+        "search_repos",  # Search repositories
+        "search_code",  # Search code
+        "search_pocs",  # Search PoC repositories
+        "get_repo_info",  # Get repository information
+        "get_repo_contents",  # Get repository file contents
+        "search_exploits",  # Search for exploit code
+        "evaluate_reliability",  # Evaluate PoC reliability
     ]
 
     def __init__(

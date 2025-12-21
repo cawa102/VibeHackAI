@@ -7,13 +7,13 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from src.agents.reporting_agent import (
-    ReportingAgent,
-    Finding,
-    ReportSection,
-    PentestReport,
-)
 from src.agents.base_agent import AgentConfig, AgentContext, AgentType
+from src.agents.reporting_agent import (
+    Finding,
+    PentestReport,
+    ReportingAgent,
+    ReportSection,
+)
 
 
 class TestFinding:
@@ -475,9 +475,7 @@ class TestReportingAgentRecommendations:
         report = agent.get_report()
 
         # Should have critical recommendation
-        has_critical_rec = any(
-            "CRITICAL" in rec for rec in report.recommendations
-        )
+        has_critical_rec = any("CRITICAL" in rec for rec in report.recommendations)
         assert has_critical_rec is True
 
     def test_sql_injection_recommendations(self, agent):
@@ -553,9 +551,7 @@ class TestReportingAgentRecommendations:
         report = agent.get_report()
 
         # Should have patch recommendation
-        has_patch_rec = any(
-            "patch" in rec.lower() for rec in report.recommendations
-        )
+        has_patch_rec = any("patch" in rec.lower() for rec in report.recommendations)
         assert has_patch_rec is True
 
 
@@ -819,10 +815,7 @@ class TestReportingAgentPatchGeneration:
         output = agent.run(context)
 
         # Should have at least one observation about finding inclusion
-        obs_ops = [
-            op for op in output.patch.operations
-            if op.target == "observations"
-        ]
+        obs_ops = [op for op in output.patch.operations if op.target == "observations"]
         assert len(obs_ops) >= 1
 
 

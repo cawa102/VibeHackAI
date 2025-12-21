@@ -15,21 +15,25 @@ from typing import Optional, Union
 
 class FilesystemError(Exception):
     """Base exception for filesystem operations."""
+
     pass
 
 
 class FileNotFoundError(FilesystemError):
     """Raised when a file is not found."""
+
     pass
 
 
 class DirectoryNotFoundError(FilesystemError):
     """Raised when a directory is not found."""
+
     pass
 
 
 class PermissionError(FilesystemError):
     """Raised when permission is denied."""
+
     pass
 
 
@@ -128,7 +132,7 @@ class FilesystemAdapter:
         path: Union[str, Path],
         content: str,
         encoding: str = "utf-8",
-        create_dirs: bool = True
+        create_dirs: bool = True,
     ) -> None:
         """
         Write a text file.
@@ -149,10 +153,7 @@ class FilesystemAdapter:
             raise PermissionError(f"Permission denied: {path}")
 
     def write_bytes(
-        self,
-        path: Union[str, Path],
-        content: bytes,
-        create_dirs: bool = True
+        self, path: Union[str, Path], content: bytes, create_dirs: bool = True
     ) -> None:
         """
         Write a binary file.
@@ -176,7 +177,7 @@ class FilesystemAdapter:
         path: Union[str, Path],
         content: str,
         encoding: str = "utf-8",
-        create_dirs: bool = True
+        create_dirs: bool = True,
     ) -> None:
         """
         Append to a text file.
@@ -244,10 +245,7 @@ class FilesystemAdapter:
     # ==================== Directory Operations ====================
 
     def create_directory(
-        self,
-        path: Union[str, Path],
-        parents: bool = True,
-        exist_ok: bool = True
+        self, path: Union[str, Path], parents: bool = True, exist_ok: bool = True
     ) -> None:
         """
         Create a directory.
@@ -264,11 +262,7 @@ class FilesystemAdapter:
         except builtins.PermissionError:
             raise PermissionError(f"Permission denied: {path}")
 
-    def delete_directory(
-        self,
-        path: Union[str, Path],
-        recursive: bool = False
-    ) -> bool:
+    def delete_directory(self, path: Union[str, Path], recursive: bool = False) -> bool:
         """
         Delete a directory.
 
@@ -301,10 +295,7 @@ class FilesystemAdapter:
         return resolved.is_dir()
 
     def list_directory(
-        self,
-        path: Union[str, Path],
-        pattern: str = "*",
-        recursive: bool = False
+        self, path: Union[str, Path], pattern: str = "*", recursive: bool = False
     ) -> list[Path]:
         """
         List directory contents.
@@ -330,10 +321,7 @@ class FilesystemAdapter:
     # ==================== Copy/Move Operations ====================
 
     def copy_file(
-        self,
-        src: Union[str, Path],
-        dst: Union[str, Path],
-        create_dirs: bool = True
+        self, src: Union[str, Path], dst: Union[str, Path], create_dirs: bool = True
     ) -> None:
         """
         Copy a file.
@@ -357,10 +345,7 @@ class FilesystemAdapter:
             raise PermissionError(f"Permission denied: {src} -> {dst}")
 
     def move_file(
-        self,
-        src: Union[str, Path],
-        dst: Union[str, Path],
-        create_dirs: bool = True
+        self, src: Union[str, Path], dst: Union[str, Path], create_dirs: bool = True
     ) -> None:
         """
         Move a file.

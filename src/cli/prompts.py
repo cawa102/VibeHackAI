@@ -256,6 +256,7 @@ class Prompts:
         """
         try:
             import getpass
+
             return getpass.getpass(f"{prompt}: ")
         except (KeyboardInterrupt, EOFError):
             return None

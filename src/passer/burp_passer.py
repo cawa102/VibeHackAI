@@ -12,9 +12,9 @@ import xml.etree.ElementTree as ET
 from typing import Any, Dict, List, Optional, Union
 from urllib.parse import urlparse
 
-from .base import BasePasser, MCPType, PasserRegistry, PasserResult
 from ..schemas import Observation
 from ..schemas.evidence import EvidenceItem
+from .base import BasePasser, MCPType, PasserRegistry, PasserResult
 
 
 @PasserRegistry.register
@@ -35,7 +35,9 @@ class BurpPasser(BasePasser):
 
         if isinstance(raw_output, str):
             # Check for Burp XML format
-            if "<?xml" in raw_output and ("burpVersion" in raw_output or "<items" in raw_output):
+            if "<?xml" in raw_output and (
+                "burpVersion" in raw_output or "<items" in raw_output
+            ):
                 return True
             # Try JSON
             try:
@@ -51,7 +53,15 @@ class BurpPasser(BasePasser):
 
     def _is_burp_json(self, data: Dict[str, Any]) -> bool:
         """Check if JSON data is from Burp."""
-        burp_indicators = ["request", "response", "sitemap", "issues", "host", "method", "path"]
+        burp_indicators = [
+            "request",
+            "response",
+            "sitemap",
+            "issues",
+            "host",
+            "method",
+            "path",
+        ]
         return any(key in data for key in burp_indicators)
 
     def normalize(
@@ -244,7 +254,11 @@ class BurpPasser(BasePasser):
         try:
             url = entry.get("url", "")
             method = entry.get("method", "GET")
-            status = entry.get("status") or entry.get("statusCode") or entry.get("response", {}).get("status")
+            status = (
+                entry.get("status")
+                or entry.get("statusCode")
+                or entry.get("response", {}).get("status")
+            )
             path = entry.get("path", "/")
 
             if url and not path:
@@ -305,7 +319,8 @@ class BurpPasser(BasePasser):
                     "confidence": confidence,
                     "url": url,
                     "issue_detail": issue.get("issueDetail") or issue.get("detail"),
-                    "remediation": issue.get("remediationDetail") or issue.get("remediation"),
+                    "remediation": issue.get("remediationDetail")
+                    or issue.get("remediation"),
                     "issue_type": issue.get("issueType") or issue.get("type"),
                 },
             )

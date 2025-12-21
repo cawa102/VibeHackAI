@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
+from src.mcp_adapters.base_adapter import MCPError, MCPResult
 from src.mcp_adapters.cve_adapter import CVEAdapter
-from src.mcp_adapters.base_adapter import MCPResult, MCPError
 
 
 class TestCVEAdapter:

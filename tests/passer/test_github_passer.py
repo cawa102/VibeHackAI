@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import json
+
 import pytest
 
-from src.passer.github_passer import GitHubPasser
 from src.passer.base import MCPType
-from src.schemas.exploit_candidate import ExploitSource, ExploitReliability
+from src.passer.github_passer import GitHubPasser
+from src.schemas.exploit_candidate import ExploitReliability, ExploitSource
 
 
 class TestGitHubPasser:
@@ -101,22 +102,42 @@ class TestGitHubPasser:
     def test_reliability_assessment(self, passer):
         """Test reliability assessment based on stars."""
         # Low stars - untested
-        data = {"full_name": "x/y", "html_url": "url", "stargazers_count": 1, "forks_count": 0}
+        data = {
+            "full_name": "x/y",
+            "html_url": "url",
+            "stargazers_count": 1,
+            "forks_count": 0,
+        }
         result = passer.normalize(data)
         assert result.exploit_candidates[0].reliability == ExploitReliability.UNTESTED
 
         # Medium stars - functional
-        data = {"full_name": "x/y", "html_url": "url", "stargazers_count": 10, "forks_count": 5}
+        data = {
+            "full_name": "x/y",
+            "html_url": "url",
+            "stargazers_count": 10,
+            "forks_count": 5,
+        }
         result = passer.normalize(data)
         assert result.exploit_candidates[0].reliability == ExploitReliability.FUNCTIONAL
 
         # High stars - good
-        data = {"full_name": "x/y", "html_url": "url", "stargazers_count": 30, "forks_count": 15}
+        data = {
+            "full_name": "x/y",
+            "html_url": "url",
+            "stargazers_count": 30,
+            "forks_count": 15,
+        }
         result = passer.normalize(data)
         assert result.exploit_candidates[0].reliability == ExploitReliability.GOOD
 
         # Very high stars - excellent
-        data = {"full_name": "x/y", "html_url": "url", "stargazers_count": 200, "forks_count": 50}
+        data = {
+            "full_name": "x/y",
+            "html_url": "url",
+            "stargazers_count": 200,
+            "forks_count": 50,
+        }
         result = passer.normalize(data)
         assert result.exploit_candidates[0].reliability == ExploitReliability.EXCELLENT
 
@@ -134,7 +155,11 @@ class TestGitHubPasser:
     def test_cve_extraction(self, passer):
         """Test CVE extraction from name and description."""
         # CVE in name
-        data = {"name": "CVE-2023-12345", "full_name": "x/CVE-2023-12345", "html_url": "url"}
+        data = {
+            "name": "CVE-2023-12345",
+            "full_name": "x/CVE-2023-12345",
+            "html_url": "url",
+        }
         result = passer.normalize(data)
         assert result.exploit_candidates[0].cve_id == "CVE-2023-12345"
 

@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .base_adapter import BaseMCPAdapter, MCPResult, MCPError, MCPToolType
+from .base_adapter import BaseMCPAdapter, MCPError, MCPResult, MCPToolType
 
 
 class NmapAdapter(BaseMCPAdapter):
@@ -25,13 +25,13 @@ class NmapAdapter(BaseMCPAdapter):
 
     # Supported operations
     OPERATIONS = [
-        "port_scan",        # Basic port scan
-        "service_scan",     # Service/version detection
-        "os_detect",        # OS fingerprinting
-        "script_scan",      # NSE script scanning
-        "quick_scan",       # Fast scan of common ports
-        "stealth_scan",     # SYN stealth scan
-        "udp_scan",         # UDP port scan
+        "port_scan",  # Basic port scan
+        "service_scan",  # Service/version detection
+        "os_detect",  # OS fingerprinting
+        "script_scan",  # NSE script scanning
+        "quick_scan",  # Fast scan of common ports
+        "stealth_scan",  # SYN stealth scan
+        "udp_scan",  # UDP port scan
     ]
 
     # Default scan profiles
@@ -364,7 +364,12 @@ class NmapAdapter(BaseMCPAdapter):
                 "ports": [
                     {"port": 53, "state": "open", "protocol": "udp", "service": "dns"},
                     {"port": 123, "state": "open", "protocol": "udp", "service": "ntp"},
-                    {"port": 161, "state": "open|filtered", "protocol": "udp", "service": "snmp"},
+                    {
+                        "port": 161,
+                        "state": "open|filtered",
+                        "protocol": "udp",
+                        "service": "snmp",
+                    },
                 ],
             },
             metadata={"source": "nmap", "scan_type": "udp_scan"},

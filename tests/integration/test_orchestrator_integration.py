@@ -21,19 +21,19 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.orchestrator.orchestrator import (
-    Orchestrator,
-    OrchestratorConfig,
-    AgentResult,
+from src.orchestrator.approval_gate import (
+    ApprovalRequest,
+    ApprovalResult,
+    ApprovalStatus,
 )
-from src.orchestrator.router import Phase, TransitionReason
 from src.orchestrator.context_builder import ContextBundle
-from src.orchestrator.approval_gate import ApprovalRequest, ApprovalResult, ApprovalStatus
-from src.patch.patch import Patch, PatchOperation
+from src.orchestrator.orchestrator import AgentResult, Orchestrator, OrchestratorConfig
+from src.orchestrator.router import Phase, TransitionReason
 from src.patch.operations import OperationType
-from src.storage.state_store import StateStore
+from src.patch.patch import Patch, PatchOperation
 from src.storage.evidence_ledger import EvidenceLedger
 from src.storage.session_manager import SessionManager
+from src.storage.state_store import StateStore
 
 
 class TestOrchestratorIntegration:
@@ -175,8 +175,16 @@ class TestFullPhaseCycle(TestOrchestratorIntegration):
                 # Return phase-specific results that satisfy can_advance requirements
                 phase_results = {
                     "recon": {"targets_found": 5, "success": True},
-                    "enumeration": {"services_found": 10, "endpoints_found": 25, "success": True},
-                    "planner": {"plans_created": 3, "vuln_candidates": 5, "success": True},
+                    "enumeration": {
+                        "services_found": 10,
+                        "endpoints_found": 25,
+                        "success": True,
+                    },
+                    "planner": {
+                        "plans_created": 3,
+                        "vuln_candidates": 5,
+                        "success": True,
+                    },
                     "exploitation": {"findings_created": 2, "success": True},
                     "reporting": {"report_generated": True, "success": True},
                 }
@@ -201,7 +209,8 @@ class TestFullPhaseCycle(TestOrchestratorIntegration):
             "planner_agent", create_mock_handler("planner", "planner_agent")
         )
         orchestrator.register_agent_handler(
-            "exploitation_agent", create_mock_handler("exploitation", "exploitation_agent")
+            "exploitation_agent",
+            create_mock_handler("exploitation", "exploitation_agent"),
         )
         orchestrator.register_agent_handler(
             "reporting_agent", create_mock_handler("reporting", "reporting_agent")
@@ -259,8 +268,13 @@ class TestFullPhaseCycle(TestOrchestratorIntegration):
             )
 
         # Register with correct agent names
-        for agent_type in ["recon_agent", "enumeration_agent", "planner_agent",
-                          "exploitation_agent", "reporting_agent"]:
+        for agent_type in [
+            "recon_agent",
+            "enumeration_agent",
+            "planner_agent",
+            "exploitation_agent",
+            "reporting_agent",
+        ]:
             orchestrator.register_agent_handler(agent_type, success_handler)
 
         result = orchestrator.run_workflow()
@@ -533,19 +547,34 @@ class TestStateEvidencePersistence(TestOrchestratorIntegration):
                         "plans_created": 1,
                     },
                 )
+
             return handler
 
-        orchestrator.register_agent_handler("recon_agent", handler_with_observation("recon", "recon_agent"))
-        orchestrator.register_agent_handler("enumeration_agent", handler_with_observation("enum", "enumeration_agent"))
-        orchestrator.register_agent_handler("planner_agent", handler_with_observation("planner", "planner_agent"))
-        orchestrator.register_agent_handler("exploitation_agent", handler_with_observation("exploit", "exploitation_agent"))
-        orchestrator.register_agent_handler("reporting_agent", handler_with_observation("reporter", "reporting_agent"))
+        orchestrator.register_agent_handler(
+            "recon_agent", handler_with_observation("recon", "recon_agent")
+        )
+        orchestrator.register_agent_handler(
+            "enumeration_agent", handler_with_observation("enum", "enumeration_agent")
+        )
+        orchestrator.register_agent_handler(
+            "planner_agent", handler_with_observation("planner", "planner_agent")
+        )
+        orchestrator.register_agent_handler(
+            "exploitation_agent",
+            handler_with_observation("exploit", "exploitation_agent"),
+        )
+        orchestrator.register_agent_handler(
+            "reporting_agent", handler_with_observation("reporter", "reporting_agent")
+        )
 
         result = orchestrator.run_workflow()
 
         # Verify observations were persisted
         saved_observations = state_store.read_jsonl("observations.jsonl")
-        assert len(saved_observations) >= len(observations_added) or len(observations_added) > 0
+        assert (
+            len(saved_observations) >= len(observations_added)
+            or len(observations_added) > 0
+        )
 
 
 class TestPhaseRollback(TestOrchestratorIntegration):
@@ -644,25 +673,32 @@ class TestPhaseRollback(TestOrchestratorIntegration):
                     success=True,
                     phase_result=phase_result,
                 )
+
             return handler
 
         orchestrator.register_agent_handler(
             "recon_agent",
-            success_handler("recon_agent", {"targets_found": 5, "success": True})
+            success_handler("recon_agent", {"targets_found": 5, "success": True}),
         )
         orchestrator.register_agent_handler(
             "enumeration_agent",
-            success_handler("enumeration_agent", {"services_found": 10, "endpoints_found": 20, "success": True})
+            success_handler(
+                "enumeration_agent",
+                {"services_found": 10, "endpoints_found": 20, "success": True},
+            ),
         )
         orchestrator.register_agent_handler(
             "planner_agent",
-            success_handler("planner_agent", {
-                "plans_created": 2,
-                "success": True,
-                "insufficient_repro": True,
-                "needs_more_info": True,
-                "rollback_phase": "enumeration",
-            })
+            success_handler(
+                "planner_agent",
+                {
+                    "plans_created": 2,
+                    "success": True,
+                    "insufficient_repro": True,
+                    "needs_more_info": True,
+                    "rollback_phase": "enumeration",
+                },
+            ),
         )
 
         orchestrator.start()
@@ -785,38 +821,44 @@ class TestContextBundlePassing(TestOrchestratorIntegration):
 
         def tracking_handler(agent_type: str, phase_result: dict):
             def handler(context: ContextBundle) -> AgentResult:
-                contexts_received.append({
-                    "agent_type": agent_type,
-                    "has_scope": context.scope is not None,
-                    "has_target_profile": context.target_profile is not None,
-                    "observations_count": len(context.observations) if context.observations else 0,
-                })
+                contexts_received.append(
+                    {
+                        "agent_type": agent_type,
+                        "has_scope": context.scope is not None,
+                        "has_target_profile": context.target_profile is not None,
+                        "observations_count": (
+                            len(context.observations) if context.observations else 0
+                        ),
+                    }
+                )
                 return AgentResult(
                     agent_type=agent_type,
                     success=True,
                     phase_result=phase_result,
                 )
+
             return handler
 
         orchestrator.register_agent_handler(
             "recon_agent",
-            tracking_handler("recon_agent", {"targets_found": 5, "success": True})
+            tracking_handler("recon_agent", {"targets_found": 5, "success": True}),
         )
         orchestrator.register_agent_handler(
             "enumeration_agent",
-            tracking_handler("enumeration_agent", {"services_found": 10, "success": True})
+            tracking_handler(
+                "enumeration_agent", {"services_found": 10, "success": True}
+            ),
         )
         orchestrator.register_agent_handler(
             "planner_agent",
-            tracking_handler("planner_agent", {"plans_created": 2, "success": True})
+            tracking_handler("planner_agent", {"plans_created": 2, "success": True}),
         )
         orchestrator.register_agent_handler(
             "exploitation_agent",
-            tracking_handler("exploitation_agent", {"success": True})
+            tracking_handler("exploitation_agent", {"success": True}),
         )
         orchestrator.register_agent_handler(
-            "reporting_agent",
-            tracking_handler("reporting_agent", {"success": True})
+            "reporting_agent", tracking_handler("reporting_agent", {"success": True})
         )
 
         orchestrator.run_workflow()

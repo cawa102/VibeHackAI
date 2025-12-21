@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
 
 from pydantic import Field, validator
 
@@ -17,6 +17,7 @@ from .base import BaseSchema
 
 class ObservationStatus(str, Enum):
     """Status of an observation/tool execution."""
+
     SUCCESS = "success"
     PARTIAL = "partial"
     FAILURE = "failure"

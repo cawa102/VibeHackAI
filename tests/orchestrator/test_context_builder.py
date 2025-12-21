@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
-import pytest
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from src.orchestrator.context_builder import (
+    AGENT_CONTEXT_REQUIREMENTS,
     ContextBuilder,
     ContextBundle,
-    AGENT_CONTEXT_REQUIREMENTS,
 )
 from src.orchestrator.router import Phase
 
@@ -211,9 +212,7 @@ class TestContextBuilder:
 
     def test_build_loads_observations(self, builder, mock_state_store):
         """Test builder loads observations when required."""
-        mock_state_store.read_jsonl.return_value = [
-            {"type": "port_open", "port": 80}
-        ]
+        mock_state_store.read_jsonl.return_value = [{"type": "port_open", "port": 80}]
 
         bundle = builder.build(
             agent_type="enumeration_agent",

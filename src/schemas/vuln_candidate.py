@@ -7,7 +7,7 @@ Defines potential vulnerabilities identified during assessment.
 from __future__ import annotations
 
 from enum import Enum
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
 
 from pydantic import Field, validator
 
@@ -16,20 +16,22 @@ from .base import BaseSchema
 
 class Severity(str, Enum):
     """Vulnerability severity levels (based on CVSS)."""
+
     CRITICAL = "critical"  # CVSS 9.0-10.0
-    HIGH = "high"          # CVSS 7.0-8.9
-    MEDIUM = "medium"      # CVSS 4.0-6.9
-    LOW = "low"            # CVSS 0.1-3.9
-    INFO = "info"          # Informational
+    HIGH = "high"  # CVSS 7.0-8.9
+    MEDIUM = "medium"  # CVSS 4.0-6.9
+    LOW = "low"  # CVSS 0.1-3.9
+    INFO = "info"  # Informational
     UNKNOWN = "unknown"
 
 
 class ConfidenceLevel(str, Enum):
     """Confidence level in the vulnerability assessment."""
+
     CONFIRMED = "confirmed"  # Verified through exploitation
-    HIGH = "high"            # Strong indicators
-    MEDIUM = "medium"        # Moderate indicators
-    LOW = "low"              # Weak indicators
+    HIGH = "high"  # Strong indicators
+    MEDIUM = "medium"  # Moderate indicators
+    LOW = "low"  # Weak indicators
     TENTATIVE = "tentative"  # Unverified hypothesis
 
 

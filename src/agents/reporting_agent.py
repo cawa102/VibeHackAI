@@ -12,20 +12,15 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .base_agent import (
-    BaseAgent,
-    AgentConfig,
-    AgentContext,
-    AgentOutput,
-    AgentType,
-)
-from ..patch.patch import Patch, PatchOperation
 from ..patch.operations import OperationType
+from ..patch.patch import Patch, PatchOperation
+from .base_agent import AgentConfig, AgentContext, AgentOutput, AgentType, BaseAgent
 
 
 @dataclass
 class Finding:
     """Verified security finding."""
+
     finding_id: str
     title: str
     severity: str  # critical, high, medium, low, info
@@ -59,6 +54,7 @@ class Finding:
 @dataclass
 class ReportSection:
     """A section of the report."""
+
     section_id: str
     title: str
     content: str
@@ -78,6 +74,7 @@ class ReportSection:
 @dataclass
 class PentestReport:
     """Complete penetration testing report."""
+
     report_id: str
     title: str
     executive_summary: str
@@ -117,7 +114,9 @@ class PentestReport:
         lines.append(f"# {self.title}")
         lines.append("")
         lines.append(f"**Report ID:** {self.report_id}")
-        lines.append(f"**Generated:** {self.generated_at.strftime('%Y-%m-%d %H:%M:%S UTC')}")
+        lines.append(
+            f"**Generated:** {self.generated_at.strftime('%Y-%m-%d %H:%M:%S UTC')}"
+        )
         lines.append("")
 
         # Executive Summary
@@ -137,7 +136,9 @@ class PentestReport:
                 lines.append(f"| {severity.capitalize()} | {count} |")
         lines.append("")
         lines.append(f"**Total Findings:** {self.statistics.get('total_findings', 0)}")
-        lines.append(f"**Verified Findings:** {self.statistics.get('verified_findings', 0)}")
+        lines.append(
+            f"**Verified Findings:** {self.statistics.get('verified_findings', 0)}"
+        )
         lines.append("")
 
         # Scope
@@ -177,7 +178,9 @@ class PentestReport:
                         lines.append(f"**CVE:** {finding.cve_id}")
                     if finding.cvss_score:
                         lines.append(f"**CVSS Score:** {finding.cvss_score}")
-                    lines.append(f"**Affected Component:** {finding.affected_component}")
+                    lines.append(
+                        f"**Affected Component:** {finding.affected_component}"
+                    )
                     lines.append("")
 
                     lines.append("**Description:**")
@@ -425,8 +428,7 @@ class ReportingAgent(BaseAgent):
             "info": 0,
         }
         risk_score = sum(
-            by_severity.get(sev, 0) * weight
-            for sev, weight in risk_weights.items()
+            by_severity.get(sev, 0) * weight for sev, weight in risk_weights.items()
         )
 
         # Determine overall risk level
@@ -447,7 +449,9 @@ class ReportingAgent(BaseAgent):
             "by_severity": by_severity,
             "risk_score": risk_score,
             "risk_level": risk_level,
-            "components_affected": len(set(f.affected_component for f in self._findings)),
+            "components_affected": len(
+                set(f.affected_component for f in self._findings)
+            ),
             "cves_referenced": len([f for f in self._findings if f.cve_id]),
         }
 
@@ -542,7 +546,8 @@ class ReportingAgent(BaseAgent):
 
         # SQL injection specific
         sqli_findings = [
-            f for f in self._findings
+            f
+            for f in self._findings
             if "sql" in f.title.lower() or "injection" in f.title.lower()
         ]
         if sqli_findings:
@@ -553,7 +558,8 @@ class ReportingAgent(BaseAgent):
 
         # Authentication issues
         auth_findings = [
-            f for f in self._findings
+            f
+            for f in self._findings
             if "auth" in f.title.lower() or "credential" in f.title.lower()
         ]
         if auth_findings:
@@ -563,12 +569,14 @@ class ReportingAgent(BaseAgent):
             )
 
         # General recommendations
-        recommendations.extend([
-            "Implement a Web Application Firewall (WAF) to provide additional protection.",
-            "Conduct regular security assessments and penetration tests.",
-            "Establish a vulnerability disclosure program.",
-            "Provide security awareness training for development teams.",
-        ])
+        recommendations.extend(
+            [
+                "Implement a Web Application Firewall (WAF) to provide additional protection.",
+                "Conduct regular security assessments and penetration tests.",
+                "Establish a vulnerability disclosure program.",
+                "Provide security awareness training for development teams.",
+            ]
+        )
 
         return recommendations
 
@@ -592,15 +600,20 @@ class ReportingAgent(BaseAgent):
                     if hostnames:
                         target_lines.append(f"  - Hostnames: {', '.join(hostnames)}")
                     if ports:
-                        port_list = [str(p) if isinstance(p, int) else str(p.get("port", p)) for p in ports[:10]]
+                        port_list = [
+                            str(p) if isinstance(p, int) else str(p.get("port", p))
+                            for p in ports[:10]
+                        ]
                         target_lines.append(f"  - Open Ports: {', '.join(port_list)}")
 
-            sections.append(ReportSection(
-                section_id=f"section-{uuid.uuid4().hex[:8]}",
-                title="Target Information",
-                content="\n".join(target_lines),
-                order=1,
-            ))
+            sections.append(
+                ReportSection(
+                    section_id=f"section-{uuid.uuid4().hex[:8]}",
+                    title="Target Information",
+                    content="\n".join(target_lines),
+                    order=1,
+                )
+            )
 
         # Technologies section
         technologies = target_profile.get("technologies", {})
@@ -613,12 +626,14 @@ class ReportingAgent(BaseAgent):
                 else:
                     tech_lines.append(f"- {tech_name}: {tech_info}")
 
-            sections.append(ReportSection(
-                section_id=f"section-{uuid.uuid4().hex[:8]}",
-                title="Identified Technologies",
-                content="\n".join(tech_lines),
-                order=2,
-            ))
+            sections.append(
+                ReportSection(
+                    section_id=f"section-{uuid.uuid4().hex[:8]}",
+                    title="Identified Technologies",
+                    content="\n".join(tech_lines),
+                    order=2,
+                )
+            )
 
         return sections
 
@@ -645,23 +660,27 @@ class ReportingAgent(BaseAgent):
 
         # Add observation operations
         for observation in self._observations:
-            operations.append(PatchOperation(
-                op=OperationType.ADD_OBSERVATION,
-                target="observations",
-                payload=observation,
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.ADD_OBSERVATION,
+                    target="observations",
+                    payload=observation,
+                )
+            )
 
         # Add report to target profile
         if self._report:
-            operations.append(PatchOperation(
-                op=OperationType.UPDATE_TARGET_PROFILE,
-                target="target_profile",
-                payload={
-                    "report": self._report.to_dict(),
-                    "report_json": self._report.to_json(),
-                    "report_markdown": self._report.to_markdown(),
-                },
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.UPDATE_TARGET_PROFILE,
+                    target="target_profile",
+                    payload={
+                        "report": self._report.to_dict(),
+                        "report_json": self._report.to_json(),
+                        "report_markdown": self._report.to_markdown(),
+                    },
+                )
+            )
 
         return operations
 

@@ -2,17 +2,18 @@
 
 from __future__ import annotations
 
-import pytest
-from unittest.mock import MagicMock
 from datetime import datetime
+from unittest.mock import MagicMock
+
+import pytest
 
 from src.orchestrator.router import (
-    Router,
+    PHASE_AGENTS,
+    PHASE_ORDER,
     Phase,
     PhaseTransition,
+    Router,
     TransitionReason,
-    PHASE_ORDER,
-    PHASE_AGENTS,
 )
 
 
@@ -22,8 +23,14 @@ class TestPhase:
     def test_all_phases_defined(self):
         """Test all expected phases are defined."""
         expected = [
-            "init", "recon", "enumeration", "planner",
-            "exploitation", "reporting", "completed", "stopped"
+            "init",
+            "recon",
+            "enumeration",
+            "planner",
+            "exploitation",
+            "reporting",
+            "completed",
+            "stopped",
         ]
         for phase_name in expected:
             assert hasattr(Phase, phase_name.upper())
@@ -98,8 +105,14 @@ class TestRouter:
 
     def test_advance_through_phases(self, router):
         """Test advancing through all phases."""
-        phases = [Phase.INIT, Phase.RECON, Phase.ENUMERATION,
-                  Phase.PLANNER, Phase.EXPLOITATION, Phase.REPORTING]
+        phases = [
+            Phase.INIT,
+            Phase.RECON,
+            Phase.ENUMERATION,
+            Phase.PLANNER,
+            Phase.EXPLOITATION,
+            Phase.REPORTING,
+        ]
 
         for i, expected_phase in enumerate(phases[:-1]):
             assert router.current_phase == expected_phase
@@ -256,9 +269,13 @@ class TestPhaseOrder:
     def test_phase_order_complete(self):
         """Test PHASE_ORDER contains all workflow phases."""
         expected = [
-            Phase.INIT, Phase.RECON, Phase.ENUMERATION,
-            Phase.PLANNER, Phase.EXPLOITATION, Phase.REPORTING,
-            Phase.COMPLETED
+            Phase.INIT,
+            Phase.RECON,
+            Phase.ENUMERATION,
+            Phase.PLANNER,
+            Phase.EXPLOITATION,
+            Phase.REPORTING,
+            Phase.COMPLETED,
         ]
         assert PHASE_ORDER == expected
 

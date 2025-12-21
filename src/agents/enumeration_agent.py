@@ -12,18 +12,12 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Set
 from urllib.parse import urlparse
 
-from .base_agent import (
-    BaseAgent,
-    AgentConfig,
-    AgentContext,
-    AgentOutput,
-    AgentType,
-)
+from ..mcp_adapters.base_adapter import MCPResult
 from ..mcp_adapters.burp_adapter import BurpAdapter
 from ..mcp_adapters.nmap_adapter import NmapAdapter
-from ..mcp_adapters.base_adapter import MCPResult
-from ..patch.patch import Patch, PatchOperation
 from ..patch.operations import OperationType
+from ..patch.patch import Patch, PatchOperation
+from .base_agent import AgentConfig, AgentContext, AgentOutput, AgentType, BaseAgent
 
 
 class EnumerationAgent(BaseAgent):
@@ -125,10 +119,18 @@ class EnumerationAgent(BaseAgent):
             "targets_processed": targets_processed,
             "input_points_found": len(self._input_points),
             "endpoints_found": len(self._endpoints),
-            "forms_found": sum(1 for ip in self._input_points if ip.get("type") == "form"),
-            "api_endpoints_found": sum(1 for ip in self._input_points if ip.get("type") == "api"),
-            "file_uploads_found": sum(1 for ip in self._input_points if ip.get("has_file_upload")),
-            "login_forms_found": sum(1 for ip in self._input_points if ip.get("is_login_form")),
+            "forms_found": sum(
+                1 for ip in self._input_points if ip.get("type") == "form"
+            ),
+            "api_endpoints_found": sum(
+                1 for ip in self._input_points if ip.get("type") == "api"
+            ),
+            "file_uploads_found": sum(
+                1 for ip in self._input_points if ip.get("has_file_upload")
+            ),
+            "login_forms_found": sum(
+                1 for ip in self._input_points if ip.get("is_login_form")
+            ),
             "auth_mechanisms_detected": list(self._auth_info.get("mechanisms", [])),
         }
 
@@ -169,10 +171,14 @@ class EnumerationAgent(BaseAgent):
             for port in ports:
                 if port in [80, 8080, 8000, 3000]:
                     host = hostnames[0] if hostnames else ip
-                    web_targets.append(f"http://{host}:{port}" if port != 80 else f"http://{host}")
+                    web_targets.append(
+                        f"http://{host}:{port}" if port != 80 else f"http://{host}"
+                    )
                 elif port in [443, 8443]:
                     host = hostnames[0] if hostnames else ip
-                    web_targets.append(f"https://{host}:{port}" if port != 443 else f"https://{host}")
+                    web_targets.append(
+                        f"https://{host}:{port}" if port != 443 else f"https://{host}"
+                    )
 
         # Deduplicate
         return list(set(web_targets))
@@ -330,8 +336,7 @@ class EnumerationAgent(BaseAgent):
                     "auth_required": endpoint.get("auth_required", False),
                     "parameters": endpoint.get("parameters", []),
                     "has_file_upload": any(
-                        p.get("type") == "file"
-                        for p in endpoint.get("parameters", [])
+                        p.get("type") == "file" for p in endpoint.get("parameters", [])
                     ),
                 }
                 self._input_points.append(input_point)
@@ -394,12 +399,14 @@ class EnumerationAgent(BaseAgent):
         if session_cookies:
             if "session_management" not in self._auth_info:
                 self._auth_info["session_management"] = []
-            self._auth_info["session_management"].append({
-                "type": "cookie",
-                "cookies": [c.get("name") for c in session_cookies],
-                "httponly": all(c.get("httponly") for c in session_cookies),
-                "secure": all(c.get("secure") for c in session_cookies),
-            })
+            self._auth_info["session_management"].append(
+                {
+                    "type": "cookie",
+                    "cookies": [c.get("name") for c in session_cookies],
+                    "httponly": all(c.get("httponly") for c in session_cookies),
+                    "secure": all(c.get("secure") for c in session_cookies),
+                }
+            )
 
     def _extract_headers(
         self,
@@ -477,8 +484,7 @@ class EnumerationAgent(BaseAgent):
         if login_forms:
             mechanisms.add("form_based")
             self._auth_info["login_forms"] = [
-                {"url": f.get("url"), "fields": f.get("fields")}
-                for f in login_forms
+                {"url": f.get("url"), "fields": f.get("fields")} for f in login_forms
             ]
 
         if self._auth_info.get("session_management"):
@@ -530,32 +536,38 @@ class EnumerationAgent(BaseAgent):
 
         # Add evidence operations
         for evidence in self._evidences:
-            operations.append(PatchOperation(
-                op=OperationType.ADD_EVIDENCE,
-                target="evidence",
-                payload=evidence,
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.ADD_EVIDENCE,
+                    target="evidence",
+                    payload=evidence,
+                )
+            )
 
         # Add observation operations
         for observation in self._observations:
-            operations.append(PatchOperation(
-                op=OperationType.ADD_OBSERVATION,
-                target="observations",
-                payload=observation,
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.ADD_OBSERVATION,
+                    target="observations",
+                    payload=observation,
+                )
+            )
 
         # Update target profile with input points and auth info
         if self._input_points or self._auth_info:
-            operations.append(PatchOperation(
-                op=OperationType.UPDATE_TARGET_PROFILE,
-                target="target_profile",
-                payload={
-                    "input_points": self._input_points,
-                    "endpoints": self._endpoints,
-                    "auth_info": self._auth_info,
-                    "updated_at": datetime.utcnow().isoformat() + "Z",
-                },
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.UPDATE_TARGET_PROFILE,
+                    target="target_profile",
+                    payload={
+                        "input_points": self._input_points,
+                        "endpoints": self._endpoints,
+                        "auth_info": self._auth_info,
+                        "updated_at": datetime.utcnow().isoformat() + "Z",
+                    },
+                )
+            )
 
         return operations
 

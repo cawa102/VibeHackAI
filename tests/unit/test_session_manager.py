@@ -3,10 +3,11 @@ Unit tests for SessionManager.
 """
 
 import json
-import pytest
-import tempfile
 import shutil
+import tempfile
 from pathlib import Path
+
+import pytest
 
 from src.storage.session_manager import SessionManager
 
@@ -31,7 +32,9 @@ class TestSessionManager:
         session_id = session_manager.create_session()
 
         assert session_id is not None
-        assert len(session_id) == 36  # UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        assert (
+            len(session_id) == 36
+        )  # UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         assert session_manager.session_exists(session_id)
 
     def test_create_session_with_custom_id(self, session_manager):
@@ -77,17 +80,26 @@ class TestSessionManager:
         state_path = session_path / "state"
 
         # Check JSON files exist and are valid
-        for filename in ["scope.json", "target_profile.json", "candidates_vuln.json",
-                         "candidates_exploit.json", "execution_plans.json",
-                         "findings.json", "state_version.json"]:
+        for filename in [
+            "scope.json",
+            "target_profile.json",
+            "candidates_vuln.json",
+            "candidates_exploit.json",
+            "execution_plans.json",
+            "findings.json",
+            "state_version.json",
+        ]:
             file_path = state_path / filename
             assert file_path.exists(), f"{filename} should exist"
             data = json.loads(file_path.read_text())
             assert isinstance(data, dict), f"{filename} should contain a dict"
 
         # Check JSONL files exist
-        for filename in ["execution_results.jsonl", "observations.jsonl",
-                         "decision_traces.jsonl"]:
+        for filename in [
+            "execution_results.jsonl",
+            "observations.jsonl",
+            "decision_traces.jsonl",
+        ]:
             assert (state_path / filename).exists(), f"{filename} should exist"
 
     def test_get_session_path_nonexistent_raises_error(self, session_manager):

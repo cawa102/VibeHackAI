@@ -10,15 +10,16 @@ from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional
 
 if TYPE_CHECKING:
-    from ..storage.state_store import StateStore
     from ..patch.patch import Patch
+    from ..storage.state_store import StateStore
 
 
 class ApprovalStatus(str, Enum):
     """Status of approval request."""
+
     PENDING = "pending"
     APPROVED = "approved"
     REJECTED = "rejected"
@@ -69,6 +70,7 @@ APPROVAL_REQUIRED_TOOLS = {
 @dataclass
 class ApprovalRequest:
     """Request for human approval."""
+
     request_id: str
     operation: str
     tool: Optional[str]
@@ -97,8 +99,12 @@ class ApprovalRequest:
             "details": self.details,
             "status": self.status.value,
             "created_at": self.created_at.isoformat() + "Z",
-            "expires_at": self.expires_at.isoformat() + "Z" if self.expires_at else None,
-            "responded_at": self.responded_at.isoformat() + "Z" if self.responded_at else None,
+            "expires_at": (
+                self.expires_at.isoformat() + "Z" if self.expires_at else None
+            ),
+            "responded_at": (
+                self.responded_at.isoformat() + "Z" if self.responded_at else None
+            ),
             "responded_by": self.responded_by,
             "rejection_reason": self.rejection_reason,
         }
@@ -113,6 +119,7 @@ class ApprovalRequest:
 @dataclass
 class ApprovalResult:
     """Result of approval request."""
+
     request_id: str
     approved: bool
     responded_by: Optional[str] = None
@@ -172,9 +179,17 @@ class ApprovalGate:
 
         # Check for keywords in operation
         dangerous_keywords = [
-            "exploit", "payload", "shell", "meterpreter",
-            "brute", "password", "credential", "persist",
-            "backdoor", "privilege", "escalat"
+            "exploit",
+            "payload",
+            "shell",
+            "meterpreter",
+            "brute",
+            "password",
+            "credential",
+            "persist",
+            "backdoor",
+            "privilege",
+            "escalat",
         ]
         if any(kw in operation_lower for kw in dangerous_keywords):
             return True
@@ -237,10 +252,7 @@ class ApprovalGate:
 
         # Persist if state store available
         if self.state_store:
-            self.state_store.append_jsonl(
-                "approval_requests.jsonl",
-                request.to_dict()
-            )
+            self.state_store.append_jsonl("approval_requests.jsonl", request.to_dict())
 
         return request
 
@@ -378,7 +390,7 @@ class ApprovalGate:
                     "responded_by": result.responded_by,
                     "reason": result.reason,
                     "timestamp": result.timestamp.isoformat() + "Z",
-                }
+                },
             )
 
     def get_pending_requests(self) -> List[ApprovalRequest]:

@@ -119,8 +119,7 @@ class Display:
 
         # Header
         header_line = " | ".join(
-            self._align(h, widths[i], alignments[i])
-            for i, h in enumerate(headers)
+            self._align(h, widths[i], alignments[i]) for i, h in enumerate(headers)
         )
         lines.append(self._color(header_line, "bold"))
 
@@ -169,9 +168,7 @@ class Display:
                 for item in value:
                     lines.append(f"{prefix}  - {item}")
             else:
-                lines.append(
-                    f"{prefix}{self._color(key + ':', 'bold')} {value}"
-                )
+                lines.append(f"{prefix}{self._color(key + ':', 'bold')} {value}")
         return "\n".join(lines)
 
     def approval_request(
@@ -216,7 +213,9 @@ class Display:
 
         stop_status = status.get("stop_monitor_status", {})
         if stop_status.get("should_stop"):
-            lines.append(f"  {self._color('STOPPED:', 'red')} {stop_status.get('stop_reason', 'Unknown')}")
+            lines.append(
+                f"  {self._color('STOPPED:', 'red')} {stop_status.get('stop_reason', 'Unknown')}"
+            )
 
         return "\n".join(lines)
 
@@ -239,7 +238,9 @@ class Display:
         ]
 
         if finding.get("description"):
-            lines.append(f"  {self._color('Description:', 'bold')} {finding['description'][:100]}...")
+            lines.append(
+                f"  {self._color('Description:', 'bold')} {finding['description'][:100]}..."
+            )
 
         return "\n".join(lines)
 

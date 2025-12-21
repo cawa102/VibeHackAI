@@ -74,10 +74,7 @@ class CacheStore:
         return time.time() > expires_at
 
     def get(
-        self,
-        category: str,
-        query: Union[str, dict],
-        ignore_expired: bool = False
+        self, category: str, query: Union[str, dict], ignore_expired: bool = False
     ) -> Optional[Any]:
         """
         Get cached data for a query.
@@ -111,7 +108,7 @@ class CacheStore:
         category: str,
         query: Union[str, dict],
         data: Any,
-        ttl: Optional[int] = None
+        ttl: Optional[int] = None,
     ) -> str:
         """
         Store data in cache.
@@ -143,8 +140,7 @@ class CacheStore:
         }
 
         cache_path.write_text(
-            json.dumps(cache_entry, indent=2, ensure_ascii=False),
-            encoding="utf-8"
+            json.dumps(cache_entry, indent=2, ensure_ascii=False), encoding="utf-8"
         )
 
         return query_hash
@@ -208,10 +204,7 @@ class CacheStore:
         if category:
             categories = [category]
         else:
-            categories = [
-                d.name for d in self.cache_dir.iterdir()
-                if d.is_dir()
-            ]
+            categories = [d.name for d in self.cache_dir.iterdir() if d.is_dir()]
 
         for cat in categories:
             category_dir = self.cache_dir / cat
@@ -254,13 +247,15 @@ class CacheStore:
 
             try:
                 cached = json.loads(cache_file.read_text(encoding="utf-8"))
-                entries.append({
-                    "query_hash": cached.get("query_hash"),
-                    "query": cached.get("query"),
-                    "cached_at_iso": cached.get("cached_at_iso"),
-                    "expires_at": cached.get("expires_at"),
-                    "expired": self._is_expired(cached),
-                })
+                entries.append(
+                    {
+                        "query_hash": cached.get("query_hash"),
+                        "query": cached.get("query"),
+                        "cached_at_iso": cached.get("cached_at_iso"),
+                        "expires_at": cached.get("expires_at"),
+                        "expired": self._is_expired(cached),
+                    }
+                )
             except (json.JSONDecodeError, KeyError):
                 continue
 

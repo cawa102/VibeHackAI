@@ -3,10 +3,11 @@ Unit tests for StateStore.
 """
 
 import json
-import pytest
-import tempfile
 import shutil
+import tempfile
 from pathlib import Path
+
+import pytest
 
 from src.storage.state_store import StateStore, StateVersionError
 
@@ -131,8 +132,7 @@ class TestStateStore:
         state_store.write_json("state_version.json", {"version": 0, "history": []})
 
         new_version = state_store.increment_version(
-            reason="test increment",
-            actor="test"
+            reason="test increment", actor="test"
         )
 
         assert new_version == 1
@@ -217,18 +217,22 @@ class TestStateStore:
         bundle = {"data": "test"}
 
         path = state_store.save_context_bundle(
-            "enumeration",
-            bundle,
-            timestamp="20231215_120000_000000"
+            "enumeration", bundle, timestamp="20231215_120000_000000"
         )
 
         assert "20231215_120000_000000" in path
 
     def test_list_context_bundles(self, state_store):
         """Test listing context bundles."""
-        state_store.save_context_bundle("planner", {"id": 1}, timestamp="20231215_100000")
-        state_store.save_context_bundle("planner", {"id": 2}, timestamp="20231215_110000")
-        state_store.save_context_bundle("planner", {"id": 3}, timestamp="20231215_120000")
+        state_store.save_context_bundle(
+            "planner", {"id": 1}, timestamp="20231215_100000"
+        )
+        state_store.save_context_bundle(
+            "planner", {"id": 2}, timestamp="20231215_110000"
+        )
+        state_store.save_context_bundle(
+            "planner", {"id": 3}, timestamp="20231215_120000"
+        )
 
         bundles = state_store.list_context_bundles("planner")
 

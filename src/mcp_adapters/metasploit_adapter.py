@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .base_adapter import BaseMCPAdapter, MCPResult, MCPError, MCPToolType
+from .base_adapter import BaseMCPAdapter, MCPError, MCPResult, MCPToolType
 
 
 class MetasploitAdapter(BaseMCPAdapter):
@@ -25,15 +25,15 @@ class MetasploitAdapter(BaseMCPAdapter):
 
     # Supported operations
     OPERATIONS = [
-        "search_modules",       # Search for exploit modules
-        "get_module_info",      # Get module details
-        "set_options",          # Set module options
-        "execute_exploit",      # Execute an exploit
-        "check_vuln",           # Check if target is vulnerable
-        "list_sessions",        # List active sessions
-        "session_command",      # Run command in session
-        "close_session",        # Close a session
-        "get_payloads",         # Get compatible payloads
+        "search_modules",  # Search for exploit modules
+        "get_module_info",  # Get module details
+        "set_options",  # Set module options
+        "execute_exploit",  # Execute an exploit
+        "check_vuln",  # Check if target is vulnerable
+        "list_sessions",  # List active sessions
+        "session_command",  # Run command in session
+        "close_session",  # Close a session
+        "get_payloads",  # Get compatible payloads
     ]
 
     # Dangerous operations requiring extra verification
@@ -196,13 +196,28 @@ class MetasploitAdapter(BaseMCPAdapter):
                 "arch": ["x86", "x64"],
                 "references": [
                     {"type": "CVE", "ref": "2021-44228"},
-                    {"type": "URL", "ref": "https://logging.apache.org/log4j/2.x/security.html"},
+                    {
+                        "type": "URL",
+                        "ref": "https://logging.apache.org/log4j/2.x/security.html",
+                    },
                 ],
                 "options": {
                     "RHOSTS": {"required": True, "description": "Target addresses"},
-                    "RPORT": {"required": True, "default": 8080, "description": "Target port"},
-                    "TARGETURI": {"required": True, "default": "/", "description": "Target URI"},
-                    "HTTP_HEADER": {"required": False, "default": "X-Api-Version", "description": "Header to inject"},
+                    "RPORT": {
+                        "required": True,
+                        "default": 8080,
+                        "description": "Target port",
+                    },
+                    "TARGETURI": {
+                        "required": True,
+                        "default": "/",
+                        "description": "Target URI",
+                    },
+                    "HTTP_HEADER": {
+                        "required": False,
+                        "default": "X-Api-Version",
+                        "description": "Header to inject",
+                    },
                 },
                 "targets": [
                     {"id": 0, "name": "Unix Command"},
@@ -515,10 +530,13 @@ class MetasploitAdapter(BaseMCPAdapter):
         Returns:
             MCPResult with command output.
         """
-        return self.invoke("session_command", {
-            "session_id": session_id,
-            "command": command,
-        })
+        return self.invoke(
+            "session_command",
+            {
+                "session_id": session_id,
+                "command": command,
+            },
+        )
 
     def close_session(self, session_id: str) -> MCPResult:
         """

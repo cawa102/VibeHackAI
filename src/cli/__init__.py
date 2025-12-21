@@ -5,9 +5,9 @@ Provides command-line interface for human interaction with the orchestrator.
 """
 
 from .cli import CLI, CLIConfig
-from .prompts import Prompts
 from .display import Display
 from .interactive_cli import InteractiveCLI, user_interaction_callback
+from .prompts import Prompts
 from .report_generator import ReportGenerator
 
 __all__ = [

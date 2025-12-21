@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 if TYPE_CHECKING:
     from ..orchestrator.context_builder import ContextBundle
@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 
 class AgentType(str, Enum):
     """Types of agents in the system."""
+
     RECON = "recon_agent"
     ENUMERATION = "enumeration_agent"
     PLANNER = "planner_agent"
@@ -30,6 +31,7 @@ class AgentType(str, Enum):
 
 class AgentStatus(str, Enum):
     """Status of agent execution."""
+
     IDLE = "idle"
     RUNNING = "running"
     COMPLETED = "completed"
@@ -40,6 +42,7 @@ class AgentStatus(str, Enum):
 @dataclass
 class AgentConfig:
     """Configuration for an agent."""
+
     agent_type: AgentType
     timeout_seconds: int = 600  # 10 minutes default
     max_retries: int = 2
@@ -55,6 +58,7 @@ class AgentContext:
 
     Wraps the ContextBundle with additional runtime info.
     """
+
     bundle: "ContextBundle"
     config: AgentConfig
     run_id: str = dataclass_field(default_factory=lambda: f"run-{uuid.uuid4().hex[:8]}")
@@ -103,6 +107,7 @@ class AgentOutput:
 
     Contains the patch to apply and execution metadata.
     """
+
     agent_type: str
     run_id: str
     success: bool
@@ -127,14 +132,19 @@ class AgentOutput:
             "warnings": self.warnings,
             "decision_traces": self.decision_traces,
             "duration_ms": self.duration_ms,
-            "started_at": self.started_at.isoformat() + "Z" if self.started_at else None,
-            "completed_at": self.completed_at.isoformat() + "Z" if self.completed_at else None,
+            "started_at": (
+                self.started_at.isoformat() + "Z" if self.started_at else None
+            ),
+            "completed_at": (
+                self.completed_at.isoformat() + "Z" if self.completed_at else None
+            ),
         }
 
 
 @dataclass
 class DecisionTrace:
     """Record of a decision made by an agent."""
+
     decision_id: str
     decision_type: str
     description: str
@@ -212,9 +222,7 @@ class BaseAgent(ABC):
             # Validate context
             validation_error = self._validate_context(context)
             if validation_error:
-                return self._create_error_output(
-                    context, validation_error
-                )
+                return self._create_error_output(context, validation_error)
 
             # Check for skip condition
             if self.config.skip_on_sufficient_data:
@@ -230,7 +238,9 @@ class BaseAgent(ABC):
             # Execute main logic
             output = self._execute(context)
 
-            self._status = AgentStatus.COMPLETED if output.success else AgentStatus.FAILED
+            self._status = (
+                AgentStatus.COMPLETED if output.success else AgentStatus.FAILED
+            )
             return output
 
         except Exception as e:

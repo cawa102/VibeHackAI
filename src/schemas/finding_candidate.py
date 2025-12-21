@@ -9,13 +9,14 @@ from __future__ import annotations
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import Field, validator, root_validator
+from pydantic import Field, root_validator, validator
 
 from .base import BaseSchema
 
 
 class FindingSeverity(str, Enum):
     """Severity levels for findings."""
+
     CRITICAL = "critical"
     HIGH = "high"
     MEDIUM = "medium"
@@ -187,6 +188,7 @@ class FindingCandidate(BaseSchema):
             raise ValueError("Finding cannot be promoted - check evidence requirements")
 
         from datetime import datetime
+
         self.promoted = True
         self.promoted_by = promoted_by
         self.promoted_at = datetime.utcnow().isoformat() + "Z"

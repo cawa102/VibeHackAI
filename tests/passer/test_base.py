@@ -8,8 +8,8 @@ from src.passer.base import (
     BasePasser,
     MCPType,
     PasserError,
-    PasserResult,
     PasserRegistry,
+    PasserResult,
     normalize,
 )
 

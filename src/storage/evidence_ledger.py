@@ -13,21 +13,24 @@ import os
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional, BinaryIO, Union
+from typing import Any, BinaryIO, Optional, Union
 
 
 class EvidenceIntegrityError(Exception):
     """Raised when evidence integrity check fails."""
+
     pass
 
 
 class EvidenceNotFoundError(Exception):
     """Raised when requested evidence is not found."""
+
     pass
 
 
 class EvidenceDeletionError(Exception):
     """Raised when attempting to delete evidence."""
+
     pass
 
 

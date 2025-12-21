@@ -1,14 +1,15 @@
 """Tests for PatchApplier."""
 
-import pytest
 import tempfile
 from pathlib import Path
 
-from src.patch.patch import Patch
+import pytest
+
+from src.patch.applier import ApplyResult, PatchApplier
 from src.patch.operations import OperationType
-from src.patch.applier import PatchApplier, ApplyResult
-from src.storage.state_store import StateStore
+from src.patch.patch import Patch
 from src.storage.evidence_ledger import EvidenceLedger
+from src.storage.state_store import StateStore
 
 
 @pytest.fixture
@@ -320,7 +321,9 @@ class TestPatchApplier:
     def test_rollback_on_failure(self, state_store, evidence_ledger):
         """Test rollback when operation fails."""
         # First, add some initial data
-        state_store.append_jsonl("observations.jsonl", {"id": "existing", "tool": "initial"})
+        state_store.append_jsonl(
+            "observations.jsonl", {"id": "existing", "tool": "initial"}
+        )
         initial_count = state_store.count_jsonl("observations.jsonl")
 
         # Create applier without validation to force failure in apply

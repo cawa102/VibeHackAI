@@ -10,9 +10,9 @@ import json
 import re
 from typing import Any, Dict, List, Optional, Union
 
-from .base import BasePasser, MCPType, PasserRegistry, PasserResult
 from ..schemas import ExecutionResult, Observation
-from ..schemas.execution_result import ExecutionStatus, ErrorClass
+from ..schemas.execution_result import ErrorClass, ExecutionStatus
+from .base import BasePasser, MCPType, PasserRegistry, PasserResult
 
 
 @PasserRegistry.register
@@ -73,14 +73,24 @@ class KaliPasser(BasePasser):
         if data is not None:
             # JSON format with Kali indicators
             kali_indicators = [
-                "command", "tool", "stdout", "stderr", "exit_code",
-                "kali", "output", "cmd"
+                "command",
+                "tool",
+                "stdout",
+                "stderr",
+                "exit_code",
+                "kali",
+                "output",
+                "cmd",
             ]
             return any(key in data for key in kali_indicators)
 
         # Check raw output for Kali tool signatures
         if isinstance(raw_output, (str, bytes)):
-            text = raw_output if isinstance(raw_output, str) else raw_output.decode("utf-8", errors="ignore")
+            text = (
+                raw_output
+                if isinstance(raw_output, str)
+                else raw_output.decode("utf-8", errors="ignore")
+            )
             tool_names = list(self.TOOL_PATTERNS.keys())
             tool_names.remove("default")
             return any(tool in text.lower() for tool in tool_names)
@@ -117,7 +127,9 @@ class KaliPasser(BasePasser):
             raw_output = raw_output.decode("utf-8", errors="ignore")
 
         if isinstance(raw_output, str):
-            return self._normalize_raw(raw_output, plan_id, step_index, tool_name, result)
+            return self._normalize_raw(
+                raw_output, plan_id, step_index, tool_name, result
+            )
 
         result.add_error("Unsupported Kali output format")
         return result
@@ -154,7 +166,9 @@ class KaliPasser(BasePasser):
 
         # Get tool name
         if not tool_name:
-            tool_name = data.get("tool") or data.get("command", "").split()[0] or "unknown"
+            tool_name = (
+                data.get("tool") or data.get("command", "").split()[0] or "unknown"
+            )
 
         # Get output
         stdout = data.get("stdout", "") or data.get("output", "")
@@ -171,7 +185,10 @@ class KaliPasser(BasePasser):
 
         try:
             # Error class is set for failure and timeout statuses
-            set_error_class = status in (ExecutionStatus.FAILURE, ExecutionStatus.TIMEOUT)
+            set_error_class = status in (
+                ExecutionStatus.FAILURE,
+                ExecutionStatus.TIMEOUT,
+            )
 
             exec_result = ExecutionResult(
                 session_id=self.session_id,
@@ -198,9 +215,7 @@ class KaliPasser(BasePasser):
             result.add_error(f"Failed to create ExecutionResult: {e}")
 
         # Create observation
-        observation = self._create_observation(
-            tool_name, stdout, status, result
-        )
+        observation = self._create_observation(tool_name, stdout, status, result)
         if observation:
             result.observations.append(observation)
 
@@ -246,9 +261,7 @@ class KaliPasser(BasePasser):
             result.add_error(f"Failed to create ExecutionResult: {e}")
 
         # Create observation
-        observation = self._create_observation(
-            tool_name, output, status, result
-        )
+        observation = self._create_observation(tool_name, output, status, result)
         if observation:
             result.observations.append(observation)
 
@@ -303,7 +316,9 @@ class KaliPasser(BasePasser):
 
         # Non-zero exit code means failure
         if exit_code is not None and exit_code != 0:
-            error_class = self._classify_error(output_lower) if output else ErrorClass.TOOL_ERROR
+            error_class = (
+                self._classify_error(output_lower) if output else ErrorClass.TOOL_ERROR
+            )
             return ExecutionStatus.FAILURE, error_class
 
         output_lower = output.lower()
@@ -327,9 +342,18 @@ class KaliPasser(BasePasser):
 
     def _classify_error(self, output: str) -> ErrorClass:
         """Classify the type of error."""
-        if any(x in output for x in ["connection refused", "connection timed out", "network unreachable"]):
+        if any(
+            x in output
+            for x in [
+                "connection refused",
+                "connection timed out",
+                "network unreachable",
+            ]
+        ):
             return ErrorClass.NETWORK
-        if any(x in output for x in ["permission denied", "access denied", "unauthorized"]):
+        if any(
+            x in output for x in ["permission denied", "access denied", "unauthorized"]
+        ):
             return ErrorClass.PERMISSION
         if any(x in output for x in ["not found", "does not exist", "no such"]):
             return ErrorClass.NOT_FOUND

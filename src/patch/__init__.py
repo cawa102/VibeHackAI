@@ -5,15 +5,11 @@ Provides state update proposal mechanism with optimistic locking
 and validation for safe state modifications.
 """
 
-from .patch import Patch, PatchOperation
+from .applier import ApplyResult, PatchApplier
+from .audit_log import AuditEntry, PatchAuditLog
 from .operations import OperationType
-from .validator import (
-    PatchValidator,
-    ValidationError,
-    ValidationResult,
-)
-from .applier import PatchApplier, ApplyResult
-from .audit_log import PatchAuditLog, AuditEntry
+from .patch import Patch, PatchOperation
+from .validator import PatchValidator, ValidationError, ValidationResult
 
 __all__ = [
     # Core structures

@@ -12,31 +12,34 @@ from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
-from .patch import Patch, PatchOperation
 from .operations import OperationType
+from .patch import Patch, PatchOperation
 from .validator import PatchValidator, ValidationResult
 
 if TYPE_CHECKING:
-    from ..storage.state_store import StateStore
-    from ..storage.evidence_ledger import EvidenceLedger
     from ..schemas.scope import Scope
+    from ..storage.evidence_ledger import EvidenceLedger
+    from ..storage.state_store import StateStore
 
 
 class ApplyError(Exception):
     """Raised when patch application fails."""
+
     pass
 
 
 class RollbackError(Exception):
     """Raised when rollback fails."""
+
     pass
 
 
 @dataclass
 class OperationResult:
     """Result of applying a single operation."""
+
     success: bool
     operation_index: int
     operation_type: str
@@ -49,6 +52,7 @@ class OperationResult:
 @dataclass
 class ApplyResult:
     """Result of applying a patch."""
+
     success: bool
     patch_id: str
     new_state_version: Optional[int] = None
@@ -161,7 +165,9 @@ class PatchApplier:
 
             if not validation.valid:
                 result.validation_errors = validation.error_messages()
-                result.error = "Validation failed: " + "; ".join(result.validation_errors)
+                result.error = "Validation failed: " + "; ".join(
+                    result.validation_errors
+                )
                 return result
 
         # Store rollback data
@@ -174,9 +180,7 @@ class PatchApplier:
                 result.operation_results.append(op_result)
 
                 if not op_result.success:
-                    raise ApplyError(
-                        f"Operation {idx} failed: {op_result.error}"
-                    )
+                    raise ApplyError(f"Operation {idx} failed: {op_result.error}")
 
                 result.operations_applied += 1
 
@@ -351,6 +355,7 @@ class PatchApplier:
         # Generate ID if not provided
         if "id" not in record:
             import uuid
+
             record["id"] = str(uuid.uuid4())
 
         # Append to JSONL file
@@ -444,6 +449,7 @@ class PatchApplier:
         # Generate ID if not provided
         if "id" not in plan:
             import uuid
+
             plan["id"] = f"plan-{uuid.uuid4()}"
 
         plans.append(plan)
@@ -546,11 +552,7 @@ class PatchApplier:
         # Capture affected files
         affected_files = set()
         for op in patch.operations:
-            op_type = (
-                OperationType(op.op)
-                if isinstance(op.op, str)
-                else op.op
-            )
+            op_type = OperationType(op.op) if isinstance(op.op, str) else op.op
 
             if op_type in self.JSONL_FILES:
                 affected_files.add(self.JSONL_FILES[op_type])
@@ -561,9 +563,13 @@ class PatchApplier:
         for filename in affected_files:
             try:
                 if filename.endswith(".jsonl"):
-                    rollback_data["files"][filename] = self.state_store.read_jsonl(filename)
+                    rollback_data["files"][filename] = self.state_store.read_jsonl(
+                        filename
+                    )
                 else:
-                    rollback_data["files"][filename] = self.state_store.read_json(filename)
+                    rollback_data["files"][filename] = self.state_store.read_json(
+                        filename
+                    )
             except FileNotFoundError:
                 rollback_data["files"][filename] = None
 

@@ -2,17 +2,18 @@
 
 from __future__ import annotations
 
-import pytest
 from unittest.mock import MagicMock
 
+import pytest
+
+from src.agents.base_agent import AgentConfig, AgentContext, AgentType
 from src.agents.planner_agent import (
+    ExecutionPlan,
+    ExecutionStep,
+    ExploitCandidate,
     PlannerAgent,
     VulnCandidate,
-    ExploitCandidate,
-    ExecutionStep,
-    ExecutionPlan,
 )
-from src.agents.base_agent import AgentConfig, AgentContext, AgentType
 
 
 class TestVulnCandidate:
@@ -248,20 +249,14 @@ class TestPlannerAgent:
         """Test that run collects evidence."""
         output = agent.run(context)
 
-        evidence_ops = [
-            op for op in output.patch.operations
-            if op.op == "add_evidence"
-        ]
+        evidence_ops = [op for op in output.patch.operations if op.op == "add_evidence"]
         assert len(evidence_ops) > 0
 
     def test_run_records_observations(self, agent, context):
         """Test that run records observations."""
         output = agent.run(context)
 
-        obs_ops = [
-            op for op in output.patch.operations
-            if op.op == "add_observation"
-        ]
+        obs_ops = [op for op in output.patch.operations if op.op == "add_observation"]
         assert len(obs_ops) > 0
 
     def test_run_finds_vuln_candidates(self, agent, context):
@@ -269,8 +264,7 @@ class TestPlannerAgent:
         output = agent.run(context)
 
         vuln_ops = [
-            op for op in output.patch.operations
-            if op.op == "add_vuln_candidate"
+            op for op in output.patch.operations if op.op == "add_vuln_candidate"
         ]
         assert len(vuln_ops) > 0
 
@@ -279,8 +273,7 @@ class TestPlannerAgent:
         output = agent.run(context)
 
         exploit_ops = [
-            op for op in output.patch.operations
-            if op.op == "add_exploit_candidate"
+            op for op in output.patch.operations if op.op == "add_exploit_candidate"
         ]
         # May have exploits if CVEs were found
         assert output.phase_result["exploit_candidates_found"] >= 0
@@ -290,8 +283,7 @@ class TestPlannerAgent:
         output = agent.run(context)
 
         plan_ops = [
-            op for op in output.patch.operations
-            if op.op == "propose_execution_plan"
+            op for op in output.patch.operations if op.op == "propose_execution_plan"
         ]
         # Should create plan if vulns were found
         if output.phase_result["vuln_candidates_found"] > 0:
@@ -345,7 +337,7 @@ class TestPlannerAgent:
                     "technologies": {
                         "django": {"version": "3.1.0", "type": "framework"},
                     }
-                }
+                },
             }
         ]
         config = AgentConfig(agent_type=AgentType.PLANNER)
@@ -376,9 +368,7 @@ class TestPlannerAgentFeasibility:
             "technologies": {
                 "log4j": {"version": "2.14.1", "type": "library"},
             },
-            "targets": {
-                "192.168.1.1": {"ip": "192.168.1.1"}
-            }
+            "targets": {"192.168.1.1": {"ip": "192.168.1.1"}},
         }
         bundle.observations = []
         bundle.instructions = None
@@ -391,7 +381,10 @@ class TestPlannerAgentFeasibility:
 
         decision_types = [d["decision_type"] for d in output.decision_traces]
         # Should have feasibility evaluation for each vuln
-        assert "feasibility_evaluation" in decision_types or output.phase_result["vuln_candidates_found"] == 0
+        assert (
+            "feasibility_evaluation" in decision_types
+            or output.phase_result["vuln_candidates_found"] == 0
+        )
 
 
 class TestPlannerAgentExecutionPlan:
@@ -425,8 +418,7 @@ class TestPlannerAgentExecutionPlan:
         output = agent.run(context)
 
         plan_ops = [
-            op for op in output.patch.operations
-            if op.op == "propose_execution_plan"
+            op for op in output.patch.operations if op.op == "propose_execution_plan"
         ]
 
         if plan_ops:
@@ -439,8 +431,7 @@ class TestPlannerAgentExecutionPlan:
         output = agent.run(context)
 
         plan_ops = [
-            op for op in output.patch.operations
-            if op.op == "propose_execution_plan"
+            op for op in output.patch.operations if op.op == "propose_execution_plan"
         ]
 
         if plan_ops:
@@ -453,8 +444,7 @@ class TestPlannerAgentExecutionPlan:
         output = agent.run(context)
 
         plan_ops = [
-            op for op in output.patch.operations
-            if op.op == "propose_execution_plan"
+            op for op in output.patch.operations if op.op == "propose_execution_plan"
         ]
 
         if plan_ops:
@@ -579,7 +569,7 @@ class TestPlannerAgentIntegration:
                     "ip": "10.0.0.1",
                     "ports": [80, 443],
                 }
-            }
+            },
         }
         bundle.observations = []
         bundle.instructions = None
@@ -611,8 +601,18 @@ class TestPlannerAgentIntegration:
                 "10.0.0.1": {
                     "ip": "10.0.0.1",
                     "ports": [
-                        {"port": 80, "service": "http", "product": "apache", "version": "2.4.49"},
-                        {"port": 443, "service": "https", "product": "nginx", "version": "1.19.0"},
+                        {
+                            "port": 80,
+                            "service": "http",
+                            "product": "apache",
+                            "version": "2.4.49",
+                        },
+                        {
+                            "port": 443,
+                            "service": "https",
+                            "product": "nginx",
+                            "version": "1.19.0",
+                        },
                     ],
                 }
             }
@@ -624,7 +624,7 @@ class TestPlannerAgentIntegration:
                     "technologies": {
                         "log4j": {"version": "2.14.1", "type": "library"},
                     }
-                }
+                },
             }
         ]
         bundle.instructions = None
@@ -666,5 +666,7 @@ class TestPlannerAgentIntegration:
         assert output.success is True
         # Should process all technologies
         decision_traces = output.decision_traces
-        tech_analysis = [d for d in decision_traces if d["decision_type"] == "tech_stack_analysis"]
+        tech_analysis = [
+            d for d in decision_traces if d["decision_type"] == "tech_stack_analysis"
+        ]
         assert len(tech_analysis) > 0

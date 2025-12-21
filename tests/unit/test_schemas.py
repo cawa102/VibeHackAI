@@ -2,29 +2,36 @@
 Unit tests for PentestAgent schemas.
 """
 
-import pytest
 from datetime import datetime, timedelta
 
-from src.schemas.base import BaseSchema, SCHEMA_VERSION
-from src.schemas.scope import Scope, TargetSpec, TargetType, AllowedOperation
-from src.schemas.target_profile import (
-    TargetProfile, HostInfo, PortInfo, PortState, Protocol, TechnologyStack, ServiceInfo
-)
+import pytest
+
+from src.schemas.base import SCHEMA_VERSION, BaseSchema
+from src.schemas.decision_trace import DecisionOption, DecisionTrace, DecisionType
 from src.schemas.evidence import EvidenceItem
-from src.schemas.observation import Observation, ObservationStatus
-from src.schemas.vuln_candidate import VulnCandidate, Severity, ConfidenceLevel
+from src.schemas.execution_plan import ExecutionPlan, ExecutionStep, RiskLevel, StepType
+from src.schemas.execution_result import ErrorClass, ExecutionResult, ExecutionStatus
 from src.schemas.exploit_candidate import ExploitCandidate, ExploitSource
-from src.schemas.execution_plan import ExecutionPlan, ExecutionStep, StepType, RiskLevel
-from src.schemas.execution_result import ExecutionResult, ExecutionStatus, ErrorClass
 from src.schemas.finding_candidate import FindingCandidate, FindingSeverity
-from src.schemas.decision_trace import DecisionTrace, DecisionType, DecisionOption
+from src.schemas.observation import Observation, ObservationStatus
+from src.schemas.scope import AllowedOperation, Scope, TargetSpec, TargetType
+from src.schemas.target_profile import (
+    HostInfo,
+    PortInfo,
+    PortState,
+    Protocol,
+    ServiceInfo,
+    TargetProfile,
+    TechnologyStack,
+)
 from src.schemas.validators import (
-    validate_evidence_ids,
-    validate_scope_tag,
-    validate_finding_evidence_requirement,
     EvidenceValidationError,
     ScopeValidationError,
+    validate_evidence_ids,
+    validate_finding_evidence_requirement,
+    validate_scope_tag,
 )
+from src.schemas.vuln_candidate import ConfidenceLevel, Severity, VulnCandidate
 
 
 class TestBaseSchema:
@@ -32,6 +39,7 @@ class TestBaseSchema:
 
     def test_auto_generate_id(self):
         """Test that ID is auto-generated."""
+
         # Create a concrete subclass for testing
         class TestSchema(BaseSchema):
             pass
@@ -47,6 +55,7 @@ class TestBaseSchema:
 
     def test_default_schema_version(self):
         """Test that schema version defaults to current."""
+
         class TestSchema(BaseSchema):
             pass
 
@@ -60,6 +69,7 @@ class TestBaseSchema:
 
     def test_created_at_defaults_to_now(self):
         """Test that created_at defaults to current time."""
+
         class TestSchema(BaseSchema):
             pass
 
@@ -75,6 +85,7 @@ class TestBaseSchema:
 
     def test_created_by_validation(self):
         """Test that empty created_by raises error."""
+
         class TestSchema(BaseSchema):
             pass
 
@@ -87,6 +98,7 @@ class TestBaseSchema:
 
     def test_scope_tag_validation(self):
         """Test that empty scope_tag raises error."""
+
         class TestSchema(BaseSchema):
             pass
 
@@ -562,12 +574,14 @@ class TestDecisionTrace:
             rationale="Nmap provides comprehensive port scanning",
         )
 
-        trace.add_option(DecisionOption(
-            option_id="nmap",
-            description="Use Nmap for port scanning",
-            pros=["Comprehensive", "Well-known"],
-            cons=["Can be slow"],
-        ))
+        trace.add_option(
+            DecisionOption(
+                option_id="nmap",
+                description="Use Nmap for port scanning",
+                pros=["Comprehensive", "Well-known"],
+                cons=["Can be slow"],
+            )
+        )
 
         assert len(trace.options) == 1
 

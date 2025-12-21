@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
-import pytest
 from unittest.mock import MagicMock
 
-from src.agents.reconnaissance_agent import ReconnaissanceAgent
+import pytest
+
 from src.agents.base_agent import AgentConfig, AgentContext, AgentType
-from src.mcp_adapters.shodan_adapter import ShodanAdapter
-from src.mcp_adapters.osint_adapter import OSINTAdapter
+from src.agents.reconnaissance_agent import ReconnaissanceAgent
 from src.mcp_adapters.nmap_adapter import NmapAdapter
+from src.mcp_adapters.osint_adapter import OSINTAdapter
+from src.mcp_adapters.shodan_adapter import ShodanAdapter
 
 
 class TestReconnaissanceAgent:
@@ -124,10 +125,7 @@ class TestReconnaissanceAgent:
         output = agent.run(context)
 
         # Should have evidence operations
-        evidence_ops = [
-            op for op in output.patch.operations
-            if op.op == "add_evidence"
-        ]
+        evidence_ops = [op for op in output.patch.operations if op.op == "add_evidence"]
         assert len(evidence_ops) > 0
 
     def test_run_records_observations(self, agent, context):
@@ -135,10 +133,7 @@ class TestReconnaissanceAgent:
         output = agent.run(context)
 
         # Should have observation operations
-        obs_ops = [
-            op for op in output.patch.operations
-            if op.op == "add_observation"
-        ]
+        obs_ops = [op for op in output.patch.operations if op.op == "add_observation"]
         assert len(obs_ops) > 0
 
     def test_run_records_decisions(self, agent, context):
@@ -226,10 +221,7 @@ class TestReconnaissanceAgentIntegration:
         assert output.success is True
 
         # Should have many observations for domain
-        obs_ops = [
-            op for op in output.patch.operations
-            if op.op == "add_observation"
-        ]
+        obs_ops = [op for op in output.patch.operations if op.op == "add_observation"]
         # Domain should generate: WHOIS, DNS records, subdomains, certs, tech detect
         assert len(obs_ops) >= 3
 

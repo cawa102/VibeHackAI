@@ -19,15 +19,16 @@ import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional
 
 if TYPE_CHECKING:
-    from ..storage.state_store import StateStore
     from ..storage.evidence_ledger import EvidenceLedger
+    from ..storage.state_store import StateStore
 
 
 class WorkflowPhase(str, Enum):
     """Workflow phases."""
+
     INIT = "init"
     PLANNING = "planning"
     AWAITING_APPROVAL = "awaiting_approval"
@@ -39,6 +40,7 @@ class WorkflowPhase(str, Enum):
 
 class TaskType(str, Enum):
     """Types of tasks that can be executed."""
+
     RECONNAISSANCE = "reconnaissance"
     ENUMERATION = "enumeration"
     VULNERABILITY_SCAN = "vulnerability_scan"
@@ -48,6 +50,7 @@ class TaskType(str, Enum):
 
 class TaskStatus(str, Enum):
     """Status of a task."""
+
     PENDING = "pending"
     APPROVED = "approved"
     IN_PROGRESS = "in_progress"
@@ -59,6 +62,7 @@ class TaskStatus(str, Enum):
 @dataclass
 class PlanStep:
     """A step in the execution plan."""
+
     step_id: str
     order: int
     task_type: TaskType
@@ -92,6 +96,7 @@ class PlanStep:
 @dataclass
 class ExecutionPlan:
     """Execution plan created by Planner."""
+
     plan_id: str
     version: int
     target: str
@@ -168,13 +173,16 @@ class ExecutionPlan:
             "completed": sum(1 for s in self.steps if s.status == TaskStatus.COMPLETED),
             "failed": sum(1 for s in self.steps if s.status == TaskStatus.FAILED),
             "pending": sum(1 for s in self.steps if s.status == TaskStatus.PENDING),
-            "in_progress": sum(1 for s in self.steps if s.status == TaskStatus.IN_PROGRESS),
+            "in_progress": sum(
+                1 for s in self.steps if s.status == TaskStatus.IN_PROGRESS
+            ),
         }
 
 
 @dataclass
 class WorkflowState:
     """State of the interactive workflow."""
+
     session_id: str
     target_ip: str
     phase: WorkflowPhase
@@ -200,6 +208,7 @@ class WorkflowState:
 @dataclass
 class UserProposal:
     """A proposal presented to the user for approval."""
+
     proposal_id: str
     proposal_type: str  # "plan", "step", "action"
     title: str
@@ -225,6 +234,7 @@ class UserProposal:
 @dataclass
 class UserResponse:
     """User's response to a proposal."""
+
     proposal_id: str
     selected_option: str
     modifications: Optional[Dict[str, Any]] = None
@@ -235,6 +245,7 @@ class UserResponse:
 @dataclass
 class AgentTaskResult:
     """Result from an agent task execution."""
+
     task_id: str
     agent: str
     success: bool
@@ -258,10 +269,18 @@ class AgentTaskResult:
 
 
 # Callback types
-PlannerCallback = Callable[[str, Dict[str, Any]], ExecutionPlan]  # (target, context) -> Plan
-PlanUpdateCallback = Callable[[ExecutionPlan, AgentTaskResult], ExecutionPlan]  # (plan, result) -> UpdatedPlan
-UserInteractionCallback = Callable[[UserProposal], UserResponse]  # (proposal) -> response
-AgentExecutionCallback = Callable[[PlanStep, Dict[str, Any]], AgentTaskResult]  # (step, context) -> result
+PlannerCallback = Callable[
+    [str, Dict[str, Any]], ExecutionPlan
+]  # (target, context) -> Plan
+PlanUpdateCallback = Callable[
+    [ExecutionPlan, AgentTaskResult], ExecutionPlan
+]  # (plan, result) -> UpdatedPlan
+UserInteractionCallback = Callable[
+    [UserProposal], UserResponse
+]  # (proposal) -> response
+AgentExecutionCallback = Callable[
+    [PlanStep, Dict[str, Any]], AgentTaskResult
+]  # (step, context) -> result
 
 
 class InteractiveWorkflow:
@@ -323,7 +342,8 @@ class InteractiveWorkflow:
         return (
             self._state is not None
             and not self._stopped
-            and self._state.phase not in (WorkflowPhase.COMPLETED, WorkflowPhase.STOPPED)
+            and self._state.phase
+            not in (WorkflowPhase.COMPLETED, WorkflowPhase.STOPPED)
         )
 
     def start(self, target_ip: str) -> UserProposal:
@@ -473,11 +493,13 @@ class InteractiveWorkflow:
         result = self._agent_callback(step, context)
 
         # Record in history
-        self._state.execution_history.append({
-            "step_id": step.step_id,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
-            "result": result.to_dict(),
-        })
+        self._state.execution_history.append(
+            {
+                "step_id": step.step_id,
+                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "result": result.to_dict(),
+            }
+        )
 
         # Update step status
         if result.success:
@@ -487,7 +509,9 @@ class InteractiveWorkflow:
                 result.evidence_ids,
             )
         else:
-            self._state.current_plan.mark_step_failed(step.step_id, result.error or "Unknown error")
+            self._state.current_plan.mark_step_failed(
+                step.step_id, result.error or "Unknown error"
+            )
 
         # Step 7 & 8: Feed results to planner for plan update
         self._state.phase = WorkflowPhase.REVIEWING
@@ -592,13 +616,15 @@ class InteractiveWorkflow:
         """Create proposal for initial plan approval."""
         steps_summary = []
         for step in sorted(plan.steps, key=lambda s: s.order):
-            steps_summary.append({
-                "order": step.order,
-                "type": step.task_type.value,
-                "description": step.description,
-                "agent": step.agent,
-                "requires_approval": step.requires_approval,
-            })
+            steps_summary.append(
+                {
+                    "order": step.order,
+                    "type": step.task_type.value,
+                    "description": step.description,
+                    "agent": step.agent,
+                    "requires_approval": step.requires_approval,
+                }
+            )
 
         return UserProposal(
             proposal_id=f"prop-{uuid.uuid4().hex[:8]}",
@@ -662,8 +688,7 @@ class InteractiveWorkflow:
                 },
                 "plan_changes": plan.rationale,
                 "remaining_steps": [
-                    s.to_dict() for s in plan.steps
-                    if s.status == TaskStatus.PENDING
+                    s.to_dict() for s in plan.steps if s.status == TaskStatus.PENDING
                 ],
                 "progress": plan.get_progress(),
             },
@@ -709,9 +734,15 @@ class InteractiveWorkflow:
         # Add state data
         try:
             context["scope"] = self.state_store.read_json("scope.json")
-            context["target_profile"] = self.state_store.read_json("target_profile.json")
-            context["observations"] = list(self.state_store.read_jsonl("observations.jsonl"))
-            context["vuln_candidates"] = self.state_store.read_json("candidates_vuln.json")
+            context["target_profile"] = self.state_store.read_json(
+                "target_profile.json"
+            )
+            context["observations"] = list(
+                self.state_store.read_jsonl("observations.jsonl")
+            )
+            context["vuln_candidates"] = self.state_store.read_json(
+                "candidates_vuln.json"
+            )
         except Exception:
             pass
 
@@ -763,6 +794,10 @@ class InteractiveWorkflow:
             "stopped": self._stopped,
             "stop_reason": self._stop_reason,
             "phase": self._state.phase.value if self._state else None,
-            "progress": self._state.current_plan.get_progress() if self._state and self._state.current_plan else None,
+            "progress": (
+                self._state.current_plan.get_progress()
+                if self._state and self._state.current_plan
+                else None
+            ),
             "report_path": self._report_path,
         }

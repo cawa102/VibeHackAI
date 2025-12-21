@@ -12,19 +12,13 @@ import uuid
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from .base_agent import (
-    BaseAgent,
-    AgentConfig,
-    AgentContext,
-    AgentOutput,
-    AgentType,
-)
-from ..mcp_adapters.shodan_adapter import ShodanAdapter
-from ..mcp_adapters.osint_adapter import OSINTAdapter
-from ..mcp_adapters.nmap_adapter import NmapAdapter
 from ..mcp_adapters.base_adapter import MCPResult
-from ..patch.patch import Patch, PatchOperation
+from ..mcp_adapters.nmap_adapter import NmapAdapter
+from ..mcp_adapters.osint_adapter import OSINTAdapter
+from ..mcp_adapters.shodan_adapter import ShodanAdapter
 from ..patch.operations import OperationType
+from ..patch.patch import Patch, PatchOperation
+from .base_agent import AgentConfig, AgentContext, AgentOutput, AgentType, BaseAgent
 
 
 class ReconnaissanceAgent(BaseAgent):
@@ -282,12 +276,13 @@ class ReconnaissanceAgent(BaseAgent):
         """
         # Extract domain from URL
         import urllib.parse
+
         parsed = urllib.parse.urlparse(url)
-        domain = parsed.netloc or parsed.path.split('/')[0]
+        domain = parsed.netloc or parsed.path.split("/")[0]
 
         if domain:
             # Remove port if present
-            domain = domain.split(':')[0]
+            domain = domain.split(":")[0]
             self._process_domain_target(domain)
 
     def _extract_shodan_data(
@@ -333,15 +328,18 @@ class ReconnaissanceAgent(BaseAgent):
             )
 
         # Update target profile
-        self._update_target_profile(ip, {
-            "ip": ip,
-            "os": data.get("os"),
-            "organization": data.get("org"),
-            "asn": data.get("asn"),
-            "country": data.get("country_code"),
-            "hostnames": data.get("hostnames", []),
-            "ports": data.get("ports", []),
-        })
+        self._update_target_profile(
+            ip,
+            {
+                "ip": ip,
+                "os": data.get("os"),
+                "organization": data.get("org"),
+                "asn": data.get("asn"),
+                "country": data.get("country_code"),
+                "hostnames": data.get("hostnames", []),
+                "ports": data.get("ports", []),
+            },
+        )
 
     def _extract_vulns(
         self,
@@ -478,8 +476,7 @@ class ReconnaissanceAgent(BaseAgent):
         """
         # Check if we have port information from passive sources
         has_port_info = any(
-            obs.get("type") == "service_discovery"
-            for obs in self._observations
+            obs.get("type") == "service_discovery" for obs in self._observations
         )
 
         if not has_port_info:
@@ -487,7 +484,8 @@ class ReconnaissanceAgent(BaseAgent):
 
         # Check if we have sufficient version info
         version_info_count = sum(
-            1 for obs in self._observations
+            1
+            for obs in self._observations
             if obs.get("type") == "service_discovery"
             and obs.get("data", {}).get("version")
         )
@@ -584,30 +582,36 @@ class ReconnaissanceAgent(BaseAgent):
 
         # Add evidence operations
         for evidence in self._evidences:
-            operations.append(PatchOperation(
-                op=OperationType.ADD_EVIDENCE,
-                target="evidence",
-                payload=evidence,
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.ADD_EVIDENCE,
+                    target="evidence",
+                    payload=evidence,
+                )
+            )
 
         # Add observation operations
         for observation in self._observations:
-            operations.append(PatchOperation(
-                op=OperationType.ADD_OBSERVATION,
-                target="observations",
-                payload=observation,
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.ADD_OBSERVATION,
+                    target="observations",
+                    payload=observation,
+                )
+            )
 
         # Update target profile
         if self._target_updates:
-            operations.append(PatchOperation(
-                op=OperationType.UPDATE_TARGET_PROFILE,
-                target="target_profile",
-                payload={
-                    "targets": self._target_updates,
-                    "updated_at": datetime.utcnow().isoformat() + "Z",
-                },
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.UPDATE_TARGET_PROFILE,
+                    target="target_profile",
+                    payload={
+                        "targets": self._target_updates,
+                        "updated_at": datetime.utcnow().isoformat() + "Z",
+                    },
+                )
+            )
 
         return operations
 

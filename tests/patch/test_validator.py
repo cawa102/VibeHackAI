@@ -1,19 +1,16 @@
 """Tests for PatchValidator."""
 
-import pytest
 import tempfile
 from pathlib import Path
 
-from src.patch.patch import Patch
+import pytest
+
 from src.patch.operations import OperationType
-from src.patch.validator import (
-    PatchValidator,
-    ValidationErrorType,
-    ValidationResult,
-)
-from src.storage.state_store import StateStore
-from src.storage.evidence_ledger import EvidenceLedger
+from src.patch.patch import Patch
+from src.patch.validator import PatchValidator, ValidationErrorType, ValidationResult
 from src.schemas.scope import Scope, TargetSpec, TargetType
+from src.storage.evidence_ledger import EvidenceLedger
+from src.storage.state_store import StateStore
 
 
 @pytest.fixture
@@ -65,7 +62,9 @@ class TestPatchValidator:
         result = validator.validate(patch)
 
         assert result.valid is False
-        assert any(e.error_type == ValidationErrorType.EMPTY_PATCH for e in result.errors)
+        assert any(
+            e.error_type == ValidationErrorType.EMPTY_PATCH for e in result.errors
+        )
 
     def test_validate_version_mismatch(self, state_store, evidence_ledger):
         """Test validation fails when version doesn't match."""
@@ -87,7 +86,9 @@ class TestPatchValidator:
         result = validator.validate(patch)
 
         assert result.valid is False
-        assert any(e.error_type == ValidationErrorType.VERSION_MISMATCH for e in result.errors)
+        assert any(
+            e.error_type == ValidationErrorType.VERSION_MISMATCH for e in result.errors
+        )
 
     def test_validate_version_match(self, state_store, evidence_ledger):
         """Test validation passes when version matches."""
@@ -126,7 +127,9 @@ class TestPatchValidator:
         result = validator.validate(patch)
 
         assert result.valid is False
-        assert any(e.error_type == ValidationErrorType.MISSING_FIELD for e in result.errors)
+        assert any(
+            e.error_type == ValidationErrorType.MISSING_FIELD for e in result.errors
+        )
 
     def test_validate_evidence_not_found(self, state_store, evidence_ledger):
         """Test validation fails when evidence doesn't exist."""
@@ -149,7 +152,10 @@ class TestPatchValidator:
         result = validator.validate(patch)
 
         assert result.valid is False
-        assert any(e.error_type == ValidationErrorType.EVIDENCE_NOT_FOUND for e in result.errors)
+        assert any(
+            e.error_type == ValidationErrorType.EVIDENCE_NOT_FOUND
+            for e in result.errors
+        )
 
     def test_validate_evidence_exists(self, state_store, evidence_ledger):
         """Test validation passes when evidence exists."""
@@ -197,7 +203,9 @@ class TestPatchValidator:
         result = validator.validate(patch)
 
         assert result.valid is False
-        assert any(e.error_type == ValidationErrorType.APPROVAL_REQUIRED for e in result.errors)
+        assert any(
+            e.error_type == ValidationErrorType.APPROVAL_REQUIRED for e in result.errors
+        )
 
     def test_validate_approval_set(self, state_store, evidence_ledger):
         """Test validation passes when approval is properly set."""
@@ -237,13 +245,19 @@ class TestPatchValidator:
             },
         )
 
-        validator = PatchValidator(state_store, evidence_ledger, existing_ids=existing_ids)
+        validator = PatchValidator(
+            state_store, evidence_ledger, existing_ids=existing_ids
+        )
         result = validator.validate(patch)
 
         assert result.valid is False
-        assert any(e.error_type == ValidationErrorType.DUPLICATE_OBJECT for e in result.errors)
+        assert any(
+            e.error_type == ValidationErrorType.DUPLICATE_OBJECT for e in result.errors
+        )
 
-    def test_validate_finding_high_severity_needs_evidence(self, state_store, evidence_ledger):
+    def test_validate_finding_high_severity_needs_evidence(
+        self, state_store, evidence_ledger
+    ):
         """Test that high severity findings need 2+ evidence items."""
         # Store one evidence
         meta = evidence_ledger.store(data=b"test", source_tool="test")
@@ -274,7 +288,9 @@ class TestPatchValidator:
         # Should have error about insufficient evidence
         assert any("2 evidence" in e.message for e in result.errors)
 
-    def test_validate_finding_high_severity_with_enough_evidence(self, state_store, evidence_ledger):
+    def test_validate_finding_high_severity_with_enough_evidence(
+        self, state_store, evidence_ledger
+    ):
         """Test high severity finding passes with 2+ evidence."""
         # Store two evidence items
         meta1 = evidence_ledger.store(data=b"test1", source_tool="test")
@@ -337,7 +353,9 @@ class TestPatchValidator:
         patch.add_operation(
             op=OperationType.ADD_OBSERVATION,
             target="192.168.1.1",
-            payload={"evidence_ids": ["ev-nonexistent"]},  # Missing fields, bad evidence
+            payload={
+                "evidence_ids": ["ev-nonexistent"]
+            },  # Missing fields, bad evidence
         )
 
         validator = PatchValidator(state_store, evidence_ledger)

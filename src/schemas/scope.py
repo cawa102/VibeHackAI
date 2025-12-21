@@ -17,6 +17,7 @@ from .base import BaseSchema
 
 class TargetType(str, Enum):
     """Types of targets."""
+
     IP = "ip"
     CIDR = "cidr"
     DOMAIN = "domain"
@@ -40,6 +41,7 @@ class TargetSpec(BaseModel):
 
 class AllowedOperation(str, Enum):
     """Types of allowed operations."""
+
     # Reconnaissance
     PASSIVE_RECON = "passive_recon"
     ACTIVE_RECON = "active_recon"
@@ -143,18 +145,23 @@ class Scope(BaseSchema):
         """
         try:
             import ipaddress
+
             network = ipaddress.ip_network(cidr, strict=False)
             return ipaddress.ip_address(ip) in network
         except (ValueError, ImportError):
             return False
 
-    def add_target(self, value: str, target_type: TargetType, description: Optional[str] = None) -> None:
+    def add_target(
+        self, value: str, target_type: TargetType, description: Optional[str] = None
+    ) -> None:
         """Add a target to the scope."""
-        self.targets.append(TargetSpec(
-            value=value,
-            type=target_type,
-            description=description,
-        ))
+        self.targets.append(
+            TargetSpec(
+                value=value,
+                type=target_type,
+                description=description,
+            )
+        )
 
     def add_operation(self, operation: AllowedOperation) -> None:
         """Add an allowed operation."""

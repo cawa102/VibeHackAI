@@ -7,7 +7,7 @@ evidence requirements.
 
 from __future__ import annotations
 
-from typing import List, Optional, Set, TYPE_CHECKING
+from typing import TYPE_CHECKING, List, Optional, Set
 
 if TYPE_CHECKING:
     from .finding_candidate import FindingCandidate, FindingSeverity
@@ -16,16 +16,19 @@ if TYPE_CHECKING:
 
 class ValidationError(Exception):
     """Raised when validation fails."""
+
     pass
 
 
 class EvidenceValidationError(ValidationError):
     """Raised when evidence validation fails."""
+
     pass
 
 
 class ScopeValidationError(ValidationError):
     """Raised when scope validation fails."""
+
     pass
 
 
@@ -33,7 +36,7 @@ def validate_evidence_ids(
     evidence_ids: List[str],
     existing_evidence_ids: Set[str],
     min_required: int = 1,
-    context: str = "object"
+    context: str = "object",
 ) -> None:
     """
     Validate that evidence IDs exist in the evidence store.
@@ -61,9 +64,7 @@ def validate_evidence_ids(
 
 
 def validate_scope_tag(
-    scope_tag: str,
-    scope: "Scope",
-    target_type: Optional["TargetType"] = None
+    scope_tag: str, scope: "Scope", target_type: Optional["TargetType"] = None
 ) -> None:
     """
     Validate that a scope tag is within the allowed scope.
@@ -102,7 +103,7 @@ def validate_scope_tag(
 def validate_finding_evidence_requirement(
     severity: "FindingSeverity",
     evidence_ids: List[str],
-    existing_evidence_ids: Optional[Set[str]] = None
+    existing_evidence_ids: Optional[Set[str]] = None,
 ) -> None:
     """
     Validate that a finding has sufficient evidence for its severity.
@@ -135,14 +136,12 @@ def validate_finding_evidence_requirement(
             evidence_ids,
             existing_evidence_ids,
             min_required=min_required,
-            context=f"{severity.value} severity finding"
+            context=f"{severity.value} severity finding",
         )
 
 
 def validate_execution_plan_approval(
-    plan_approved: bool,
-    step_requires_approval: bool,
-    step_index: int
+    plan_approved: bool, step_requires_approval: bool, step_index: int
 ) -> None:
     """
     Validate that execution can proceed based on approval status.
@@ -162,9 +161,7 @@ def validate_execution_plan_approval(
 
 
 def validate_vuln_candidate_for_exploit(
-    vuln_has_evidence: bool,
-    vuln_false_positive: bool,
-    vuln_id: str
+    vuln_has_evidence: bool, vuln_false_positive: bool, vuln_id: str
 ) -> None:
     """
     Validate that a vulnerability candidate is suitable for exploitation.

@@ -7,7 +7,7 @@ Records decision-making processes for audit and explainability.
 from __future__ import annotations
 
 from enum import Enum
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field, validator
 
@@ -16,6 +16,7 @@ from .base import BaseSchema
 
 class DecisionType(str, Enum):
     """Types of decisions."""
+
     PHASE_TRANSITION = "phase_transition"
     TARGET_SELECTION = "target_selection"
     TOOL_SELECTION = "tool_selection"

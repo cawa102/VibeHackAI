@@ -9,9 +9,9 @@ from __future__ import annotations
 import json
 from typing import Any, Dict, List, Optional, Union
 
+from ..schemas import Observation, TargetProfile
+from ..schemas.target_profile import OSInfo, PortInfo, ServiceInfo
 from .base import BasePasser, MCPType, PasserRegistry, PasserResult
-from ..schemas import TargetProfile, Observation
-from ..schemas.target_profile import PortInfo, ServiceInfo, OSInfo
 
 
 @PasserRegistry.register

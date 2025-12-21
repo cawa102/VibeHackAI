@@ -12,13 +12,13 @@ from typing import Optional
 
 from pydantic import BaseModel, Field, validator
 
-
 # Current schema version
 SCHEMA_VERSION = "1.0.0"
 
 
 class SchemaVersion:
     """Schema version constants."""
+
     CURRENT = SCHEMA_VERSION
     V1_0_0 = "1.0.0"
 

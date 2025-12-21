@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .base_adapter import BaseMCPAdapter, MCPResult, MCPError, MCPToolType
+from .base_adapter import BaseMCPAdapter, MCPError, MCPResult, MCPToolType
 
 
 class SnykAdapter(BaseMCPAdapter):
@@ -25,12 +25,12 @@ class SnykAdapter(BaseMCPAdapter):
 
     # Supported operations
     OPERATIONS = [
-        "scan_deps",        # Scan dependencies for vulnerabilities
-        "scan_container",   # Scan container image
-        "lookup_vuln",      # Lookup specific vulnerability
-        "search_vulns",     # Search vulnerabilities by package
-        "get_vuln_details", # Get vulnerability details
-        "list_cves",        # List CVEs for a package/version
+        "scan_deps",  # Scan dependencies for vulnerabilities
+        "scan_container",  # Scan container image
+        "lookup_vuln",  # Lookup specific vulnerability
+        "search_vulns",  # Search vulnerabilities by package
+        "get_vuln_details",  # Get vulnerability details
+        "list_cves",  # List CVEs for a package/version
     ]
 
     def __init__(

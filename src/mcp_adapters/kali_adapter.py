@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .base_adapter import BaseMCPAdapter, MCPResult, MCPError, MCPToolType
+from .base_adapter import BaseMCPAdapter, MCPError, MCPResult, MCPToolType
 
 
 class KaliAdapter(BaseMCPAdapter):
@@ -25,14 +25,14 @@ class KaliAdapter(BaseMCPAdapter):
 
     # Supported operations
     OPERATIONS = [
-        "sqlmap_scan",          # SQL injection testing
-        "nikto_scan",           # Web server scanning
-        "hydra_attack",         # Credential brute-force
-        "dirb_scan",            # Directory enumeration
-        "wfuzz_scan",           # Web fuzzing
-        "run_tool",             # Run arbitrary tool
-        "list_tools",           # List available tools
-        "get_tool_help",        # Get tool help
+        "sqlmap_scan",  # SQL injection testing
+        "nikto_scan",  # Web server scanning
+        "hydra_attack",  # Credential brute-force
+        "dirb_scan",  # Directory enumeration
+        "wfuzz_scan",  # Web fuzzing
+        "run_tool",  # Run arbitrary tool
+        "list_tools",  # List available tools
+        "get_tool_help",  # Get tool help
     ]
 
     # Dangerous operations requiring approval
@@ -333,12 +333,36 @@ class KaliAdapter(BaseMCPAdapter):
             success=True,
             data={
                 "tools": [
-                    {"name": "sqlmap", "category": "sql_injection", "description": "Automatic SQL injection tool"},
-                    {"name": "nikto", "category": "web_scanner", "description": "Web server scanner"},
-                    {"name": "hydra", "category": "password", "description": "Password cracking tool"},
-                    {"name": "dirb", "category": "enumeration", "description": "Directory brute forcer"},
-                    {"name": "wfuzz", "category": "fuzzing", "description": "Web application fuzzer"},
-                    {"name": "nmap", "category": "network", "description": "Network scanner"},
+                    {
+                        "name": "sqlmap",
+                        "category": "sql_injection",
+                        "description": "Automatic SQL injection tool",
+                    },
+                    {
+                        "name": "nikto",
+                        "category": "web_scanner",
+                        "description": "Web server scanner",
+                    },
+                    {
+                        "name": "hydra",
+                        "category": "password",
+                        "description": "Password cracking tool",
+                    },
+                    {
+                        "name": "dirb",
+                        "category": "enumeration",
+                        "description": "Directory brute forcer",
+                    },
+                    {
+                        "name": "wfuzz",
+                        "category": "fuzzing",
+                        "description": "Web application fuzzer",
+                    },
+                    {
+                        "name": "nmap",
+                        "category": "network",
+                        "description": "Network scanner",
+                    },
                 ],
                 "total": 6,
             },
@@ -420,11 +444,14 @@ class KaliAdapter(BaseMCPAdapter):
         Returns:
             MCPResult with scan results.
         """
-        return self.invoke("nikto_scan", {
-            "target": target,
-            "port": port,
-            "ssl": ssl,
-        })
+        return self.invoke(
+            "nikto_scan",
+            {
+                "target": target,
+                "port": port,
+                "ssl": ssl,
+            },
+        )
 
     def hydra_attack(
         self,
@@ -496,11 +523,14 @@ class KaliAdapter(BaseMCPAdapter):
         Returns:
             MCPResult with fuzz results.
         """
-        return self.invoke("wfuzz_scan", {
-            "target": target,
-            "wordlist": wordlist,
-            "fuzz_point": fuzz_point,
-        })
+        return self.invoke(
+            "wfuzz_scan",
+            {
+                "target": target,
+                "wordlist": wordlist,
+                "fuzz_point": fuzz_point,
+            },
+        )
 
     def run_tool(
         self,

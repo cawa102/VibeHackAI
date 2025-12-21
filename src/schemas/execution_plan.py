@@ -7,7 +7,7 @@ Defines the plan for executing exploits with approval gates.
 from __future__ import annotations
 
 from enum import Enum
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field, validator
 
@@ -16,6 +16,7 @@ from .base import BaseSchema
 
 class StepType(str, Enum):
     """Types of execution steps."""
+
     PREPARATION = "preparation"
     VERIFICATION = "verification"
     EXPLOITATION = "exploitation"
@@ -26,6 +27,7 @@ class StepType(str, Enum):
 
 class RiskLevel(str, Enum):
     """Risk level of an action."""
+
     LOW = "low"
     MEDIUM = "medium"
     HIGH = "high"
@@ -213,6 +215,7 @@ class ExecutionPlan(BaseSchema):
     def approve(self, approved_by: str) -> None:
         """Approve the plan."""
         from datetime import datetime
+
         self.approved = True
         self.approved_by = approved_by
         self.approved_at = datetime.utcnow().isoformat() + "Z"
@@ -220,7 +223,8 @@ class ExecutionPlan(BaseSchema):
     def get_high_risk_steps(self) -> List[ExecutionStep]:
         """Get all high/critical risk steps."""
         return [
-            step for step in self.steps
+            step
+            for step in self.steps
             if step.risk_level in (RiskLevel.HIGH, RiskLevel.CRITICAL)
         ]
 
@@ -229,7 +233,12 @@ class ExecutionPlan(BaseSchema):
         if not self.steps:
             return RiskLevel.LOW
 
-        risk_order = [RiskLevel.LOW, RiskLevel.MEDIUM, RiskLevel.HIGH, RiskLevel.CRITICAL]
+        risk_order = [
+            RiskLevel.LOW,
+            RiskLevel.MEDIUM,
+            RiskLevel.HIGH,
+            RiskLevel.CRITICAL,
+        ]
         max_risk = RiskLevel.LOW
 
         for step in self.steps:

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from src.passer.nmap_passer import NmapPasser
 from src.passer.base import MCPType
+from src.passer.nmap_passer import NmapPasser
 
 
 class TestNmapPasser:

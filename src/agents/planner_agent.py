@@ -13,24 +13,19 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from .base_agent import (
-    BaseAgent,
-    AgentConfig,
-    AgentContext,
-    AgentOutput,
-    AgentType,
-)
-from ..mcp_adapters.snyk_adapter import SnykAdapter
+from ..mcp_adapters.base_adapter import MCPResult
 from ..mcp_adapters.cve_adapter import CVEAdapter
 from ..mcp_adapters.github_adapter import GitHubAdapter
-from ..mcp_adapters.base_adapter import MCPResult
-from ..patch.patch import Patch, PatchOperation
+from ..mcp_adapters.snyk_adapter import SnykAdapter
 from ..patch.operations import OperationType
+from ..patch.patch import Patch, PatchOperation
+from .base_agent import AgentConfig, AgentContext, AgentOutput, AgentType, BaseAgent
 
 
 @dataclass
 class VulnCandidate:
     """Vulnerability candidate identified by the planner."""
+
     vuln_id: str
     cve_id: Optional[str]
     title: str
@@ -64,6 +59,7 @@ class VulnCandidate:
 @dataclass
 class ExploitCandidate:
     """Exploit candidate for a vulnerability."""
+
     exploit_id: str
     vuln_candidate_id: str
     source: str  # github, exploit-db, metasploit
@@ -93,6 +89,7 @@ class ExploitCandidate:
 @dataclass
 class ExecutionStep:
     """A step in the execution plan."""
+
     step_id: str
     order: int
     action: str
@@ -122,6 +119,7 @@ class ExecutionStep:
 @dataclass
 class ExecutionPlan:
     """Execution plan for exploitation."""
+
     plan_id: str
     vuln_candidates: List[str]  # vuln_candidate_ids
     exploit_candidates: List[str]  # exploit_candidate_ids
@@ -246,11 +244,15 @@ class PlannerAgent(BaseAgent):
             # Still return success with empty results
             operations = self._generate_operations()
             patch = self._create_patch(context, operations)
-            return self._create_success_output(context, patch, {
-                "vuln_candidates_found": 0,
-                "exploit_candidates_found": 0,
-                "execution_plan_created": False,
-            })
+            return self._create_success_output(
+                context,
+                patch,
+                {
+                    "vuln_candidates_found": 0,
+                    "exploit_candidates_found": 0,
+                    "execution_plan_created": False,
+                },
+            )
 
         # Phase 2: Feasibility evaluation
         self._evaluate_feasibility(context)
@@ -273,16 +275,12 @@ class PlannerAgent(BaseAgent):
             "high_severity_vulns": sum(
                 1 for v in self._vuln_candidates if v.severity in ["critical", "high"]
             ),
-            "verified_exploits": sum(
-                1 for e in self._exploit_candidates if e.verified
-            ),
+            "verified_exploits": sum(1 for e in self._exploit_candidates if e.verified),
         }
 
         return self._create_success_output(context, patch, phase_result)
 
-    def _extract_tech_stack(
-        self, context: AgentContext
-    ) -> List[Dict[str, Any]]:
+    def _extract_tech_stack(self, context: AgentContext) -> List[Dict[str, Any]]:
         """
         Extract technology stack from target profile.
 
@@ -298,17 +296,21 @@ class PlannerAgent(BaseAgent):
         # Check for direct technologies
         for tech_name, tech_info in target_profile.get("technologies", {}).items():
             if isinstance(tech_info, dict):
-                tech_stack.append({
-                    "name": tech_name,
-                    "version": tech_info.get("version"),
-                    "type": tech_info.get("type", "unknown"),
-                })
+                tech_stack.append(
+                    {
+                        "name": tech_name,
+                        "version": tech_info.get("version"),
+                        "type": tech_info.get("type", "unknown"),
+                    }
+                )
             else:
-                tech_stack.append({
-                    "name": tech_name,
-                    "version": str(tech_info) if tech_info else None,
-                    "type": "unknown",
-                })
+                tech_stack.append(
+                    {
+                        "name": tech_name,
+                        "version": str(tech_info) if tech_info else None,
+                        "type": "unknown",
+                    }
+                )
 
         # Check for services in targets
         for target_id, target_info in target_profile.get("targets", {}).items():
@@ -317,23 +319,29 @@ class PlannerAgent(BaseAgent):
                 if isinstance(port_info, dict):
                     product = port_info.get("product") or port_info.get("service")
                     if product:
-                        tech_stack.append({
-                            "name": product,
-                            "version": port_info.get("version"),
-                            "type": "service",
-                            "port": port_info.get("port"),
-                        })
+                        tech_stack.append(
+                            {
+                                "name": product,
+                                "version": port_info.get("version"),
+                                "type": "service",
+                                "port": port_info.get("port"),
+                            }
+                        )
 
         # Check observations for technology detection
         for obs in context.observations:
             if obs.get("type") == "technology_detection":
-                for tech_name, tech_info in obs.get("data", {}).get("technologies", {}).items():
+                for tech_name, tech_info in (
+                    obs.get("data", {}).get("technologies", {}).items()
+                ):
                     if isinstance(tech_info, dict):
-                        tech_stack.append({
-                            "name": tech_name,
-                            "version": tech_info.get("version"),
-                            "type": tech_info.get("type", "framework"),
-                        })
+                        tech_stack.append(
+                            {
+                                "name": tech_name,
+                                "version": tech_info.get("version"),
+                                "type": tech_info.get("type", "framework"),
+                            }
+                        )
 
         # Deduplicate
         seen = set()
@@ -346,9 +354,7 @@ class PlannerAgent(BaseAgent):
 
         return unique_stack
 
-    def _lookup_vulnerabilities(
-        self, tech_stack: List[Dict[str, Any]]
-    ) -> None:
+    def _lookup_vulnerabilities(self, tech_stack: List[Dict[str, Any]]) -> None:
         """
         Lookup vulnerabilities for the technology stack.
 
@@ -437,9 +443,7 @@ class PlannerAgent(BaseAgent):
                 candidate.to_dict(),
             )
 
-    def _assess_exploitability(
-        self, vuln_data: Dict[str, Any]
-    ) -> str:
+    def _assess_exploitability(self, vuln_data: Dict[str, Any]) -> str:
         """Assess exploitability of a vulnerability."""
         if vuln_data.get("exploit_available"):
             if vuln_data.get("exploit_maturity") == "high":
@@ -507,15 +511,13 @@ class PlannerAgent(BaseAgent):
 
         return True  # Can't verify, assume possible
 
-    def _version_in_range(
-        self, target_version: str, vuln_version: str
-    ) -> bool:
+    def _version_in_range(self, target_version: str, vuln_version: str) -> bool:
         """Check if target version is in vulnerable range."""
         # Simplified check - in real implementation use proper semver
         try:
             # Extract version numbers
-            target_nums = [int(x) for x in re.findall(r'\d+', target_version)[:3]]
-            vuln_nums = [int(x) for x in re.findall(r'\d+', vuln_version)[:3]]
+            target_nums = [int(x) for x in re.findall(r"\d+", target_version)[:3]]
+            vuln_nums = [int(x) for x in re.findall(r"\d+", vuln_version)[:3]]
 
             if not target_nums or not vuln_nums:
                 return True
@@ -537,7 +539,9 @@ class PlannerAgent(BaseAgent):
         if vuln.severity == "critical" and vuln.cvss_score >= 9.0:
             # High severity often requires no auth
             pass
-        elif "auth" in vuln.title.lower() or "authentication" in vuln.description.lower():
+        elif (
+            "auth" in vuln.title.lower() or "authentication" in vuln.description.lower()
+        ):
             prereqs.append("authentication_required")
 
         # Check network access
@@ -634,7 +638,8 @@ class PlannerAgent(BaseAgent):
 
         # Get related exploits
         related_exploits = [
-            e for e in self._exploit_candidates
+            e
+            for e in self._exploit_candidates
             if e.vuln_candidate_id in [v.vuln_id for v in top_vulns]
         ]
 
@@ -644,20 +649,21 @@ class PlannerAgent(BaseAgent):
 
         for vuln in top_vulns:
             vuln_exploits = [
-                e for e in related_exploits
-                if e.vuln_candidate_id == vuln.vuln_id
+                e for e in related_exploits if e.vuln_candidate_id == vuln.vuln_id
             ]
 
             # Verification step
-            steps.append(ExecutionStep(
-                step_id=f"step-{uuid.uuid4().hex[:8]}",
-                order=order,
-                action="verify_vulnerability",
-                description=f"Verify {vuln.cve_id or vuln.title} is exploitable",
-                target=vuln.affected_component,
-                requires_approval=False,
-                expected_outcome="vulnerability_confirmed",
-            ))
+            steps.append(
+                ExecutionStep(
+                    step_id=f"step-{uuid.uuid4().hex[:8]}",
+                    order=order,
+                    action="verify_vulnerability",
+                    description=f"Verify {vuln.cve_id or vuln.title} is exploitable",
+                    target=vuln.affected_component,
+                    requires_approval=False,
+                    expected_outcome="vulnerability_confirmed",
+                )
+            )
             order += 1
 
             # Exploitation step
@@ -665,17 +671,19 @@ class PlannerAgent(BaseAgent):
                 best_exploit = max(vuln_exploits, key=lambda e: e.reliability_score)
                 is_dangerous = self._is_dangerous_operation(vuln)
 
-                steps.append(ExecutionStep(
-                    step_id=f"step-{uuid.uuid4().hex[:8]}",
-                    order=order,
-                    action="execute_exploit",
-                    description=f"Execute exploit for {vuln.cve_id or vuln.title}",
-                    target=vuln.affected_component,
-                    exploit_id=best_exploit.exploit_id,
-                    requires_approval=is_dangerous,
-                    rollback_action="terminate_session" if is_dangerous else None,
-                    expected_outcome="exploitation_success",
-                ))
+                steps.append(
+                    ExecutionStep(
+                        step_id=f"step-{uuid.uuid4().hex[:8]}",
+                        order=order,
+                        action="execute_exploit",
+                        description=f"Execute exploit for {vuln.cve_id or vuln.title}",
+                        target=vuln.affected_component,
+                        exploit_id=best_exploit.exploit_id,
+                        requires_approval=is_dangerous,
+                        rollback_action="terminate_session" if is_dangerous else None,
+                        expected_outcome="exploitation_success",
+                    )
+                )
                 order += 1
 
         # Calculate plan metrics
@@ -683,9 +691,15 @@ class PlannerAgent(BaseAgent):
         has_verified_exploits = any(e.verified for e in related_exploits)
         max_severity = max(self._severity_to_score(v.severity) for v in top_vulns)
 
-        risk_level = "critical" if max_severity >= 4 else \
-                     "high" if max_severity >= 3 else \
-                     "medium" if max_severity >= 2 else "low"
+        risk_level = (
+            "critical"
+            if max_severity >= 4
+            else (
+                "high"
+                if max_severity >= 3
+                else "medium" if max_severity >= 2 else "low"
+            )
+        )
 
         self._execution_plan = ExecutionPlan(
             plan_id=f"plan-{uuid.uuid4().hex[:8]}",
@@ -693,7 +707,8 @@ class PlannerAgent(BaseAgent):
             exploit_candidates=[e.exploit_id for e in related_exploits],
             steps=steps,
             priority_score=max_severity * avg_confidence,
-            estimated_success_rate=avg_confidence * (0.9 if has_verified_exploits else 0.6),
+            estimated_success_rate=avg_confidence
+            * (0.9 if has_verified_exploits else 0.6),
             risk_level=risk_level,
             requires_approval=any(s.requires_approval for s in steps),
         )
@@ -719,19 +734,19 @@ class PlannerAgent(BaseAgent):
     def _is_dangerous_operation(self, vuln: VulnCandidate) -> bool:
         """Check if exploitation is a dangerous operation."""
         dangerous_keywords = [
-            "rce", "remote code execution",
-            "sql injection", "sqli",
+            "rce",
+            "remote code execution",
+            "sql injection",
+            "sqli",
             "authentication bypass",
             "privilege escalation",
-            "file write", "arbitrary write",
+            "file write",
+            "arbitrary write",
         ]
         title_lower = vuln.title.lower()
         desc_lower = vuln.description.lower()
 
-        return any(
-            kw in title_lower or kw in desc_lower
-            for kw in dangerous_keywords
-        )
+        return any(kw in title_lower or kw in desc_lower for kw in dangerous_keywords)
 
     def _add_evidence(self, result: MCPResult) -> None:
         """Add evidence from MCP result."""
@@ -760,44 +775,54 @@ class PlannerAgent(BaseAgent):
 
         # Add evidence operations
         for evidence in self._evidences:
-            operations.append(PatchOperation(
-                op=OperationType.ADD_EVIDENCE,
-                target="evidence",
-                payload=evidence,
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.ADD_EVIDENCE,
+                    target="evidence",
+                    payload=evidence,
+                )
+            )
 
         # Add observation operations
         for observation in self._observations:
-            operations.append(PatchOperation(
-                op=OperationType.ADD_OBSERVATION,
-                target="observations",
-                payload=observation,
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.ADD_OBSERVATION,
+                    target="observations",
+                    payload=observation,
+                )
+            )
 
         # Add vulnerability candidates
         for vuln in self._vuln_candidates:
-            operations.append(PatchOperation(
-                op=OperationType.ADD_VULN_CANDIDATE,
-                target="vuln_candidates",
-                payload=vuln.to_dict(),
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.ADD_VULN_CANDIDATE,
+                    target="vuln_candidates",
+                    payload=vuln.to_dict(),
+                )
+            )
 
         # Add exploit candidates
         for exploit in self._exploit_candidates:
-            operations.append(PatchOperation(
-                op=OperationType.ADD_EXPLOIT_CANDIDATE,
-                target="exploit_candidates",
-                payload=exploit.to_dict(),
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.ADD_EXPLOIT_CANDIDATE,
+                    target="exploit_candidates",
+                    payload=exploit.to_dict(),
+                )
+            )
 
         # Add execution plan
         if self._execution_plan:
-            operations.append(PatchOperation(
-                op=OperationType.PROPOSE_EXECUTION_PLAN,
-                target="execution_plan",
-                payload=self._execution_plan.to_dict(),
-                requires_approval=self._execution_plan.requires_approval,
-            ))
+            operations.append(
+                PatchOperation(
+                    op=OperationType.PROPOSE_EXECUTION_PLAN,
+                    target="execution_plan",
+                    payload=self._execution_plan.to_dict(),
+                    requires_approval=self._execution_plan.requires_approval,
+                )
+            )
 
         return operations
 

@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import json
+
 import pytest
 
-from src.passer.shodan_passer import ShodanPasser
 from src.passer.base import MCPType
+from src.passer.shodan_passer import ShodanPasser
 
 
 class TestShodanPasser:

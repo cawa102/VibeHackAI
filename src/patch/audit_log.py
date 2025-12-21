@@ -6,17 +6,16 @@ Records all patch application attempts for audit and debugging.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
-import json
-
-from .patch import Patch
 from .applier import ApplyResult
+from .patch import Patch
 
 if TYPE_CHECKING:
     from ..storage.state_store import StateStore
@@ -24,6 +23,7 @@ if TYPE_CHECKING:
 
 class AuditAction(str, Enum):
     """Types of audit actions."""
+
     APPLIED = "applied"
     REJECTED = "rejected"
     FAILED = "failed"
@@ -134,8 +134,7 @@ class PatchAuditLog:
 
         # Extract operation types
         op_types = [
-            op.op if isinstance(op.op, str) else op.op.value
-            for op in patch.operations
+            op.op if isinstance(op.op, str) else op.op.value for op in patch.operations
         ]
 
         entry = AuditEntry(
@@ -178,8 +177,7 @@ class PatchAuditLog:
             The created audit entry.
         """
         op_types = [
-            op.op if isinstance(op.op, str) else op.op.value
-            for op in patch.operations
+            op.op if isinstance(op.op, str) else op.op.value for op in patch.operations
         ]
 
         entry = AuditEntry(

@@ -13,9 +13,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-from .state_store import StateStore
-from .evidence_ledger import EvidenceLedger
 from .cache_store import CacheStore
+from .evidence_ledger import EvidenceLedger
+from .state_store import StateStore
 
 
 class SessionManager:
@@ -176,6 +176,7 @@ class SessionManager:
                 if version_file.exists():
                     try:
                         import json
+
                         data = json.loads(version_file.read_text())
                         session_info["state_version"] = data.get("version", 0)
                     except (json.JSONDecodeError, KeyError):
@@ -202,6 +203,7 @@ class SessionManager:
         session_path = self.get_session_path(session_id)
 
         import shutil
+
         shutil.rmtree(session_path)
 
     def get_state_store(self, session_id: str) -> StateStore:

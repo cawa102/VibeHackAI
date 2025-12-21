@@ -13,11 +13,11 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Type, Union
 
 from ..schemas import (
-    TargetProfile,
-    Observation,
-    VulnCandidate,
-    ExploitCandidate,
     ExecutionResult,
+    ExploitCandidate,
+    Observation,
+    TargetProfile,
+    VulnCandidate,
 )
 from ..schemas.evidence import EvidenceItem
 
@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 class MCPType(str, Enum):
     """Supported MCP server types."""
+
     NMAP = "nmap"
     SHODAN = "shodan"
     OSINT = "osint"

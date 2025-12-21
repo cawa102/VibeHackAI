@@ -10,9 +10,9 @@ import json
 import re
 from typing import Any, Dict, List, Optional, Union
 
+from ..schemas import Observation, VulnCandidate
+from ..schemas.vuln_candidate import ConfidenceLevel, Severity
 from .base import BasePasser, MCPType, PasserRegistry, PasserResult
-from ..schemas import VulnCandidate, Observation
-from ..schemas.vuln_candidate import Severity, ConfidenceLevel
 
 
 @PasserRegistry.register
@@ -43,8 +43,14 @@ class CvePasser(BasePasser):
 
         # Check for CVE-specific fields
         cve_indicators = [
-            "CVE", "cve", "cveId", "cve_id", "vulnerabilities",
-            "CVE_data_meta", "CVE_Items", "result"
+            "CVE",
+            "cve",
+            "cveId",
+            "cve_id",
+            "vulnerabilities",
+            "CVE_data_meta",
+            "CVE_Items",
+            "result",
         ]
 
         # Check top-level keys
@@ -182,11 +188,11 @@ class CvePasser(BasePasser):
         try:
             # Extract CVE ID
             cve_id = (
-                data.get("cveId") or
-                data.get("cve_id") or
-                data.get("id") or
-                data.get("CVE_data_meta", {}).get("ID") or
-                data.get("CVE")
+                data.get("cveId")
+                or data.get("cve_id")
+                or data.get("id")
+                or data.get("CVE_data_meta", {}).get("ID")
+                or data.get("CVE")
             )
 
             if not cve_id:
@@ -225,8 +231,10 @@ class CvePasser(BasePasser):
                 references=self._extract_references(data),
                 metadata={
                     "cwe_ids": self._extract_cwe(data),
-                    "published_date": data.get("publishedDate") or data.get("published"),
-                    "last_modified": data.get("lastModifiedDate") or data.get("lastModified"),
+                    "published_date": data.get("publishedDate")
+                    or data.get("published"),
+                    "last_modified": data.get("lastModifiedDate")
+                    or data.get("lastModified"),
                     "assigner": data.get("assigner") or data.get("sourceIdentifier"),
                     "vuln_status": data.get("vulnStatus"),
                 },
@@ -327,7 +335,8 @@ class CvePasser(BasePasser):
 
             # Get references
             references = [
-                ref.get("url") for ref in cve_data.get("references", [])
+                ref.get("url")
+                for ref in cve_data.get("references", [])
                 if ref.get("url")
             ]
 

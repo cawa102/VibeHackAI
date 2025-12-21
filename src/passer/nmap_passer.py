@@ -9,9 +9,9 @@ from __future__ import annotations
 import xml.etree.ElementTree as ET
 from typing import Any, Dict, List, Optional, Union
 
+from ..schemas import Observation, TargetProfile
+from ..schemas.target_profile import OSInfo, PortInfo, ServiceInfo
 from .base import BasePasser, MCPType, PasserRegistry, PasserResult
-from ..schemas import TargetProfile, Observation
-from ..schemas.target_profile import PortInfo, ServiceInfo, OSInfo
 
 
 @PasserRegistry.register
@@ -218,7 +218,11 @@ class NmapPasser(BasePasser):
 
             # Get state
             state_elem = port.find("state")
-            state = state_elem.get("state", "unknown") if state_elem is not None else "unknown"
+            state = (
+                state_elem.get("state", "unknown")
+                if state_elem is not None
+                else "unknown"
+            )
 
             # Get service info
             service_elem = port.find("service")
@@ -231,9 +235,7 @@ class NmapPasser(BasePasser):
                     extra_info=service_elem.get("extrainfo"),
                     tunnel=service_elem.get("tunnel"),
                     method=service_elem.get("method"),
-                    confidence=self._safe_int(
-                        service_elem.get("conf"), 0, result
-                    ),
+                    confidence=self._safe_int(service_elem.get("conf"), 0, result),
                 )
 
             port_info = PortInfo(
@@ -372,7 +374,8 @@ class NmapPasser(BasePasser):
                 summary=summary,
                 raw_output_preview=scan_info.get("args", "")[:500],
                 exit_code=0 if scan_info.get("exit") == "success" else 1,
-                success=scan_info.get("exit") == "success" or scan_info.get("exit") is None,
+                success=scan_info.get("exit") == "success"
+                or scan_info.get("exit") is None,
                 metadata={
                     "scan_type": scan_info.get("type"),
                     "protocol": scan_info.get("protocol"),

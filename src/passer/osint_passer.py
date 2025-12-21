@@ -9,8 +9,8 @@ from __future__ import annotations
 import json
 from typing import Any, Dict, List, Optional, Union
 
+from ..schemas import Observation, TargetProfile
 from .base import BasePasser, MCPType, PasserRegistry, PasserResult
-from ..schemas import TargetProfile, Observation
 
 
 @PasserRegistry.register
@@ -32,9 +32,17 @@ class OsintPasser(BasePasser):
 
         # Check for OSINT-specific fields
         osint_indicators = [
-            "domain", "dns_records", "whois", "subdomains",
-            "mx_records", "ns_records", "a_records", "aaaa_records",
-            "registrar", "name_servers", "organization"
+            "domain",
+            "dns_records",
+            "whois",
+            "subdomains",
+            "mx_records",
+            "ns_records",
+            "a_records",
+            "aaaa_records",
+            "registrar",
+            "name_servers",
+            "organization",
         ]
         return any(key in data for key in osint_indicators)
 
@@ -108,7 +116,9 @@ class OsintPasser(BasePasser):
         """Parse domain information."""
         domains = data.get("domains", [])
         if not domains and "domain" in data:
-            domains = [data["domain"]] if isinstance(data["domain"], str) else data["domain"]
+            domains = (
+                [data["domain"]] if isinstance(data["domain"], str) else data["domain"]
+            )
 
         for domain_info in domains:
             if isinstance(domain_info, str):
@@ -188,7 +198,11 @@ class OsintPasser(BasePasser):
             if not name:
                 continue
 
-            ip_address = subdomain.get("ip") or subdomain.get("ip_address") or f"subdomain:{name}"
+            ip_address = (
+                subdomain.get("ip")
+                or subdomain.get("ip_address")
+                or f"subdomain:{name}"
+            )
 
             try:
                 target = TargetProfile(
@@ -205,7 +219,9 @@ class OsintPasser(BasePasser):
                 )
                 result.target_profiles.append(target)
             except Exception as e:
-                result.add_warning(f"Failed to create TargetProfile for subdomain {name}: {e}")
+                result.add_warning(
+                    f"Failed to create TargetProfile for subdomain {name}: {e}"
+                )
 
     def _parse_ip_addresses(
         self,
@@ -223,7 +239,11 @@ class OsintPasser(BasePasser):
         existing_ips = {tp.ip_address for tp in result.target_profiles}
 
         for ip in all_ips:
-            if ip in existing_ips or ip.startswith("domain:") or ip.startswith("subdomain:"):
+            if (
+                ip in existing_ips
+                or ip.startswith("domain:")
+                or ip.startswith("subdomain:")
+            ):
                 continue
 
             try:
@@ -257,7 +277,9 @@ class OsintPasser(BasePasser):
                 actions.append("subdomain_enum")
             if "whois" in data:
                 actions.append("whois_lookup")
-            if "dns_records" in data or any(k.endswith("_records") for k in data.keys()):
+            if "dns_records" in data or any(
+                k.endswith("_records") for k in data.keys()
+            ):
                 actions.append("dns_lookup")
 
             action = "_".join(actions) if actions else "osint_lookup"

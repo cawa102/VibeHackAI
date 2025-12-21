@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
 
 from pydantic import Field, validator
 
@@ -17,6 +17,7 @@ from .base import BaseSchema
 
 class ExecutionStatus(str, Enum):
     """Status of an execution."""
+
     SUCCESS = "success"
     FAILURE = "failure"
     PARTIAL = "partial"
@@ -28,16 +29,17 @@ class ExecutionStatus(str, Enum):
 
 class ErrorClass(str, Enum):
     """Classification of errors."""
-    NETWORK = "network"          # Network connectivity issues
-    AUTH = "auth"                # Authentication/authorization failures
-    SCOPE = "scope"              # Scope violation
-    PARSE = "parse"              # Output parsing errors
-    TIMEOUT = "timeout"          # Operation timed out
-    PERMISSION = "permission"    # Permission denied
-    NOT_FOUND = "not_found"      # Target/resource not found
+
+    NETWORK = "network"  # Network connectivity issues
+    AUTH = "auth"  # Authentication/authorization failures
+    SCOPE = "scope"  # Scope violation
+    PARSE = "parse"  # Output parsing errors
+    TIMEOUT = "timeout"  # Operation timed out
+    PERMISSION = "permission"  # Permission denied
+    NOT_FOUND = "not_found"  # Target/resource not found
     PRECONDITION = "precondition"  # Precondition not met
-    TOOL_ERROR = "tool_error"    # Tool-specific error
-    UNKNOWN = "unknown"          # Unknown error
+    TOOL_ERROR = "tool_error"  # Tool-specific error
+    UNKNOWN = "unknown"  # Unknown error
 
 
 class ExecutionResult(BaseSchema):

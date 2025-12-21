@@ -10,9 +10,9 @@ import json
 import re
 from typing import Any, Dict, List, Optional, Union
 
-from .base import BasePasser, MCPType, PasserRegistry, PasserResult
 from ..schemas import ExecutionResult, Observation
-from ..schemas.execution_result import ExecutionStatus, ErrorClass
+from ..schemas.execution_result import ErrorClass, ExecutionStatus
+from .base import BasePasser, MCPType, PasserRegistry, PasserResult
 
 
 @PasserRegistry.register
@@ -53,23 +53,41 @@ class MetasploitPasser(BasePasser):
         if data is None:
             # Check if it's raw MSF console output
             if isinstance(raw_output, (str, bytes)):
-                text = raw_output if isinstance(raw_output, str) else raw_output.decode("utf-8", errors="ignore")
+                text = (
+                    raw_output
+                    if isinstance(raw_output, str)
+                    else raw_output.decode("utf-8", errors="ignore")
+                )
                 text_lower = text.lower()
                 # More specific MSF patterns
                 msf_patterns = [
-                    "msf6", "msf5", "msf>", "metasploit",
-                    "meterpreter", "exploit(", "auxiliary(",
-                    "meterpreter session", "command shell session",
-                    "[*] starting", "[+] meterpreter",
+                    "msf6",
+                    "msf5",
+                    "msf>",
+                    "metasploit",
+                    "meterpreter",
+                    "exploit(",
+                    "auxiliary(",
+                    "meterpreter session",
+                    "command shell session",
+                    "[*] starting",
+                    "[+] meterpreter",
                 ]
                 return any(pattern in text_lower for pattern in msf_patterns)
             return False
 
         # Check for MSF-specific JSON fields
         msf_indicators = [
-            "module", "sessions", "job_id", "uuid",
-            "exploit", "payload", "lhost", "rhost",
-            "module_type", "module_name"
+            "module",
+            "sessions",
+            "job_id",
+            "uuid",
+            "exploit",
+            "payload",
+            "lhost",
+            "rhost",
+            "module_type",
+            "module_name",
         ]
         return any(key in data for key in msf_indicators)
 
@@ -177,7 +195,11 @@ class MetasploitPasser(BasePasser):
         session_info = self._extract_session_info(output)
 
         # Extract error info if failed
-        error_info = self._extract_error_info(output) if status == ExecutionStatus.FAILURE else None
+        error_info = (
+            self._extract_error_info(output)
+            if status == ExecutionStatus.FAILURE
+            else None
+        )
 
         # Build output summary
         summary = self._build_summary(output, status, session_info)
@@ -235,7 +257,9 @@ class MetasploitPasser(BasePasser):
                 error_class = ErrorClass.TOOL_ERROR
 
             # Build summary
-            module_name = data.get("module_name") or data.get("module", {}).get("name", "unknown")
+            module_name = data.get("module_name") or data.get("module", {}).get(
+                "name", "unknown"
+            )
             summary = f"Module {module_name}: {status.value}"
 
             exec_result = ExecutionResult(
@@ -274,7 +298,9 @@ class MetasploitPasser(BasePasser):
         """Parse session info into ExecutionResult."""
         try:
             session_type = session_data.get("type", "shell")
-            target = session_data.get("target_host") or session_data.get("tunnel_peer", "")
+            target = session_data.get("target_host") or session_data.get(
+                "tunnel_peer", ""
+            )
 
             summary = f"Session {session_id} ({session_type}) opened on {target}"
 
@@ -327,7 +353,8 @@ class MetasploitPasser(BasePasser):
         # Look for session opened message
         session_match = re.search(
             r"(meterpreter|command shell) session (\d+) opened \(([^)]+)\)",
-            output, re.IGNORECASE
+            output,
+            re.IGNORECASE,
         )
         if session_match:
             return {
@@ -342,7 +369,10 @@ class MetasploitPasser(BasePasser):
         output_lower = output.lower()
 
         # Check for common error types
-        if "connection refused" in output_lower or "connection timed out" in output_lower:
+        if (
+            "connection refused" in output_lower
+            or "connection timed out" in output_lower
+        ):
             return {"class": ErrorClass.NETWORK, "message": "Connection failed"}
         if "permission denied" in output_lower or "access denied" in output_lower:
             return {"class": ErrorClass.PERMISSION, "message": "Access denied"}
@@ -362,8 +392,7 @@ class MetasploitPasser(BasePasser):
         """Extract the command that was executed."""
         # Look for exploit/auxiliary/payload names
         module_match = re.search(
-            r"(exploit|auxiliary|post)/[\w/]+",
-            output, re.IGNORECASE
+            r"(exploit|auxiliary|post)/[\w/]+", output, re.IGNORECASE
         )
         if module_match:
             return module_match.group(0)
@@ -400,8 +429,12 @@ class MetasploitPasser(BasePasser):
         """Create observation for module info."""
         try:
             module_data = data.get("module", data)
-            module_name = module_data.get("name") or module_data.get("module_name", "unknown")
-            module_type = module_data.get("type") or module_data.get("module_type", "unknown")
+            module_name = module_data.get("name") or module_data.get(
+                "module_name", "unknown"
+            )
+            module_type = module_data.get("type") or module_data.get(
+                "module_type", "unknown"
+            )
 
             observation = Observation(
                 session_id=self.session_id,

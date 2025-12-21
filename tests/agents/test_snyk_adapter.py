@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
+from src.mcp_adapters.base_adapter import MCPError, MCPResult
 from src.mcp_adapters.snyk_adapter import SnykAdapter
-from src.mcp_adapters.base_adapter import MCPResult, MCPError
 
 
 class TestSnykAdapter:

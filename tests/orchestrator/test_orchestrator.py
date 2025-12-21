@@ -2,15 +2,12 @@
 
 from __future__ import annotations
 
-import pytest
-from unittest.mock import MagicMock, patch
 from datetime import datetime
+from unittest.mock import MagicMock, patch
 
-from src.orchestrator.orchestrator import (
-    Orchestrator,
-    OrchestratorConfig,
-    AgentResult,
-)
+import pytest
+
+from src.orchestrator.orchestrator import AgentResult, Orchestrator, OrchestratorConfig
 from src.orchestrator.router import Phase, TransitionReason
 
 
@@ -136,6 +133,7 @@ class TestOrchestrator:
 
     def test_register_agent_handler(self, orchestrator):
         """Test registering agent handler."""
+
         def dummy_handler(context):
             return AgentResult(agent_type="test", success=True)
 
@@ -229,10 +227,12 @@ class TestOrchestrator:
         orchestrator.advance_phase({})  # RECON -> ENUM
 
         # Request rollback
-        transition = orchestrator.advance_phase({
-            "needs_more_info": True,
-            "rollback_phase": "recon",
-        })
+        transition = orchestrator.advance_phase(
+            {
+                "needs_more_info": True,
+                "rollback_phase": "recon",
+            }
+        )
 
         assert transition is not None
         assert transition.reason == TransitionReason.ROLLBACK
@@ -287,7 +287,9 @@ class TestOrchestratorWorkflow:
             scope_tag="test",
         )
 
-    def test_run_workflow_complete(self, mock_state_store, mock_evidence_ledger, config):
+    def test_run_workflow_complete(
+        self, mock_state_store, mock_evidence_ledger, config
+    ):
         """Test running complete workflow."""
         orchestrator = Orchestrator(
             state_store=mock_state_store,
@@ -303,8 +305,13 @@ class TestOrchestratorWorkflow:
                 phase_result={"success": True},
             )
 
-        for agent_type in ["recon_agent", "enum_agent", "planner_agent",
-                          "exploit_agent", "reporter_agent"]:
+        for agent_type in [
+            "recon_agent",
+            "enum_agent",
+            "planner_agent",
+            "exploit_agent",
+            "reporter_agent",
+        ]:
             orchestrator.register_agent_handler(agent_type, success_handler)
 
         # Run workflow
@@ -314,7 +321,9 @@ class TestOrchestratorWorkflow:
         assert result["stopped"] is False
         assert result["total_phases_run"] == 5
 
-    def test_run_workflow_stops_on_errors(self, mock_state_store, mock_evidence_ledger, config):
+    def test_run_workflow_stops_on_errors(
+        self, mock_state_store, mock_evidence_ledger, config
+    ):
         """Test workflow stops on consecutive errors."""
         orchestrator = Orchestrator(
             state_store=mock_state_store,
@@ -370,6 +379,7 @@ class TestOrchestratorApproval:
         def approval_callback(request):
             callback_invoked.append(request)
             from src.orchestrator.approval_gate import ApprovalResult
+
             return ApprovalResult(
                 request_id=request.request_id,
                 approved=True,
@@ -389,8 +399,8 @@ class TestOrchestratorApproval:
         )
 
         # Create a patch requiring approval
-        from src.patch.patch import Patch, PatchOperation
         from src.patch.operations import OperationType
+        from src.patch.patch import Patch, PatchOperation
 
         patch = Patch(
             patch_id="test-patch",
@@ -448,8 +458,8 @@ class TestOrchestratorPatching:
             config=config,
         )
 
-        from src.patch.patch import Patch, PatchOperation
         from src.patch.operations import OperationType
+        from src.patch.patch import Patch, PatchOperation
 
         patch = Patch(
             patch_id="test-patch",

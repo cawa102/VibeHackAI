@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
-from .base_adapter import BaseMCPAdapter, MCPResult, MCPError, MCPToolType
+from .base_adapter import BaseMCPAdapter, MCPError, MCPResult, MCPToolType
 
 
 class BurpAdapter(BaseMCPAdapter):
@@ -26,16 +26,16 @@ class BurpAdapter(BaseMCPAdapter):
 
     # Supported operations
     OPERATIONS = [
-        "get_sitemap",       # Get site map for target
-        "spider",            # Spider/crawl target
-        "get_requests",      # Get captured requests
-        "get_responses",     # Get captured responses
-        "scan_passive",      # Passive scanning
-        "get_forms",         # Get detected forms
-        "get_endpoints",     # Get API endpoints
-        "get_parameters",    # Get parameters from requests
-        "get_cookies",       # Get cookies
-        "get_headers",       # Get headers
+        "get_sitemap",  # Get site map for target
+        "spider",  # Spider/crawl target
+        "get_requests",  # Get captured requests
+        "get_responses",  # Get captured responses
+        "scan_passive",  # Passive scanning
+        "get_forms",  # Get detected forms
+        "get_endpoints",  # Get API endpoints
+        "get_parameters",  # Get parameters from requests
+        "get_cookies",  # Get cookies
+        "get_headers",  # Get headers
     ]
 
     # Default spider settings
@@ -165,7 +165,11 @@ class BurpAdapter(BaseMCPAdapter):
                     {"url": f"{base_url}/", "method": "GET", "status": 200},
                     {"url": f"{base_url}/login", "method": "GET", "status": 200},
                     {"url": f"{base_url}/api/v1/users", "method": "GET", "status": 200},
-                    {"url": f"{base_url}/api/v1/products", "method": "GET", "status": 200},
+                    {
+                        "url": f"{base_url}/api/v1/products",
+                        "method": "GET",
+                        "status": 200,
+                    },
                     {"url": f"{base_url}/dashboard", "method": "GET", "status": 302},
                     {"url": f"{base_url}/admin", "method": "GET", "status": 403},
                     {"url": f"{base_url}/search", "method": "GET", "status": 200},
@@ -494,15 +498,60 @@ class BurpAdapter(BaseMCPAdapter):
             data={
                 "target": target,
                 "parameters": [
-                    {"name": "username", "type": "string", "locations": ["body"], "endpoints": ["/login", "/api/v1/auth/login"]},
-                    {"name": "password", "type": "string", "locations": ["body"], "endpoints": ["/login", "/api/v1/auth/login"]},
-                    {"name": "q", "type": "string", "locations": ["query"], "endpoints": ["/search"]},
-                    {"name": "page", "type": "integer", "locations": ["query"], "endpoints": ["/api/v1/users", "/api/v1/products"]},
-                    {"name": "limit", "type": "integer", "locations": ["query"], "endpoints": ["/api/v1/users"]},
-                    {"name": "id", "type": "integer", "locations": ["path"], "endpoints": ["/api/v1/users/{id}"]},
-                    {"name": "category", "type": "string", "locations": ["query"], "endpoints": ["/api/v1/products"]},
-                    {"name": "file", "type": "file", "locations": ["body"], "endpoints": ["/api/v1/upload"]},
-                    {"name": "csrf_token", "type": "string", "locations": ["body"], "endpoints": ["/login", "/contact"]},
+                    {
+                        "name": "username",
+                        "type": "string",
+                        "locations": ["body"],
+                        "endpoints": ["/login", "/api/v1/auth/login"],
+                    },
+                    {
+                        "name": "password",
+                        "type": "string",
+                        "locations": ["body"],
+                        "endpoints": ["/login", "/api/v1/auth/login"],
+                    },
+                    {
+                        "name": "q",
+                        "type": "string",
+                        "locations": ["query"],
+                        "endpoints": ["/search"],
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "locations": ["query"],
+                        "endpoints": ["/api/v1/users", "/api/v1/products"],
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "locations": ["query"],
+                        "endpoints": ["/api/v1/users"],
+                    },
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "locations": ["path"],
+                        "endpoints": ["/api/v1/users/{id}"],
+                    },
+                    {
+                        "name": "category",
+                        "type": "string",
+                        "locations": ["query"],
+                        "endpoints": ["/api/v1/products"],
+                    },
+                    {
+                        "name": "file",
+                        "type": "file",
+                        "locations": ["body"],
+                        "endpoints": ["/api/v1/upload"],
+                    },
+                    {
+                        "name": "csrf_token",
+                        "type": "string",
+                        "locations": ["body"],
+                        "endpoints": ["/login", "/contact"],
+                    },
                 ],
                 "total_parameters": 9,
                 "file_parameters": 1,
@@ -575,7 +624,11 @@ class BurpAdapter(BaseMCPAdapter):
                     "Strict-Transport-Security": "max-age=31536000",
                 },
                 "security_headers": {
-                    "present": ["Content-Security-Policy", "X-Content-Type-Options", "Strict-Transport-Security"],
+                    "present": [
+                        "Content-Security-Policy",
+                        "X-Content-Type-Options",
+                        "Strict-Transport-Security",
+                    ],
                     "missing": ["X-Frame-Options", "X-XSS-Protection"],
                 },
             },

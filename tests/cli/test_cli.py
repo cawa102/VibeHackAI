@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from src.cli.cli import CLI, CLIConfig
 
@@ -308,7 +309,9 @@ class TestCLIWithOrchestrator:
 
     def test_run_with_handler(self, cli_with_orchestrator, capsys):
         """Test run with agent handler."""
-        cli_with_orchestrator._orchestrator._agent_handlers = {"recon_agent": MagicMock()}
+        cli_with_orchestrator._orchestrator._agent_handlers = {
+            "recon_agent": MagicMock()
+        }
 
         mock_result = MagicMock()
         mock_result.success = True
@@ -322,7 +325,9 @@ class TestCLIWithOrchestrator:
 
     def test_run_failure(self, cli_with_orchestrator, capsys):
         """Test run with failure."""
-        cli_with_orchestrator._orchestrator._agent_handlers = {"recon_agent": MagicMock()}
+        cli_with_orchestrator._orchestrator._agent_handlers = {
+            "recon_agent": MagicMock()
+        }
 
         mock_result = MagicMock()
         mock_result.success = False
@@ -361,7 +366,9 @@ class TestCLIScopeAndFindings:
             ],
             "allowed_operations": ["port_scan", "web_crawl"],
         }
-        cli_with_session._session_manager.get_state_store.return_value = mock_state_store
+        cli_with_session._session_manager.get_state_store.return_value = (
+            mock_state_store
+        )
 
         cli_with_session._handle_command("scope")
 
@@ -374,7 +381,9 @@ class TestCLIScopeAndFindings:
         """Test scope when not defined."""
         mock_state_store = MagicMock()
         mock_state_store.read_json.side_effect = FileNotFoundError()
-        cli_with_session._session_manager.get_state_store.return_value = mock_state_store
+        cli_with_session._session_manager.get_state_store.return_value = (
+            mock_state_store
+        )
 
         cli_with_session._handle_command("scope")
 
@@ -396,7 +405,9 @@ class TestCLIScopeAndFindings:
                 "affected_component": "search.php",
             },
         ]
-        cli_with_session._session_manager.get_state_store.return_value = mock_state_store
+        cli_with_session._session_manager.get_state_store.return_value = (
+            mock_state_store
+        )
 
         cli_with_session._handle_command("findings")
 
@@ -409,7 +420,9 @@ class TestCLIScopeAndFindings:
         """Test findings when empty."""
         mock_state_store = MagicMock()
         mock_state_store.read_jsonl.return_value = []
-        cli_with_session._session_manager.get_state_store.return_value = mock_state_store
+        cli_with_session._session_manager.get_state_store.return_value = (
+            mock_state_store
+        )
 
         cli_with_session._handle_command("findings")
 
@@ -430,8 +443,9 @@ class TestCLIApproval:
         """Test approval callback when approved."""
         cli.prompts.approval_prompt = MagicMock(return_value=True)
 
-        from src.orchestrator.approval_gate import ApprovalRequest
         from datetime import datetime
+
+        from src.orchestrator.approval_gate import ApprovalRequest
 
         request = ApprovalRequest(
             request_id="req-001",
@@ -450,8 +464,9 @@ class TestCLIApproval:
         """Test approval callback when denied."""
         cli.prompts.approval_prompt = MagicMock(return_value=False)
 
-        from src.orchestrator.approval_gate import ApprovalRequest
         from datetime import datetime
+
+        from src.orchestrator.approval_gate import ApprovalRequest
 
         request = ApprovalRequest(
             request_id="req-001",

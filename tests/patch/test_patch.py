@@ -1,10 +1,11 @@
 """Tests for Patch and PatchOperation classes."""
 
-import pytest
 from datetime import datetime
 
-from src.patch.patch import Patch, PatchOperation
+import pytest
+
 from src.patch.operations import OperationType
+from src.patch.patch import Patch, PatchOperation
 
 
 class TestPatchOperation:
@@ -28,7 +29,11 @@ class TestPatchOperation:
         op = PatchOperation(
             op=OperationType.PROPOSE_EXECUTION_PLAN,
             target="plan-001",
-            payload={"title": "Test Plan", "description": "Test", "target": "192.168.1.1"},
+            payload={
+                "title": "Test Plan",
+                "description": "Test",
+                "target": "192.168.1.1",
+            },
             requires_approval=True,
         )
 

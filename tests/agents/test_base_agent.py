@@ -2,17 +2,18 @@
 
 from __future__ import annotations
 
-import pytest
-from unittest.mock import MagicMock
 from datetime import datetime
+from unittest.mock import MagicMock
+
+import pytest
 
 from src.agents.base_agent import (
-    BaseAgent,
     AgentConfig,
     AgentContext,
     AgentOutput,
-    AgentType,
     AgentStatus,
+    AgentType,
+    BaseAgent,
     DecisionTrace,
 )
 

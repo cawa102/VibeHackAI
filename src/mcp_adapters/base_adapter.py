@@ -17,6 +17,7 @@ from typing import Any, Dict, List, Optional, Union
 
 class MCPToolType(str, Enum):
     """Types of MCP tools."""
+
     SHODAN = "shodan"
     OSINT = "osint"
     NMAP = "nmap"
@@ -63,10 +64,13 @@ class MCPResult:
 
     Contains the raw result and metadata.
     """
+
     tool: str
     operation: str
     success: bool
-    result_id: str = dataclass_field(default_factory=lambda: f"mcp-{uuid.uuid4().hex[:8]}")
+    result_id: str = dataclass_field(
+        default_factory=lambda: f"mcp-{uuid.uuid4().hex[:8]}"
+    )
     data: Optional[Dict[str, Any]] = None
     raw_output: Optional[str] = None
     error: Optional[str] = None
@@ -192,7 +196,8 @@ class BaseMCPAdapter(ABC):
                     break
                 # Wait before retry (exponential backoff)
                 import time
-                time.sleep(2 ** attempt)
+
+                time.sleep(2**attempt)
 
             except Exception as e:
                 last_error = e
@@ -200,9 +205,7 @@ class BaseMCPAdapter(ABC):
                     break
 
         # All retries failed
-        duration_ms = int(
-            (datetime.utcnow() - start_time).total_seconds() * 1000
-        )
+        duration_ms = int((datetime.utcnow() - start_time).total_seconds() * 1000)
         error_msg = str(last_error) if last_error else "Unknown error"
 
         result = MCPResult(

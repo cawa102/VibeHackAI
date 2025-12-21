@@ -9,25 +9,26 @@ from __future__ import annotations
 from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from datetime import datetime
-from typing import Any, Callable, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional
 
-from .router import Router, Phase, PhaseTransition, TransitionReason, PHASE_AGENTS
-from .context_builder import ContextBuilder, ContextBundle
 from .approval_gate import ApprovalGate, ApprovalRequest, ApprovalResult
-from .stop_monitor import StopMonitor, StopCondition, StopReason
-from .audit_logger import OrchestratorAuditLogger, AuditEventType
+from .audit_logger import AuditEventType, OrchestratorAuditLogger
+from .context_builder import ContextBuilder, ContextBundle
+from .router import PHASE_AGENTS, Phase, PhaseTransition, Router, TransitionReason
+from .stop_monitor import StopCondition, StopMonitor, StopReason
 
 if TYPE_CHECKING:
-    from ..storage.state_store import StateStore
-    from ..storage.evidence_ledger import EvidenceLedger
+    from ..patch.applier import ApplyResult, PatchApplier
     from ..patch.patch import Patch
-    from ..patch.applier import PatchApplier, ApplyResult
     from ..patch.validator import PatchValidator
+    from ..storage.evidence_ledger import EvidenceLedger
+    from ..storage.state_store import StateStore
 
 
 @dataclass
 class OrchestratorConfig:
     """Configuration for orchestrator."""
+
     session_id: str
     scope_tag: str
     approval_timeout_minutes: int = 5
@@ -40,6 +41,7 @@ class OrchestratorConfig:
 @dataclass
 class AgentResult:
     """Result from an agent invocation."""
+
     agent_type: str
     success: bool
     patch: Optional["Patch"] = None
@@ -90,8 +92,7 @@ class Orchestrator:
         # Initialize components
         self.router = Router(state_store)
         self.context_builder = ContextBuilder(
-            state_store, evidence_ledger,
-            config.session_id, config.scope_tag
+            state_store, evidence_ledger, config.session_id, config.scope_tag
         )
         self.approval_gate = ApprovalGate(
             state_store,
@@ -103,17 +104,17 @@ class Orchestrator:
             consecutive_error_threshold=config.consecutive_error_threshold,
             total_error_threshold=config.total_error_threshold,
         )
-        self.audit_logger = OrchestratorAuditLogger(
-            state_store, config.session_id
-        )
+        self.audit_logger = OrchestratorAuditLogger(state_store, config.session_id)
 
         # Patch applier (create if not provided)
         if patch_applier:
             self.patch_applier = patch_applier
         else:
             from ..patch.applier import PatchApplier
+
             self.patch_applier = PatchApplier(
-                state_store, evidence_ledger,
+                state_store,
+                evidence_ledger,
                 validate_before_apply=True,
             )
 
@@ -224,16 +225,15 @@ class Orchestrator:
             raise RuntimeError(f"No handler registered for: {agent_type}")
 
         # Build context bundle
-        previous_result = self.router.get_phase_result(
-            self._get_previous_phase(phase)
-        )
+        previous_result = self.router.get_phase_result(self._get_previous_phase(phase))
         context = self.context_builder.build(
             agent_type, phase, previous_result, instructions
         )
 
         # Log invocation
         self.audit_logger.log_agent_invoked(
-            agent_type, phase.value,
+            agent_type,
+            phase.value,
             context_size=len(str(context.to_dict())),
         )
 
@@ -244,9 +244,7 @@ class Orchestrator:
             result = handler(context)
 
             # Calculate duration
-            duration_ms = int(
-                (datetime.utcnow() - start_time).total_seconds() * 1000
-            )
+            duration_ms = int((datetime.utcnow() - start_time).total_seconds() * 1000)
             result.duration_ms = duration_ms
 
             # Log completion
@@ -265,13 +263,9 @@ class Orchestrator:
             return result
 
         except Exception as e:
-            duration_ms = int(
-                (datetime.utcnow() - start_time).total_seconds() * 1000
-            )
+            duration_ms = int((datetime.utcnow() - start_time).total_seconds() * 1000)
 
-            self.audit_logger.log_agent_failed(
-                agent_type, phase.value, str(e)
-            )
+            self.audit_logger.log_agent_failed(agent_type, phase.value, str(e))
 
             return AgentResult(
                 agent_type=agent_type,
@@ -283,6 +277,7 @@ class Orchestrator:
     def _get_previous_phase(self, current: Phase) -> Optional[Phase]:
         """Get the phase before current."""
         from .router import PHASE_ORDER
+
         try:
             idx = PHASE_ORDER.index(current)
             if idx > 0:
@@ -303,6 +298,7 @@ class Orchestrator:
         if patch.requires_approval():
             if not self._handle_approval(patch):
                 from ..patch.applier import ApplyResult
+
                 self.audit_logger.log_patch_rejected(
                     patch.patch_id,
                     "Approval denied",
@@ -380,9 +376,7 @@ class Orchestrator:
             elif "permission" in error_lower or "denied" in error_lower:
                 error_class = "permission"
 
-        condition = self.stop_monitor.record_error(
-            error_class, result.error
-        )
+        condition = self.stop_monitor.record_error(error_class, result.error)
 
         if condition:
             self.audit_logger.log_stop_condition(
@@ -433,6 +427,7 @@ class Orchestrator:
                     # Skip one phase
                     after_next = None
                     from .router import PHASE_ORDER
+
                     try:
                         idx = PHASE_ORDER.index(next_phase)
                         if idx < len(PHASE_ORDER) - 1:
@@ -492,13 +487,15 @@ class Orchestrator:
             # Run current phase
             try:
                 result = self.run_phase()
-                results.append({
-                    "phase": phase.value,
-                    "agent": result.agent_type,
-                    "success": result.success,
-                    "error": result.error,
-                    "duration_ms": result.duration_ms,
-                })
+                results.append(
+                    {
+                        "phase": phase.value,
+                        "agent": result.agent_type,
+                        "success": result.success,
+                        "error": result.error,
+                        "duration_ms": result.duration_ms,
+                    }
+                )
 
                 # Advance phase
                 phase_result = result.phase_result or {
@@ -520,7 +517,11 @@ class Orchestrator:
             "results": results,
             "transitions": transitions,
             "stopped": self._stopped,
-            "stop_reason": self.stop_monitor.stop_reason.value if self.stop_monitor.stop_reason else None,
+            "stop_reason": (
+                self.stop_monitor.stop_reason.value
+                if self.stop_monitor.stop_reason
+                else None
+            ),
         }
 
     def get_status(self) -> Dict[str, Any]:
@@ -599,8 +600,9 @@ class Orchestrator:
         Returns:
             ExecutionPlan created by planner.
         """
-        from .workflow import ExecutionPlan, PlanStep, TaskType, TaskStatus
         import uuid
+
+        from .workflow import ExecutionPlan, PlanStep, TaskStatus, TaskType
 
         # Build context bundle for planner
         planner_context = self.context_builder.build(
@@ -631,53 +633,64 @@ class Orchestrator:
         steps = []
 
         # Default reconnaissance step
-        steps.append(PlanStep(
-            step_id=f"step-{uuid.uuid4().hex[:8]}",
-            order=1,
-            task_type=TaskType.RECONNAISSANCE,
-            description="Initial reconnaissance: port scan and service detection",
-            target=target,
-            agent="recon_agent",
-            parameters={"scan_type": "service_scan", "ports": "1-1000"},
-            requires_approval=False,
-        ))
+        steps.append(
+            PlanStep(
+                step_id=f"step-{uuid.uuid4().hex[:8]}",
+                order=1,
+                task_type=TaskType.RECONNAISSANCE,
+                description="Initial reconnaissance: port scan and service detection",
+                target=target,
+                agent="recon_agent",
+                parameters={"scan_type": "service_scan", "ports": "1-1000"},
+                requires_approval=False,
+            )
+        )
 
         # Default enumeration step
-        steps.append(PlanStep(
-            step_id=f"step-{uuid.uuid4().hex[:8]}",
-            order=2,
-            task_type=TaskType.ENUMERATION,
-            description="Enumerate discovered services and gather details",
-            target=target,
-            agent="enumeration_agent",
-            parameters={},
-            requires_approval=False,
-        ))
+        steps.append(
+            PlanStep(
+                step_id=f"step-{uuid.uuid4().hex[:8]}",
+                order=2,
+                task_type=TaskType.ENUMERATION,
+                description="Enumerate discovered services and gather details",
+                target=target,
+                agent="enumeration_agent",
+                parameters={},
+                requires_approval=False,
+            )
+        )
 
         # Vulnerability scan step
-        steps.append(PlanStep(
-            step_id=f"step-{uuid.uuid4().hex[:8]}",
-            order=3,
-            task_type=TaskType.VULNERABILITY_SCAN,
-            description="Scan for known vulnerabilities in discovered services",
-            target=target,
-            agent="planner_agent",
-            parameters={"mode": "vulnerability_assessment"},
-            requires_approval=False,
-        ))
+        steps.append(
+            PlanStep(
+                step_id=f"step-{uuid.uuid4().hex[:8]}",
+                order=3,
+                task_type=TaskType.VULNERABILITY_SCAN,
+                description="Scan for known vulnerabilities in discovered services",
+                target=target,
+                agent="planner_agent",
+                parameters={"mode": "vulnerability_assessment"},
+                requires_approval=False,
+            )
+        )
 
         # Add exploitation steps based on planner output
-        if result.phase_result and result.phase_result.get("vuln_candidates_found", 0) > 0:
-            steps.append(PlanStep(
-                step_id=f"step-{uuid.uuid4().hex[:8]}",
-                order=4,
-                task_type=TaskType.EXPLOITATION,
-                description="Attempt exploitation of identified vulnerabilities",
-                target=target,
-                agent="exploitation_agent",
-                parameters={},
-                requires_approval=True,  # Always require approval for exploitation
-            ))
+        if (
+            result.phase_result
+            and result.phase_result.get("vuln_candidates_found", 0) > 0
+        ):
+            steps.append(
+                PlanStep(
+                    step_id=f"step-{uuid.uuid4().hex[:8]}",
+                    order=4,
+                    task_type=TaskType.EXPLOITATION,
+                    description="Attempt exploitation of identified vulnerabilities",
+                    target=target,
+                    agent="exploitation_agent",
+                    parameters={},
+                    requires_approval=True,  # Always require approval for exploitation
+                )
+            )
 
         return ExecutionPlan(
             plan_id=f"plan-{uuid.uuid4().hex[:8]}",
@@ -708,8 +721,9 @@ class Orchestrator:
         Returns:
             Updated ExecutionPlan.
         """
-        from .workflow import PlanStep, TaskType
         import uuid
+
+        from .workflow import PlanStep, TaskType
 
         # Check if we need to update the plan based on results
         needs_update = False
@@ -731,42 +745,47 @@ class Orchestrator:
                 if vulns > 0:
                     needs_update = True
                     # Add verification step
-                    new_steps.append(PlanStep(
-                        step_id=f"step-{uuid.uuid4().hex[:8]}",
-                        order=len(current_plan.steps) + 1,
-                        task_type=TaskType.VERIFICATION,
-                        description="Verify exploitability of discovered vulnerabilities",
-                        target=current_plan.target,
-                        agent="planner_agent",
-                        parameters={"mode": "verify"},
-                        requires_approval=False,
-                    ))
+                    new_steps.append(
+                        PlanStep(
+                            step_id=f"step-{uuid.uuid4().hex[:8]}",
+                            order=len(current_plan.steps) + 1,
+                            task_type=TaskType.VERIFICATION,
+                            description="Verify exploitability of discovered vulnerabilities",
+                            target=current_plan.target,
+                            agent="planner_agent",
+                            parameters={"mode": "verify"},
+                            requires_approval=False,
+                        )
+                    )
 
             # If vulnerability scan found high/critical issues
             elif last_result.agent == "planner_agent":
                 high_vulns = result_data.get("high_severity_vulns", 0)
                 if high_vulns > 0 and not any(
-                    s.task_type == TaskType.EXPLOITATION
-                    for s in current_plan.steps
+                    s.task_type == TaskType.EXPLOITATION for s in current_plan.steps
                 ):
                     needs_update = True
-                    new_steps.append(PlanStep(
-                        step_id=f"step-{uuid.uuid4().hex[:8]}",
-                        order=len(current_plan.steps) + 1,
-                        task_type=TaskType.EXPLOITATION,
-                        description=f"Exploit {high_vulns} high/critical vulnerabilities",
-                        target=current_plan.target,
-                        agent="exploitation_agent",
-                        parameters={"vuln_count": high_vulns},
-                        requires_approval=True,
-                    ))
+                    new_steps.append(
+                        PlanStep(
+                            step_id=f"step-{uuid.uuid4().hex[:8]}",
+                            order=len(current_plan.steps) + 1,
+                            task_type=TaskType.EXPLOITATION,
+                            description=f"Exploit {high_vulns} high/critical vulnerabilities",
+                            target=current_plan.target,
+                            agent="exploitation_agent",
+                            parameters={"vuln_count": high_vulns},
+                            requires_approval=True,
+                        )
+                    )
 
         # Update plan if needed
         if needs_update and new_steps:
             current_plan.steps.extend(new_steps)
             current_plan.version += 1
             current_plan.updated_at = datetime.utcnow().isoformat() + "Z"
-            current_plan.rationale = f"Plan updated based on {last_result.agent} results"
+            current_plan.rationale = (
+                f"Plan updated based on {last_result.agent} results"
+            )
 
         return current_plan
 
@@ -878,13 +897,13 @@ class Orchestrator:
 
 # Type alias for workflow imports
 from .workflow import (
-    InteractiveWorkflow,
+    AgentTaskResult,
     ExecutionPlan,
+    InteractiveWorkflow,
     PlanStep,
-    TaskType,
     TaskStatus,
-    WorkflowPhase,
+    TaskType,
     UserProposal,
     UserResponse,
-    AgentTaskResult,
+    WorkflowPhase,
 )

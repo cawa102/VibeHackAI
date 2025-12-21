@@ -10,15 +10,16 @@ from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 if TYPE_CHECKING:
-    from ..storage.state_store import StateStore
     from ..schemas.execution_result import ErrorClass
+    from ..storage.state_store import StateStore
 
 
 class StopReason(str, Enum):
     """Reasons for stopping execution."""
+
     CONSECUTIVE_ERRORS = "consecutive_errors"
     SCOPE_VIOLATION = "scope_violation"
     DOS_DETECTED = "dos_detected"
@@ -32,6 +33,7 @@ class StopReason(str, Enum):
 @dataclass
 class StopCondition:
     """A detected stop condition."""
+
     reason: StopReason
     severity: str  # warning, critical, emergency
     message: str
@@ -86,7 +88,9 @@ class StopMonitor:
 
         # Error tracking
         self._error_counts: Dict[str, int] = {}  # error_class -> count
-        self._consecutive_errors: Dict[str, int] = {}  # error_class -> consecutive count
+        self._consecutive_errors: Dict[str, int] = (
+            {}
+        )  # error_class -> consecutive count
         self._last_error_class: Optional[str] = None
         self._total_errors = 0
 
@@ -229,6 +233,7 @@ class StopMonitor:
         if "/" in allowed:
             try:
                 import ipaddress
+
                 network = ipaddress.ip_network(allowed, strict=False)
                 return ipaddress.ip_address(target) in network
             except (ValueError, ImportError):
@@ -358,10 +363,7 @@ class StopMonitor:
 
         # Persist if state store available
         if self.state_store:
-            self.state_store.append_jsonl(
-                "stop_conditions.jsonl",
-                condition.to_dict()
-            )
+            self.state_store.append_jsonl("stop_conditions.jsonl", condition.to_dict())
 
     def clear_stop(self) -> None:
         """Clear stop flag (for resuming after review)."""

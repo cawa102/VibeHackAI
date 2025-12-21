@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-import pytest
 from unittest.mock import MagicMock
 
-from src.agents.enumeration_agent import EnumerationAgent
+import pytest
+
 from src.agents.base_agent import AgentConfig, AgentContext, AgentType
+from src.agents.enumeration_agent import EnumerationAgent
 from src.mcp_adapters.burp_adapter import BurpAdapter
 
 
@@ -114,10 +115,7 @@ class TestEnumerationAgent:
         output = agent.run(context)
 
         # Should have evidence operations
-        evidence_ops = [
-            op for op in output.patch.operations
-            if op.op == "add_evidence"
-        ]
+        evidence_ops = [op for op in output.patch.operations if op.op == "add_evidence"]
         assert len(evidence_ops) > 0
 
     def test_run_records_observations(self, agent, context):
@@ -125,10 +123,7 @@ class TestEnumerationAgent:
         output = agent.run(context)
 
         # Should have observation operations
-        obs_ops = [
-            op for op in output.patch.operations
-            if op.op == "add_observation"
-        ]
+        obs_ops = [op for op in output.patch.operations if op.op == "add_observation"]
         assert len(obs_ops) > 0
 
     def test_run_finds_forms(self, agent, context):
@@ -315,8 +310,7 @@ class TestEnumerationAgentInputPointAnalysis:
 
         # Find update_target_profile operation
         profile_ops = [
-            op for op in output.patch.operations
-            if op.op == "update_target_profile"
+            op for op in output.patch.operations if op.op == "update_target_profile"
         ]
         assert len(profile_ops) > 0
 
@@ -334,8 +328,7 @@ class TestEnumerationAgentInputPointAnalysis:
         output = agent.run(context)
 
         profile_ops = [
-            op for op in output.patch.operations
-            if op.op == "update_target_profile"
+            op for op in output.patch.operations if op.op == "update_target_profile"
         ]
         assert len(profile_ops) > 0
 
@@ -380,8 +373,7 @@ class TestEnumerationAgentAuthAnalysis:
         output = agent.run(context)
 
         profile_ops = [
-            op for op in output.patch.operations
-            if op.op == "update_target_profile"
+            op for op in output.patch.operations if op.op == "update_target_profile"
         ]
         assert len(profile_ops) > 0
 
@@ -396,8 +388,7 @@ class TestEnumerationAgentAuthAnalysis:
         output = agent.run(context)
 
         profile_ops = [
-            op for op in output.patch.operations
-            if op.op == "update_target_profile"
+            op for op in output.patch.operations if op.op == "update_target_profile"
         ]
         payload = profile_ops[0].payload
         auth_info = payload.get("auth_info", {})
@@ -410,8 +401,7 @@ class TestEnumerationAgentAuthAnalysis:
         output = agent.run(context)
 
         profile_ops = [
-            op for op in output.patch.operations
-            if op.op == "update_target_profile"
+            op for op in output.patch.operations if op.op == "update_target_profile"
         ]
         payload = profile_ops[0].payload
         auth_info = payload.get("auth_info", {})

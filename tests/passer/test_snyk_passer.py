@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import json
+
 import pytest
 
-from src.passer.snyk_passer import SnykPasser
 from src.passer.base import MCPType
+from src.passer.snyk_passer import SnykPasser
 from src.schemas.vuln_candidate import Severity
 
 
@@ -114,13 +115,25 @@ class TestSnykPasser:
             {
                 "projectName": "project-a",
                 "vulnerabilities": [
-                    {"id": "1", "title": "Vuln A", "severity": "low", "packageName": "a", "version": "1.0"},
+                    {
+                        "id": "1",
+                        "title": "Vuln A",
+                        "severity": "low",
+                        "packageName": "a",
+                        "version": "1.0",
+                    },
                 ],
             },
             {
                 "projectName": "project-b",
                 "vulnerabilities": [
-                    {"id": "2", "title": "Vuln B", "severity": "high", "packageName": "b", "version": "2.0"},
+                    {
+                        "id": "2",
+                        "title": "Vuln B",
+                        "severity": "high",
+                        "packageName": "b",
+                        "version": "2.0",
+                    },
                 ],
             },
         ]
@@ -134,10 +147,34 @@ class TestSnykPasser:
         data = {
             "projectName": "test",
             "vulnerabilities": [
-                {"id": "1", "title": "A", "severity": "critical", "packageName": "a", "version": "1"},
-                {"id": "2", "title": "B", "severity": "high", "packageName": "b", "version": "1"},
-                {"id": "3", "title": "C", "severity": "high", "packageName": "c", "version": "1"},
-                {"id": "4", "title": "D", "severity": "medium", "packageName": "d", "version": "1"},
+                {
+                    "id": "1",
+                    "title": "A",
+                    "severity": "critical",
+                    "packageName": "a",
+                    "version": "1",
+                },
+                {
+                    "id": "2",
+                    "title": "B",
+                    "severity": "high",
+                    "packageName": "b",
+                    "version": "1",
+                },
+                {
+                    "id": "3",
+                    "title": "C",
+                    "severity": "high",
+                    "packageName": "c",
+                    "version": "1",
+                },
+                {
+                    "id": "4",
+                    "title": "D",
+                    "severity": "medium",
+                    "packageName": "d",
+                    "version": "1",
+                },
             ],
         }
         result = passer.normalize(data)

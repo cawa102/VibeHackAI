@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 if TYPE_CHECKING:
     from ..storage.state_store import StateStore
@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 
 class AuditEventType(str, Enum):
     """Types of audit events."""
+
     # Session events
     SESSION_START = "session_start"
     SESSION_END = "session_end"
@@ -59,6 +60,7 @@ class AuditEventType(str, Enum):
 @dataclass
 class AuditEvent:
     """An audit log event."""
+
     event_type: AuditEventType
     session_id: str
     timestamp: datetime = dataclass_field(default_factory=datetime.utcnow)

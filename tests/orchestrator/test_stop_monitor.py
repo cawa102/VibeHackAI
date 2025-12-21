@@ -2,15 +2,12 @@
 
 from __future__ import annotations
 
-import pytest
-from unittest.mock import MagicMock
 from datetime import datetime
+from unittest.mock import MagicMock
 
-from src.orchestrator.stop_monitor import (
-    StopMonitor,
-    StopCondition,
-    StopReason,
-)
+import pytest
+
+from src.orchestrator.stop_monitor import StopCondition, StopMonitor, StopReason
 
 
 class TestStopReason:

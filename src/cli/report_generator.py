@@ -11,7 +11,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from ..orchestrator.workflow import WorkflowState, ExecutionPlan, TaskType
+from ..orchestrator.workflow import ExecutionPlan, TaskType, WorkflowState
 
 
 class ReportGenerator:
@@ -102,7 +102,8 @@ class ReportGenerator:
 
         progress = state.current_plan.get_progress()
 
-        return f"""## Execution Summary
+        return (
+            f"""## Execution Summary
 
 | Metric | Value |
 |--------|-------|
@@ -116,10 +117,15 @@ class ReportGenerator:
 
 | # | Task Type | Description | Agent | Status |
 |---|-----------|-------------|-------|--------|
-""" + "\n".join([
-            f"| {step.order} | {step.task_type.value.upper()} | {step.description} | {step.agent} | {'✅' if step.status.value == 'completed' else '❌' if step.status.value == 'failed' else '⏭️'} |"
-            for step in sorted(state.current_plan.steps, key=lambda s: s.order)
-        ]) + "\n\n---\n"
+"""
+            + "\n".join(
+                [
+                    f"| {step.order} | {step.task_type.value.upper()} | {step.description} | {step.agent} | {'✅' if step.status.value == 'completed' else '❌' if step.status.value == 'failed' else '⏭️'} |"
+                    for step in sorted(state.current_plan.steps, key=lambda s: s.order)
+                ]
+            )
+            + "\n\n---\n"
+        )
 
     def _build_agent_execution_details(
         self,
@@ -151,14 +157,18 @@ class ReportGenerator:
 
             # Agent header
             status_icon = "✅" if success else "❌"
-            sections.append(f"### {i}. {agent.replace('_', ' ').title()} {status_icon}\n")
+            sections.append(
+                f"### {i}. {agent.replace('_', ' ').title()} {status_icon}\n"
+            )
 
             # Step info
             if step_info:
                 sections.append(f"**Task:** {step_info.description}\n")
                 sections.append(f"**Task Type:** `{step_info.task_type.value}`\n")
                 if step_info.parameters:
-                    sections.append(f"**Parameters:**\n```json\n{self._format_dict(step_info.parameters)}\n```\n")
+                    sections.append(
+                        f"**Parameters:**\n```json\n{self._format_dict(step_info.parameters)}\n```\n"
+                    )
 
             # Execution timestamp
             sections.append(f"**Executed At:** {execution.get('timestamp', 'N/A')}\n")
@@ -219,7 +229,9 @@ class ReportGenerator:
                 if isinstance(finding, dict):
                     sections.append(f"### {finding.get('title', 'Finding')}\n")
                     sections.append(f"- Severity: {finding.get('severity', 'N/A')}\n")
-                    sections.append(f"- Description: {finding.get('description', 'N/A')}\n")
+                    sections.append(
+                        f"- Description: {finding.get('description', 'N/A')}\n"
+                    )
                 else:
                     sections.append(f"- {finding}\n")
 
@@ -246,9 +258,13 @@ class ReportGenerator:
                 cve_count = result_data.get("cve_count", 0)
                 vulns = result_data.get("vulnerabilities_found", 0)
                 if cve_count > 0:
-                    findings.append(f"Vulnerability Scan: {cve_count} CVE references found")
+                    findings.append(
+                        f"Vulnerability Scan: {cve_count} CVE references found"
+                    )
                 if vulns > 0:
-                    findings.append(f"Vulnerability Scan: {vulns} potential vulnerabilities")
+                    findings.append(
+                        f"Vulnerability Scan: {vulns} potential vulnerabilities"
+                    )
 
             # Extract exploitation findings
             if agent == "exploitation_agent":
@@ -317,4 +333,5 @@ class ReportGenerator:
     def _format_dict(self, d: Dict[str, Any], indent: int = 2) -> str:
         """Format dictionary for display."""
         import json
+
         return json.dumps(d, indent=indent, ensure_ascii=False)

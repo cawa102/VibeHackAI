@@ -2,17 +2,18 @@
 
 from __future__ import annotations
 
-import pytest
-from unittest.mock import MagicMock
 from datetime import datetime
+from unittest.mock import MagicMock
+
+import pytest
 
 from src.orchestrator.approval_gate import (
+    APPROVAL_REQUIRED_OPERATIONS,
+    APPROVAL_REQUIRED_TOOLS,
     ApprovalGate,
     ApprovalRequest,
     ApprovalResult,
     ApprovalStatus,
-    APPROVAL_REQUIRED_OPERATIONS,
-    APPROVAL_REQUIRED_TOOLS,
 )
 
 

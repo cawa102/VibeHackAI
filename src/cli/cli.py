@@ -10,22 +10,23 @@ import sys
 from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from pathlib import Path
-from typing import Any, Dict, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 from .display import Display
 from .prompts import Prompts
 
 if TYPE_CHECKING:
-    from ..orchestrator.orchestrator import Orchestrator, OrchestratorConfig
     from ..orchestrator.approval_gate import ApprovalRequest, ApprovalResult
-    from ..storage.state_store import StateStore
+    from ..orchestrator.orchestrator import Orchestrator, OrchestratorConfig
     from ..storage.evidence_ledger import EvidenceLedger
     from ..storage.session_manager import SessionManager
+    from ..storage.state_store import StateStore
 
 
 @dataclass
 class CLIConfig:
     """Configuration for CLI."""
+
     workspace_path: str = ".pentest_workspace"
     use_colors: bool = True
     verbose: bool = False
@@ -142,9 +143,9 @@ Session Commands:
     def _cmd_start(self, args: list) -> None:
         """Start a new session."""
         if self._orchestrator and self._orchestrator.is_running:
-            self.print(self.display.warning(
-                "Session already running. Use 'stop' first."
-            ))
+            self.print(
+                self.display.warning("Session already running. Use 'stop' first.")
+            )
             return
 
         # Initialize session manager
@@ -186,10 +187,7 @@ Session Commands:
         # Start orchestrator
         self._orchestrator.start()
         self.print(self.display.success("Session started!"))
-        self.print(self.display.phase(
-            self._orchestrator.current_phase.value,
-            "active"
-        ))
+        self.print(self.display.phase(self._orchestrator.current_phase.value, "active"))
 
     def _cmd_stop(self, args: list) -> None:
         """Stop the current session."""
@@ -237,9 +235,11 @@ Session Commands:
 
         transition = self._orchestrator.advance_phase(phase_result)
         if transition:
-            self.print(self.display.success(
-                f"Advanced: {transition.from_phase.value} -> {transition.to_phase.value}"
-            ))
+            self.print(
+                self.display.success(
+                    f"Advanced: {transition.from_phase.value} -> {transition.to_phase.value}"
+                )
+            )
         else:
             self.print(self.display.warning("Cannot advance from current phase."))
 
@@ -256,10 +256,12 @@ Session Commands:
 
         # Check if handler is registered
         if agent not in self._orchestrator._agent_handlers:
-            self.print(self.display.warning(
-                f"No handler registered for {agent}. "
-                "Register agent handlers before running."
-            ))
+            self.print(
+                self.display.warning(
+                    f"No handler registered for {agent}. "
+                    "Register agent handlers before running."
+                )
+            )
             return
 
         self.print(self.display.info(f"Running {agent}..."))
@@ -268,13 +270,13 @@ Session Commands:
             result = self._orchestrator.run_phase()
 
             if result.success:
-                self.print(self.display.success(
-                    f"Agent completed successfully ({result.duration_ms}ms)"
-                ))
+                self.print(
+                    self.display.success(
+                        f"Agent completed successfully ({result.duration_ms}ms)"
+                    )
+                )
             else:
-                self.print(self.display.error(
-                    f"Agent failed: {result.error}"
-                ))
+                self.print(self.display.error(f"Agent failed: {result.error}"))
 
         except RuntimeError as e:
             self.print(self.display.error(str(e)))
@@ -341,6 +343,7 @@ Session Commands:
         """Initialize session manager."""
         if not self._session_manager:
             from ..storage.session_manager import SessionManager
+
             workspace = Path(self.config.workspace_path).resolve()
             self._session_manager = SessionManager(workspace)
 

@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .base_adapter import BaseMCPAdapter, MCPResult, MCPError, MCPToolType
+from .base_adapter import BaseMCPAdapter, MCPError, MCPResult, MCPToolType
 
 
 class OSINTAdapter(BaseMCPAdapter):
@@ -26,15 +26,15 @@ class OSINTAdapter(BaseMCPAdapter):
 
     # Supported operations
     OPERATIONS = [
-        "dns_lookup",       # DNS record lookup
-        "whois",            # WHOIS information
-        "subdomains",       # Subdomain enumeration
-        "mx_records",       # Mail server records
-        "ns_records",       # Nameserver records
-        "txt_records",      # TXT records (SPF, DKIM, etc.)
-        "cert_search",      # Certificate transparency search
-        "email_harvest",    # Email harvesting (public sources)
-        "tech_detect",      # Technology detection
+        "dns_lookup",  # DNS record lookup
+        "whois",  # WHOIS information
+        "subdomains",  # Subdomain enumeration
+        "mx_records",  # Mail server records
+        "ns_records",  # Nameserver records
+        "txt_records",  # TXT records (SPF, DKIM, etc.)
+        "cert_search",  # Certificate transparency search
+        "email_harvest",  # Email harvesting (public sources)
+        "tech_detect",  # Technology detection
     ]
 
     def __init__(

@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 if TYPE_CHECKING:
     from ..storage.state_store import StateStore
@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 
 class Phase(str, Enum):
     """Phases of penetration testing workflow."""
+
     INIT = "init"
     RECON = "recon"
     ENUMERATION = "enumeration"
@@ -30,17 +31,19 @@ class Phase(str, Enum):
 
 class TransitionReason(str, Enum):
     """Reasons for phase transition."""
-    NORMAL = "normal"              # Normal progression
-    ROLLBACK = "rollback"          # Rolled back due to insufficient info
-    SKIP = "skip"                  # Skipped due to sufficient info
-    ERROR = "error"                # Transition due to error
+
+    NORMAL = "normal"  # Normal progression
+    ROLLBACK = "rollback"  # Rolled back due to insufficient info
+    SKIP = "skip"  # Skipped due to sufficient info
+    ERROR = "error"  # Transition due to error
     USER_REQUEST = "user_request"  # User requested transition
-    STOP = "stop"                  # Stopped execution
+    STOP = "stop"  # Stopped execution
 
 
 @dataclass
 class PhaseTransition:
     """Record of a phase transition."""
+
     from_phase: Phase
     to_phase: Phase
     reason: TransitionReason
@@ -166,15 +169,14 @@ class Router:
         elif phase == Phase.ENUMERATION:
             # Need some enumeration data
             return (
-                phase_result.get("services_found", 0) > 0 or
-                phase_result.get("endpoints_found", 0) > 0
+                phase_result.get("services_found", 0) > 0
+                or phase_result.get("endpoints_found", 0) > 0
             )
 
         elif phase == Phase.PLANNER:
             # Need at least one plan or explicit "no candidates"
-            return (
-                phase_result.get("plans_created", 0) > 0 or
-                phase_result.get("no_candidates", False)
+            return phase_result.get("plans_created", 0) > 0 or phase_result.get(
+                "no_candidates", False
             )
 
         elif phase == Phase.EXPLOITATION:
@@ -393,8 +395,7 @@ class Router:
         """Persist transition to state store."""
         if self.state_store:
             self.state_store.append_jsonl(
-                "phase_transitions.jsonl",
-                transition.to_dict()
+                "phase_transitions.jsonl", transition.to_dict()
             )
 
     def get_phase_result(self, phase: Phase) -> Optional[Dict[str, Any]]:
@@ -406,9 +407,7 @@ class Router:
         return {
             "current_phase": self._current_phase.value,
             "transitions_count": len(self._transitions),
-            "phase_results": {
-                p.value: r for p, r in self._phase_results.items()
-            },
+            "phase_results": {p.value: r for p, r in self._phase_results.items()},
         }
 
     def load_state(self, state: Dict[str, Any]) -> None:

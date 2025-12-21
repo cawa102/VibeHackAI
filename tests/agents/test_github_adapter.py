@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
+from src.mcp_adapters.base_adapter import MCPError, MCPResult
 from src.mcp_adapters.github_adapter import GitHubAdapter
-from src.mcp_adapters.base_adapter import MCPResult, MCPError
 
 
 class TestGitHubAdapter:

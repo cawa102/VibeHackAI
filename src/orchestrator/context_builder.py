@@ -9,13 +9,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from datetime import datetime
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from .router import Phase
 
 if TYPE_CHECKING:
-    from ..storage.state_store import StateStore
     from ..storage.evidence_ledger import EvidenceLedger
+    from ..storage.state_store import StateStore
 
 
 @dataclass
@@ -25,6 +25,7 @@ class ContextBundle:
 
     Contains all information an agent needs to perform its task.
     """
+
     agent_type: str
     session_id: str
     scope_tag: str
@@ -110,27 +111,39 @@ AGENT_CONTEXT_REQUIREMENTS = {
     },
     "planner_agent": {
         "include": [
-            "scope", "target_profile", "observations",
-            "vuln_candidates", "exploit_candidates"
+            "scope",
+            "target_profile",
+            "observations",
+            "vuln_candidates",
+            "exploit_candidates",
         ],
         "observations_limit": 100,
         "include_decisions": True,
     },
     "exploitation_agent": {
         "include": [
-            "scope", "target_profile", "observations",
-            "vuln_candidates", "exploit_candidates",
-            "execution_plans", "execution_results"
+            "scope",
+            "target_profile",
+            "observations",
+            "vuln_candidates",
+            "exploit_candidates",
+            "execution_plans",
+            "execution_results",
         ],
         "observations_limit": 50,
         "include_decisions": True,
     },
     "reporting_agent": {
         "include": [
-            "scope", "target_profile", "observations",
-            "vuln_candidates", "exploit_candidates",
-            "execution_plans", "execution_results",
-            "finding_candidates", "decision_traces"
+            "scope",
+            "target_profile",
+            "observations",
+            "vuln_candidates",
+            "exploit_candidates",
+            "execution_plans",
+            "execution_results",
+            "finding_candidates",
+            "decision_traces",
         ],
         "observations_limit": None,  # All
         "include_decisions": True,
@@ -189,8 +202,7 @@ class ContextBuilder:
 
         # Get requirements for this agent
         requirements = AGENT_CONTEXT_REQUIREMENTS.get(
-            agent_type,
-            AGENT_CONTEXT_REQUIREMENTS["recon_agent"]
+            agent_type, AGENT_CONTEXT_REQUIREMENTS["recon_agent"]
         )
 
         bundle = ContextBundle(
