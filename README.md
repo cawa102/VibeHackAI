@@ -144,16 +144,151 @@ When functioning correctly, you should see:
 - `[✓]` prefix for completed actions
 - Clear indication of current phase (RECON → ENUM → PLAN → EXPLOIT → REPORT)
 
-### Demo vs. Full MCP Mode
+### Demo vs. Claude Code Mode
 
-| Capability | Demo Mode | With MCP Integration |
-|------------|-----------|---------------------|
+| Capability | Demo Mode | With Claude Code |
+|------------|-----------|------------------|
 | Interface exploration | ✓ | ✓ |
 | Workflow validation | ✓ | ✓ |
 | Simulated findings | ✓ | Real findings |
+| AI reasoning & analysis | — | ✓ (Claude provides intelligence) |
 | Network scanning | — | ✓ (Nmap, Shodan) |
 | Vulnerability lookup | — | ✓ (Snyk, CVE databases) |
 | Active exploitation | — | ✓ (Metasploit, with approval) |
+| Report generation | — | ✓ (AI-generated reports) |
+
+---
+
+## Usage with Claude Code (Recommended)
+
+For full AI-powered penetration testing, use VibeHackAI with [Claude Code](https://claude.ai/code). Claude Code provides the AI reasoning that analyzes findings, plans attack strategies, and generates comprehensive reports.
+
+### Why Claude Code?
+
+VibeHackAI's Python codebase provides the **structure and workflow**, while Claude Code provides the **AI intelligence**:
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Claude Code   │───▶│   VibeHackAI    │───▶│   MCP Servers   │
+│   (AI Brain)    │    │   (Framework)   │    │   (Tools)       │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+        │
+        ├── Analyzes scan results
+        ├── Identifies vulnerabilities
+        ├── Plans attack strategies
+        ├── Requests human approval
+        └── Generates reports
+```
+
+### Prerequisites
+
+- [Claude Code](https://claude.ai/code) subscription
+- Node.js 18+ (for MCP servers)
+- Docker (optional, for GitHub MCP)
+- API keys for external services
+
+### Step 1: Clone and Install
+
+```bash
+git clone https://github.com/cawa102/VibeHackAI.git
+cd VibeHackAI
+```
+
+### Step 2: Configure MCP Servers
+
+Copy `.mcp.json` to your Claude Code configuration directory and update the API keys:
+
+**Required API Keys:**
+
+| Service | Get API Key | Purpose |
+|---------|-------------|---------|
+| Shodan | [account.shodan.io](https://account.shodan.io/) | Passive reconnaissance |
+| Snyk | [app.snyk.io/account](https://app.snyk.io/account) | Vulnerability database |
+| GitHub | [github.com/settings/tokens](https://github.com/settings/tokens) | Repository analysis |
+
+**Minimal `.mcp.json` configuration:**
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/workspace"]
+    },
+    "nmap": {
+      "command": "npx",
+      "args": ["-y", "mcp-nmap-server"]
+    },
+    "shodan": {
+      "command": "npx",
+      "args": ["-y", "@burtthecoder/mcp-shodan"],
+      "env": {
+        "SHODAN_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+See `.mcp.json` in this repository for full configuration including Metasploit, Burp Suite, and other tools.
+
+### Step 3: Start Penetration Test
+
+Open Claude Code in the VibeHackAI directory and provide your target:
+
+```
+I have written authorization to test 192.168.1.0/24.
+Please perform a penetration test following the VibeHackAI workflow:
+1. Reconnaissance - gather information about the target
+2. Enumeration - identify services and entry points
+3. Vulnerability analysis - map CVEs and potential exploits
+4. Exploitation - test vulnerabilities (with my approval)
+5. Report - generate findings report
+```
+
+Claude will:
+- Read the project structure and understand the workflow
+- Use MCP tools (Nmap, Shodan, etc.) for scanning
+- Analyze results and identify vulnerabilities
+- Ask for your approval before any exploitation
+- Generate a comprehensive penetration test report
+
+### Example Session
+
+```
+You: Test 10.0.0.5 for vulnerabilities. I have authorization.
+
+Claude: I'll start reconnaissance on 10.0.0.5.
+
+[Uses Shodan MCP to query host information]
+[Uses Nmap MCP to scan ports]
+
+Found:
+- Port 22: OpenSSH 7.4
+- Port 80: Apache 2.4.6
+- Port 443: Apache with outdated SSL
+
+I've identified potential vulnerabilities:
+1. CVE-2021-41617 in OpenSSH 7.4 (Medium)
+2. CVE-2019-0211 in Apache 2.4.6 (High)
+
+Would you like me to:
+a) Search for exploits for these CVEs?
+b) Continue enumeration on web services?
+c) Generate a preliminary report?
+
+You: Search for exploits, but ask before running anything.
+
+Claude: [Searches CVE databases]
+[Finds Metasploit module for Apache vulnerability]
+
+⚠️ APPROVAL REQUEST:
+I found exploit/multi/http/apache_mod_cgi_bash_env_exec
+Target: 10.0.0.5:80
+Risk: May cause service disruption
+
+Do you approve this exploitation attempt? (yes/no)
+```
 
 ---
 
