@@ -1,0 +1,101 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# Testing
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Documentation
+docs/_build/
+
+# Jupyter
+.ipynb_checkpoints
+
+# Environment
+.env
+.env.local
+*.env
+
+# Secrets - NEVER commit these
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# Logs
+*.log
+logs/
+
+# Workspace sessions (may contain sensitive data)
+workspace/sessions/
+workspace/logs/
+
+# Cache
+.cache/
+*.cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.tar.gz
+*.zip
+
+# Docker
+.docker/
+
+# Node modules (for MCP servers)
+node_modules/
+
+# External MCP server data
+external/*/data/
+external/*/.venv/

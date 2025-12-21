@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # Main PentestAgent application
+  pentest-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pentest-agent
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./workspace:/app/workspace
+      - ./settings.json:/app/settings.json:ro
+      - ./.mcp.json:/app/.mcp.json:ro
+    environment:
+      - PYTHONPATH=/app
+      - WORKSPACE_ROOT=/app/workspace
+      # MCP API Keys (set in .env file)
+      - SHODAN_API_KEY=${SHODAN_API_KEY:-}
+      - SNYK_TOKEN=${SNYK_TOKEN:-}
+      - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN:-}
+      - WHOISXMLAPI_API_KEY=${WHOISXMLAPI_API_KEY:-}
+    networks:
+      - pentest-network
+    depends_on:
+      - mcp-filesystem
+
+  # Filesystem MCP Server
+  mcp-filesystem:
+    image: node:20-slim
+    container_name: mcp-filesystem
+    command: npx -y @modelcontextprotocol/server-filesystem /workspace
+    volumes:
+      - ./workspace:/workspace
+    networks:
+      - pentest-network
+
+  # GitHub MCP Server (optional)
+  mcp-github:
+    image: ghcr.io/github/github-mcp-server
+    container_name: mcp-github
+    environment:
+      - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN:-}
+    networks:
+      - pentest-network
+    profiles:
+      - github
+
+  # Metasploit RPC Server (optional)
+  metasploit:
+    image: metasploitframework/metasploit-framework
+    container_name: metasploit
+    command: >
+      bash -c "
+        msfconsole -x 'load msgrpc Pass=${MSF_PASSWORD:-msfpass}'
+      "
+    environment:
+      - MSF_PASSWORD=${MSF_PASSWORD:-msfpass}
+    ports:
+      - "55553:55553"
+    networks:
+      - pentest-network
+    profiles:
+      - exploitation
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
+  # CVE-Search local instance (optional)
+  cve-search:
+    image: cve-search/cve-search
+    container_name: cve-search
+    ports:
+      - "5000:5000"
+    networks:
+      - pentest-network
+    profiles:
+      - cve
+
+networks:
+  pentest-network:
+    driver: bridge
+
+volumes:
+  workspace:

@@ -1,0 +1,56 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*.egg-info
+.eggs
+dist
+build
+.tox
+.nox
+.coverage
+htmlcov
+.pytest_cache
+.mypy_cache
+
+# Virtual environments
+venv
+.venv
+env
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Tests
+tests/
+pytest.ini
+
+# Development files
+.env*
+*.log
+Makefile
+
+# External (will be mounted separately)
+external/
+
+# Workspace data
+workspace/sessions/
+workspace/logs/
+
+# Node modules
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
