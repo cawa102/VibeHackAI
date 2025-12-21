@@ -417,18 +417,24 @@ class TestOrchestratorApproval:
             approval_callback=approval_callback,
         )
 
-        # Create a patch requiring approval
+        # Create a patch requiring approval (PROPOSE_EXECUTION_PLAN requires approval)
         from src.patch.operations import OperationType
         from src.patch.patch import Patch, PatchOperation
 
         patch = Patch(
             patch_id="test-patch",
+            session_id="test",
             agent_id="test-agent",
+            base_state_version=0,
             operations=[
                 PatchOperation(
-                    op=OperationType.EXECUTE,
-                    target="metasploit",
-                    payload={"exploit": "test"},
+                    op=OperationType.PROPOSE_EXECUTION_PLAN,
+                    target="execution_plans",
+                    payload={
+                        "title": "Test Plan",
+                        "description": "Test execution plan",
+                        "target": "192.168.1.1",
+                    },
                     requires_approval=True,
                 )
             ],
@@ -482,12 +488,14 @@ class TestOrchestratorPatching:
 
         patch = Patch(
             patch_id="test-patch",
+            session_id="test",
             agent_id="recon_agent",
+            base_state_version=0,
             operations=[
                 PatchOperation(
                     op=OperationType.ADD_OBSERVATION,
                     target="observations",
-                    payload={"type": "host", "ip": "192.168.1.1"},
+                    payload={"tool": "nmap", "action": "scan", "ip": "192.168.1.1"},
                 )
             ],
         )

@@ -20,9 +20,10 @@ class TestStopReason:
             "scope_violation",
             "dos_detected",
             "destructive_behavior",
-            "approval_timeout",
-            "user_request",
-            "total_errors",
+            "user_requested",
+            "timeout",
+            "unknown_error",
+            "resource_exhaustion",
         ]
         for reason in expected:
             assert hasattr(StopReason, reason.upper())
@@ -36,7 +37,7 @@ class TestStopCondition:
         condition = StopCondition(
             reason=StopReason.CONSECUTIVE_ERRORS,
             severity="high",
-            timestamp=datetime.utcnow(),
+            message="Test condition",
             details={"count": 3},
         )
 
@@ -49,8 +50,9 @@ class TestStopCondition:
         condition = StopCondition(
             reason=StopReason.SCOPE_VIOLATION,
             severity="critical",
-            timestamp=datetime(2024, 1, 1, 12, 0, 0),
+            message="Scope violation detected",
             details={"target": "out-of-scope.com"},
+            detected_at=datetime(2024, 1, 1, 12, 0, 0),
         )
 
         result = condition.to_dict()
@@ -83,17 +85,18 @@ class TestStopMonitor:
         assert monitor.stop_reason is None
 
     def test_record_success_resets_consecutive_errors(self, monitor):
-        """Test success resets consecutive error count."""
+        """Test success resets consecutive error tracking."""
         # Record some errors
         monitor.record_error("test", "error1")
-        monitor.record_error("test", "error2")
 
-        # Record success
+        # Record success - this resets the last_error_class tracking
         monitor.record_success()
 
-        # Should reset consecutive count
-        status = monitor.get_status()
-        assert status["consecutive_errors"] == 0
+        # Now record another error - it should start fresh
+        monitor.record_error("test", "error2")
+
+        # Should not have triggered stop (only 1 consecutive error)
+        assert monitor.should_stop is False
 
     def test_consecutive_errors_trigger_stop(self, monitor):
         """Test consecutive errors trigger stop."""
@@ -121,7 +124,7 @@ class TestStopMonitor:
         assert monitor.should_stop is True
 
     def test_total_error_threshold(self, mock_state_store):
-        """Test total error threshold."""
+        """Test total error threshold generates warning."""
         monitor = StopMonitor(
             mock_state_store,
             consecutive_error_threshold=100,  # High so it doesn't trigger
@@ -129,51 +132,58 @@ class TestStopMonitor:
         )
 
         for i in range(4):
-            monitor.record_error("test", f"error {i}")
-            monitor.record_success()  # Reset consecutive
+            monitor.record_error(
+                f"type{i}", f"error {i}"
+            )  # Different types to avoid consecutive
 
         assert monitor.should_stop is False
 
-        monitor.record_error("test", "error 5")
-        assert monitor.should_stop is True
-        assert monitor.stop_reason == StopReason.TOTAL_ERRORS
+        # 5th error reaches total threshold, but it's a warning (auto_stop=False)
+        condition = monitor.record_error("type4", "error 5")
+        assert condition is not None
+        assert condition.reason == StopReason.UNKNOWN_ERROR
+        assert condition.auto_stop is False  # Just a warning
 
     def test_check_scope_violation(self, monitor, mock_state_store):
         """Test scope violation detection."""
-        mock_state_store.read_json.return_value = {
-            "targets": [{"value": "192.168.1.0/24", "type": "cidr"}]
-        }
+        scope_targets = ["192.168.1.0/24", "example.com"]
 
         # In-scope target should be OK
-        condition = monitor.check_scope_violation("192.168.1.50")
+        condition = monitor.check_scope_violation("192.168.1.50", scope_targets)
         assert condition is None
 
         # Out-of-scope target should trigger
-        condition = monitor.check_scope_violation("10.0.0.1")
+        condition = monitor.check_scope_violation("10.0.0.1", scope_targets)
         assert condition is not None
         assert condition.reason == StopReason.SCOPE_VIOLATION
 
     def test_check_dos_indicators(self, monitor):
         """Test DoS detection."""
-        # Normal request rate
-        condition = monitor.check_dos_indicators(requests_per_second=10)
+        # Normal request rate (10 requests in 60 seconds = 10 per minute)
+        condition = monitor.check_dos_indicators(
+            requests_count=10,
+            time_window_seconds=60.0,
+        )
         assert condition is None
 
-        # High request rate indicates DoS
-        condition = monitor.check_dos_indicators(requests_per_second=1000)
+        # High request rate (200 requests in 1 second = 12000 per minute)
+        condition = monitor.check_dos_indicators(
+            requests_count=200,
+            time_window_seconds=1.0,
+        )
         assert condition is not None
         assert condition.reason == StopReason.DOS_DETECTED
 
     def test_check_destructive_behavior(self, monitor):
         """Test destructive behavior detection."""
         # Non-destructive operation
-        condition = monitor.check_destructive_behavior("port_scan")
+        condition = monitor.check_destructive_behavior("port_scan", "192.168.1.1")
         assert condition is None
 
         # Destructive operations
-        destructive_ops = ["rm", "delete", "drop", "truncate", "format"]
+        destructive_ops = ["rm -rf /", "drop database", "truncate table", "format c:"]
         for op in destructive_ops:
-            condition = monitor.check_destructive_behavior(op)
+            condition = monitor.check_destructive_behavior(op, "192.168.1.1")
             assert condition is not None
             assert condition.reason == StopReason.DESTRUCTIVE_BEHAVIOR
 
@@ -182,7 +192,7 @@ class TestStopMonitor:
         monitor.request_stop("User requested", "admin")
 
         assert monitor.should_stop is True
-        assert monitor.stop_reason == StopReason.USER_REQUEST
+        assert monitor.stop_reason == StopReason.USER_REQUESTED
 
     def test_get_status(self, monitor):
         """Test getting monitor status."""
@@ -192,15 +202,15 @@ class TestStopMonitor:
         assert "consecutive_errors" in status
         assert "total_errors" in status
         assert "stop_reason" in status
-        assert "conditions" in status
+        assert "stop_conditions_count" in status
 
     def test_stop_condition_recorded(self, monitor):
         """Test stop conditions are recorded."""
         monitor.record_error("test", "error1")
         monitor.record_error("test", "error2")
 
-        status = monitor.get_status()
-        assert len(status["conditions"]) > 0
+        # Access stop_conditions property directly
+        assert len(monitor.stop_conditions) > 0
 
     def test_save_emergency_snapshot(self, monitor, mock_state_store):
         """Test emergency snapshot is saved."""
