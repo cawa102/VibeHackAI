@@ -16,7 +16,7 @@ from ..mcp_adapters.base_adapter import MCPResult
 from ..mcp_adapters.burp_adapter import BurpAdapter
 from ..mcp_adapters.nmap_adapter import NmapAdapter
 from ..patch.operations import OperationType
-from ..patch.patch import Patch, PatchOperation
+from ..patch.patch import PatchOperation
 from .base_agent import AgentConfig, AgentContext, AgentOutput, AgentType, BaseAgent
 
 

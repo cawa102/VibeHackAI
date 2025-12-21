@@ -13,7 +13,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from ..patch.operations import OperationType
-from ..patch.patch import Patch, PatchOperation
+from ..patch.patch import PatchOperation
 from .base_agent import AgentConfig, AgentContext, AgentOutput, AgentType, BaseAgent
 
 
@@ -128,7 +128,7 @@ class PentestReport:
         # Statistics
         lines.append("## Summary Statistics")
         lines.append("")
-        lines.append(f"| Severity | Count |")
+        lines.append("| Severity | Count |")
         lines.append("|----------|-------|")
         for severity in ["critical", "high", "medium", "low", "info"]:
             count = self.statistics.get("by_severity", {}).get(severity, 0)
@@ -350,7 +350,6 @@ class ReportingAgent(BaseAgent):
     def _generate_report(self, context: AgentContext) -> PentestReport:
         """Generate the complete report."""
         scope = context.scope or {}
-        target_profile = context.target_profile or {}
 
         # Calculate statistics
         statistics = self._calculate_statistics()
@@ -450,7 +449,7 @@ class ReportingAgent(BaseAgent):
             "risk_score": risk_score,
             "risk_level": risk_level,
             "components_affected": len(
-                set(f.affected_component for f in self._findings)
+                {f.affected_component for f in self._findings}
             ),
             "cves_referenced": len([f for f in self._findings if f.cve_id]),
         }

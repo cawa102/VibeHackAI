@@ -7,17 +7,16 @@ Performs passive OSINT and minimal active reconnaissance.
 from __future__ import annotations
 
 import ipaddress
-import re
 import uuid
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 from ..mcp_adapters.base_adapter import MCPResult
 from ..mcp_adapters.nmap_adapter import NmapAdapter
 from ..mcp_adapters.osint_adapter import OSINTAdapter
 from ..mcp_adapters.shodan_adapter import ShodanAdapter
 from ..patch.operations import OperationType
-from ..patch.patch import Patch, PatchOperation
+from ..patch.patch import PatchOperation
 from .base_agent import AgentConfig, AgentContext, AgentOutput, AgentType, BaseAgent
 
 

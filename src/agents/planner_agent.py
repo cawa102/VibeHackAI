@@ -11,14 +11,14 @@ import re
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 from ..mcp_adapters.base_adapter import MCPResult
 from ..mcp_adapters.cve_adapter import CVEAdapter
 from ..mcp_adapters.github_adapter import GitHubAdapter
 from ..mcp_adapters.snyk_adapter import SnykAdapter
 from ..patch.operations import OperationType
-from ..patch.patch import Patch, PatchOperation
+from ..patch.patch import PatchOperation
 from .base_agent import AgentConfig, AgentContext, AgentOutput, AgentType, BaseAgent
 
 
@@ -227,7 +227,7 @@ class PlannerAgent(BaseAgent):
         self._record_decision(
             "tech_stack_analysis",
             f"Identified {len(tech_stack)} technologies",
-            f"Extracted technologies from target profile for vulnerability analysis",
+            "Extracted technologies from target profile for vulnerability analysis",
             inputs={"target_profile": context.target_profile},
             outputs={"tech_stack": tech_stack},
         )
@@ -313,7 +313,7 @@ class PlannerAgent(BaseAgent):
                 )
 
         # Check for services in targets
-        for target_id, target_info in target_profile.get("targets", {}).items():
+        for _target_id, target_info in target_profile.get("targets", {}).items():
             # Extract from ports/services
             for port_info in target_info.get("ports", []):
                 if isinstance(port_info, dict):
