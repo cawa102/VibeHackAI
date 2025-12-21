@@ -155,14 +155,15 @@ class TestCLISessionManagement:
 
     def test_init_session_manager(self, cli):
         """Test session manager initialization."""
-        with patch("src.cli.cli.SessionManager") as MockSessionManager:
+        with patch("src.storage.session_manager.SessionManager") as MockSessionManager:
+            MockSessionManager.return_value = MagicMock()
             cli._init_session_manager()
 
             assert cli._session_manager is not None
 
-    @patch("src.cli.cli.SessionManager")
-    @patch("src.cli.cli.Orchestrator")
-    def test_start_new_session(self, MockOrchestrator, MockSessionManager, cli, capsys):
+    @patch("src.orchestrator.orchestrator.Orchestrator")
+    @patch("src.storage.session_manager.SessionManager")
+    def test_start_new_session(self, MockSessionManager, MockOrchestrator, cli, capsys):
         """Test starting a new session."""
         mock_session_mgr = MagicMock()
         mock_session_mgr.create_session.return_value = "test-session-001"
@@ -185,27 +186,23 @@ class TestCLISessionManagement:
         # Should warn about no targets
         assert "No targets" in captured.out or "Created session" in captured.out
 
-    @patch("src.cli.cli.SessionManager")
-    def test_start_resume_session(self, MockSessionManager, cli, capsys):
+    def test_start_resume_session(self, cli, capsys):
         """Test resuming existing session."""
         mock_session_mgr = MagicMock()
         mock_session_mgr.get_session_path.return_value = "/tmp/session"
-        MockSessionManager.return_value = mock_session_mgr
+        cli._session_manager = mock_session_mgr
 
-        cli._init_session_manager()
         cli._handle_command("start existing-session-id")
 
         captured = capsys.readouterr()
         assert "Resuming session" in captured.out
 
-    @patch("src.cli.cli.SessionManager")
-    def test_start_invalid_session(self, MockSessionManager, cli, capsys):
+    def test_start_invalid_session(self, cli, capsys):
         """Test resuming non-existent session."""
         mock_session_mgr = MagicMock()
         mock_session_mgr.get_session_path.side_effect = ValueError("Not found")
-        MockSessionManager.return_value = mock_session_mgr
+        cli._session_manager = mock_session_mgr
 
-        cli._init_session_manager()
         cli._handle_command("start fake-session")
 
         captured = capsys.readouterr()
@@ -450,9 +447,11 @@ class TestCLIApproval:
         request = ApprovalRequest(
             request_id="req-001",
             operation="metasploit_execute",
+            tool=None,
             target="192.168.1.1",
-            created_at=datetime.utcnow(),
+            description="Execute metasploit exploit",
             risk_level="high",
+            created_at=datetime.utcnow(),
         )
 
         result = cli._approval_callback(request)
@@ -471,9 +470,11 @@ class TestCLIApproval:
         request = ApprovalRequest(
             request_id="req-001",
             operation="brute_force",
+            tool=None,
             target="10.0.0.1",
-            created_at=datetime.utcnow(),
+            description="Brute force SSH login",
             risk_level="critical",
+            created_at=datetime.utcnow(),
         )
 
         result = cli._approval_callback(request)

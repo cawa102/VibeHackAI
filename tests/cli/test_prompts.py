@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -256,14 +256,20 @@ class TestPromptsInteger:
 class TestPromptsPassword:
     """Tests for password prompts."""
 
-    def test_password(self):
-        """Test password prompt."""
-        prompts = Prompts()
+    def test_password_fallback(self):
+        """Test password prompt fallback."""
+        # Test that password method handles getpass failure gracefully
+        # by falling back to text input
+        mock_input = MagicMock(return_value="secret123")
+        mock_print = MagicMock()
+        prompts = Prompts(input_func=mock_input, print_func=mock_print)
 
-        # This would normally use getpass, but we can test the fallback
-        with pytest.raises(Exception):
-            # getpass fails in test environment usually
-            pass
+        # Override the built-in getpass to simulate failure
+        with patch("getpass.getpass", side_effect=Exception("No tty")):
+            result = prompts.password("Enter password")
+
+        # Should fall back to text input
+        assert result == "secret123"
 
 
 class TestPromptsScopeInput:

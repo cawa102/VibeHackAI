@@ -35,7 +35,10 @@ class TestApprovalRequest:
         request = ApprovalRequest(
             request_id="req-001",
             operation="metasploit_execute",
+            tool=None,
             target="192.168.1.100",
+            description="Execute exploit",
+            risk_level="high",
             created_at=datetime.utcnow(),
         )
 
@@ -49,6 +52,7 @@ class TestApprovalRequest:
         request = ApprovalRequest(
             request_id="req-001",
             operation="exploit_verify",
+            tool=None,
             target="10.0.0.1",
             created_at=datetime(2024, 1, 1, 12, 0, 0),
             description="Verify SQL injection",
@@ -73,7 +77,7 @@ class TestApprovalResult:
             request_id="req-001",
             approved=True,
             responded_by="user",
-            responded_at=datetime.utcnow(),
+            timestamp=datetime.utcnow(),
         )
 
         assert result.approved is True
@@ -115,7 +119,7 @@ class TestApprovalGate:
     def test_requires_approval_for_dangerous_tools(self, gate):
         """Test dangerous tools require approval."""
         for tool in APPROVAL_REQUIRED_TOOLS:
-            assert gate.requires_approval(tool=tool) is True
+            assert gate.requires_approval(operation="safe_operation", tool=tool) is True
 
     def test_no_approval_for_safe_operations(self, gate):
         """Test safe operations don't require approval."""
@@ -135,13 +139,14 @@ class TestApprovalGate:
 
         assert request.operation == "metasploit_execute"
         assert request.target == "192.168.1.1"
-        assert request.request_id.startswith("apr-")
+        assert request.request_id.startswith("approval-")
 
     def test_create_request_with_risk_level(self, gate):
         """Test creating request with risk level."""
         request = gate.create_request(
             operation="brute_force",
             target="ssh://10.0.0.1:22",
+            description="SSH brute force attack",
             risk_level="high",
         )
 
@@ -152,6 +157,7 @@ class TestApprovalGate:
         request = gate.create_request(
             operation="payload_deliver",
             target="10.0.0.1",
+            description="Deliver payload",
         )
 
         pending = gate.get_pending_requests()
@@ -163,6 +169,7 @@ class TestApprovalGate:
         request = gate.create_request(
             operation="metasploit_execute",
             target="10.0.0.1",
+            description="Execute metasploit module",
         )
 
         result = gate.approve(request.request_id, "admin")
@@ -179,6 +186,7 @@ class TestApprovalGate:
         request = gate.create_request(
             operation="brute_force",
             target="10.0.0.1",
+            description="Brute force attack",
         )
 
         result = gate.reject(request.request_id, "admin", "Too risky")
@@ -192,40 +200,44 @@ class TestApprovalGate:
 
     def test_approve_nonexistent_request(self, gate):
         """Test approving non-existent request."""
-        result = gate.approve("fake-id", "admin")
-        assert result is None
+        with pytest.raises(ValueError):
+            gate.approve("fake-id", "admin")
 
     def test_reject_nonexistent_request(self, gate):
         """Test rejecting non-existent request."""
-        result = gate.reject("fake-id", "admin", "reason")
-        assert result is None
+        with pytest.raises(ValueError):
+            gate.reject("fake-id", "admin", "reason")
 
     def test_cancel_request(self, gate):
         """Test cancelling a request."""
         request = gate.create_request(
             operation="exploit_execute",
             target="10.0.0.1",
+            description="Execute exploit",
         )
 
-        gate.cancel(request.request_id)
+        gate.cancel_request(request.request_id)
 
         pending = gate.get_pending_requests()
         assert len(pending) == 0
 
-    def test_get_request_by_id(self, gate):
-        """Test getting request by ID."""
+    def test_get_pending_request_by_id(self, gate):
+        """Test getting pending request by ID from list."""
         request = gate.create_request(
             operation="test_op",
             target="test_target",
+            description="Test operation",
         )
 
-        found = gate.get_request(request.request_id)
+        pending = gate.get_pending_requests()
+        found = next((r for r in pending if r.request_id == request.request_id), None)
         assert found is not None
         assert found.request_id == request.request_id
 
     def test_get_nonexistent_request(self, gate):
-        """Test getting non-existent request."""
-        found = gate.get_request("fake-id")
+        """Test getting non-existent request from pending list."""
+        pending = gate.get_pending_requests()
+        found = next((r for r in pending if r.request_id == "fake-id"), None)
         assert found is None
 
 
@@ -242,7 +254,7 @@ class TestApprovalCallback:
                 request_id=request.request_id,
                 approved=True,
                 responded_by="auto",
-                responded_at=datetime.utcnow(),
+                timestamp=datetime.utcnow(),
             )
 
         gate = ApprovalGate(store, approval_callback=auto_approve)
@@ -250,6 +262,7 @@ class TestApprovalCallback:
         request = gate.create_request(
             operation="metasploit_execute",
             target="10.0.0.1",
+            description="Execute metasploit module",
         )
 
         result = gate.request_approval(request)
@@ -274,6 +287,7 @@ class TestApprovalCallback:
         request = gate.create_request(
             operation="brute_force",
             target="10.0.0.1",
+            description="Brute force attack",
         )
 
         result = gate.request_approval(request)

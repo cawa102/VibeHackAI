@@ -207,7 +207,11 @@ class TestOrchestrator:
         """Test advancing to next phase."""
         orchestrator.start()
 
-        transition = orchestrator.advance_phase({"success": True})
+        # Need to provide required phase data for RECON phase
+        transition = orchestrator.advance_phase({
+            "success": True,
+            "targets_found": 1,
+        })
 
         assert transition is not None
         assert transition.from_phase == Phase.RECON
@@ -224,13 +228,14 @@ class TestOrchestrator:
     def test_advance_phase_rollback(self, orchestrator):
         """Test rollback during advance."""
         orchestrator.start()
-        orchestrator.advance_phase({})  # RECON -> ENUM
+        # Need to provide required phase data for RECON phase
+        orchestrator.advance_phase({"targets_found": 1})  # RECON -> ENUM
 
-        # Request rollback
+        # Request rollback using the correct rollback_reason value
         transition = orchestrator.advance_phase(
             {
-                "needs_more_info": True,
-                "rollback_phase": "recon",
+                "services_found": 1,
+                "rollback_reason": "version_unconfirmed",
             }
         )
 

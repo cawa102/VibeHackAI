@@ -282,10 +282,10 @@ class Prompts:
 
             # Detect type
             target_type = "ip"
-            if "/" in target:
-                target_type = "cidr"
-            elif target.startswith("http"):
+            if target.startswith("http"):
                 target_type = "url"
+            elif "/" in target:
+                target_type = "cidr"
             elif "." in target and not target[0].isdigit():
                 target_type = "domain"
 
