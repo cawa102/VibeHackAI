@@ -208,10 +208,12 @@ class TestOrchestrator:
         orchestrator.start()
 
         # Need to provide required phase data for RECON phase
-        transition = orchestrator.advance_phase({
-            "success": True,
-            "targets_found": 1,
-        })
+        transition = orchestrator.advance_phase(
+            {
+                "success": True,
+                "targets_found": 1,
+            }
+        )
 
         assert transition is not None
         assert transition.from_phase == Phase.RECON
