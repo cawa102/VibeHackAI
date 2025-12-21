@@ -62,13 +62,48 @@
 
 ## ⚡ Quick Start
 
+### Prerequisites
+
+```
+[*] Python 3.10+     Required
+[*] Node.js 18+      Required (for MCP servers)
+[*] nmap             Recommended
+[*] Docker           Optional (for some MCP servers)
+```
+
+### 1. Install
+
 ```bash
 $ git clone https://github.com/cawa102/VibeHackAI.git
-$ cd VibeHackAI && pip install -e . && pentest-agent
+$ cd VibeHackAI
+$ python -m venv venv && source venv/bin/activate
+$ pip install -e .
+```
+
+### 2. Configure MCP Servers
+
+```bash
+$ cp .env.example .env
+$ vim .env  # Add your API keys
+```
+
+```
+# .env - Required API keys for full functionality
+SHODAN_API_KEY=your_key        # https://account.shodan.io/
+SNYK_TOKEN=your_token          # https://app.snyk.io/account
+GITHUB_PERSONAL_ACCESS_TOKEN=  # https://github.com/settings/tokens
+```
+
+### 3. Run
+
+```bash
+$ pentest-agent
 
 [*] VibeHackAI v0.1.0 initialized
 [*] Awaiting target scope...
 ```
+
+> 📖 **Full setup guide:** [INSTALLATION.md](INSTALLATION.md)
 
 ---
 
