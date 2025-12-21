@@ -10,9 +10,9 @@ import pytest
 from src.agents.base_agent import AgentConfig, AgentContext, AgentType
 from src.agents.reporting_agent import (
     Finding,
-    SecurityReport,
     ReportingAgent,
     ReportSection,
+    SecurityReport,
 )
 
 
