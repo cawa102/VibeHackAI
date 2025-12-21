@@ -47,11 +47,11 @@ VibeHackAI addresses these issues by keeping humans in the decision loop. The AI
 - **Conversation Interface** — Natural language interaction for course correction
 - **Auto-Stop** — Consecutive errors pause execution and await human decision
 
-### Planned (Requires MCP Integration)
+### MCP Integration (Requires API Keys)
 
-- External tool integration (Nmap, Shodan, Metasploit, Burp Suite, Snyk)
-- Real-time vulnerability scanning
-- Automated evidence collection from live systems
+- **External Tools** — Nmap, Shodan, Metasploit, Burp Suite, Snyk, CVE databases
+- **Real-time Scanning** — Live reconnaissance and vulnerability detection
+- **Evidence Collection** — Automatic capture from scan results
 
 ---
 
@@ -403,18 +403,20 @@ The human-in-the-loop design is a feature, not a limitation.
 - [x] Demo mode with simulated responses
 - [x] Evidence storage framework
 
+### MCP Integration (Ready)
+
+- [x] MCP adapter integration
+- [x] Nmap MCP support
+- [x] Shodan integration
+- [x] Metasploit MCP integration
+- [x] Burp Suite MCP integration
+- [x] Snyk / CVE-search integration
+- [x] GitHub / GitLab integration
+
 ### Next Milestone (v0.2.0)
 
-- [ ] MCP adapter integration
-- [ ] Nmap MCP support
-- [ ] Basic Shodan integration
 - [ ] Session persistence and resume
-
-### Future
-
-- [ ] Metasploit MCP integration
-- [ ] Burp Suite MCP integration
-- [ ] Report generation (PDF, Markdown)
+- [ ] Report generation (PDF export)
 - [ ] Multi-session management
 
 ---
