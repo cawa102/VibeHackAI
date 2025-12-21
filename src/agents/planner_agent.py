@@ -1,5 +1,5 @@
 """
-Planner Agent for PentestAgent.
+Planner Agent for VibeHackAI.
 
 Identifies vulnerability candidates, evaluates feasibility,
 and creates execution plans for exploitation.

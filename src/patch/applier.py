@@ -1,5 +1,5 @@
 """
-Patch Applier for PentestAgent.
+Patch Applier for VibeHackAI.
 
 Applies validated patches to state atomically with rollback support.
 """

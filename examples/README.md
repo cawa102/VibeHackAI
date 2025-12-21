@@ -1,11 +1,11 @@
 # Examples
 
-This directory contains example configurations and usage scenarios for PentestAgent.
+This directory contains example configurations and usage scenarios for VibeHackAI.
 
 ## Contents
 
 - [basic_scan.md](#basic-scan) - Basic reconnaissance workflow
-- [web_app_pentest.md](#web-application-pentest) - Web application testing
+- [web_app_security_test.md](#web-application-security-test) - Web application testing
 - [scope_example.json](#scope-configuration) - Example scope configuration
 - [mcp_minimal.json](#minimal-mcp-setup) - Minimal MCP configuration
 
@@ -21,8 +21,8 @@ A simple workflow for reconnaissance of a target network.
 ### Steps
 
 ```bash
-# Start PentestAgent
-pentest-agent
+# Start VibeHackAI
+vibehackai
 
 # Create session
 > start basic-recon-session
@@ -44,7 +44,7 @@ Confirm scope? [y/N]: y
 > export report.md
 ```
 
-## Web Application Pentest
+## Web Application Security Test
 
 Complete workflow for web application security testing.
 
@@ -130,7 +130,7 @@ Example `scope.json` for authorized testing:
     "max_requests_per_second": 10
   },
   "authorization": {
-    "document_ref": "pentest-auth-2025-001.pdf",
+    "document_ref": "security-auth-2025-001.pdf",
     "valid_from": "2025-01-01T00:00:00Z",
     "valid_until": "2025-01-31T23:59:59Z",
     "authorizer": "Security Team Lead"

@@ -1,5 +1,5 @@
 """
-Vulnerability Candidate schema for PentestAgent.
+Vulnerability Candidate schema for VibeHackAI.
 
 Defines potential vulnerabilities identified during assessment.
 """

@@ -1,5 +1,5 @@
 """
-GitHub MCP Adapter for PentestAgent.
+GitHub MCP Adapter for VibeHackAI.
 
 Provides interface to GitHub MCP for PoC/Exploit search.
 """

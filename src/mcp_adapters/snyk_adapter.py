@@ -1,5 +1,5 @@
 """
-Snyk MCP Adapter for PentestAgent.
+Snyk MCP Adapter for VibeHackAI.
 
 Provides interface to Snyk MCP for vulnerability scanning.
 """

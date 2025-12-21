@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-E2E Test Script for PentestAgent.
+E2E Test Script for VibeHackAI.
 
 Target: 192.168.64.23 (CryptoBank VM)
 """
@@ -133,7 +133,7 @@ def approval_callback(request: ApprovalRequest) -> ApprovalResult:
 
 def main():
     """Run E2E test."""
-    print(f"\nPentestAgent E2E Test")
+    print(f"\nVibeHackAI E2E Test")
     print(f"Target: {TARGET_IP}")
     print(f"Session: {SESSION_ID}")
     print("-" * 40)

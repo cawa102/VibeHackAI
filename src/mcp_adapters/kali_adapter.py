@@ -1,5 +1,5 @@
 """
-Kali MCP Adapter for PentestAgent.
+Kali MCP Adapter for VibeHackAI.
 
 Provides interface to Kali tools via MCP.
 """

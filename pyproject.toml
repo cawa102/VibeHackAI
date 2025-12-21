@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pentest-agent"
+name = "vibehackai"
 version = "0.1.0"
 description = "MCP-integrated Multi-Agent Penetration Testing Support System"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
-    {name = "PentestAgent Team"}
+    {name = "VibeHackAI Team"}
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -30,7 +30,7 @@ dependencies = [
 ]
 
 [project.scripts]
-pentest-agent = "src.cli.cli:main"
+vibehackai = "src.cli.cli:main"
 
 [project.optional-dependencies]
 dev = [

@@ -28,7 +28,7 @@ class TestCLIConfig:
         """Test config default values."""
         config = CLIConfig()
 
-        assert config.workspace_path == ".pentest_workspace"
+        assert config.workspace_path == ".vibehackai_workspace"
         assert config.use_colors is True
         assert config.verbose is False
 

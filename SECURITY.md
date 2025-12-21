@@ -2,7 +2,7 @@
 
 ## Responsible Use
 
-PentestAgent is a powerful security testing tool. **You must use it responsibly and ethically.**
+VibeHackAI is a powerful security testing tool. **You must use it responsibly and ethically.**
 
 ### Authorized Use Only
 
@@ -16,7 +16,7 @@ This tool is intended **exclusively** for:
 
 ### Prohibited Use
 
-**DO NOT** use PentestAgent for:
+**DO NOT** use VibeHackAI for:
 
 - Unauthorized access to systems you don't own
 - Testing systems without explicit written permission
@@ -36,7 +36,7 @@ Users are responsible for:
 
 ## Security Features
 
-PentestAgent includes built-in safety mechanisms:
+VibeHackAI includes built-in safety mechanisms:
 
 ### Scope Enforcement
 
@@ -74,7 +74,7 @@ The following operations require explicit human approval:
 
 We welcome security reports for:
 
-- Vulnerabilities in PentestAgent code
+- Vulnerabilities in VibeHackAI code
 - Security issues in our build/release process
 - Flaws in safety mechanisms
 - Authentication/authorization bypasses
@@ -155,7 +155,7 @@ We will credit researchers (with permission) in:
 
 ### Logging
 
-PentestAgent maintains comprehensive logs:
+VibeHackAI maintains comprehensive logs:
 
 - All MCP operations
 - Approval decisions
@@ -182,7 +182,7 @@ Logs can be exported for:
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. THE AUTHORS ARE NOT RESPONSIBLE FOR ANY MISUSE, DAMAGE, OR ILLEGAL ACTIVITIES CONDUCTED WITH THIS TOOL.
 
-By using PentestAgent, you acknowledge that:
+By using VibeHackAI, you acknowledge that:
 
 1. You will only test systems you own or have authorization to test
 2. You will comply with all applicable laws

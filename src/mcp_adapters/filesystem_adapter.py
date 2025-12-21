@@ -1,5 +1,5 @@
 """
-Filesystem Adapter for PentestAgent.
+Filesystem Adapter for VibeHackAI.
 
 Provides a wrapper for filesystem operations with error handling.
 This adapter can be extended to use Filesystem MCP when available.

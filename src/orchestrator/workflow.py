@@ -1,5 +1,5 @@
 """
-Interactive Workflow for PentestAgent.
+Interactive Workflow for VibeHackAI.
 
 Implements the step-by-step workflow:
 1. User provides IP

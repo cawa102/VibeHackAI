@@ -1,5 +1,5 @@
 """
-Metasploit MCP Adapter for PentestAgent.
+Metasploit MCP Adapter for VibeHackAI.
 
 Provides interface to Metasploit MCP for exploitation.
 """

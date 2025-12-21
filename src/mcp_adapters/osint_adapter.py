@@ -1,5 +1,5 @@
 """
-OSINT MCP Adapter for PentestAgent.
+OSINT MCP Adapter for VibeHackAI.
 
 Provides interface to OSINT tools for passive reconnaissance.
 """

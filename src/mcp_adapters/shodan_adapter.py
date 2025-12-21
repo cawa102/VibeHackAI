@@ -1,5 +1,5 @@
 """
-Shodan MCP Adapter for PentestAgent.
+Shodan MCP Adapter for VibeHackAI.
 
 Provides interface to Shodan MCP for passive reconnaissance.
 """

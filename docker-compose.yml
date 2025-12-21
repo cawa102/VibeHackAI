@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  # Main PentestAgent application
-  pentest-agent:
+  # Main VibeHackAI application
+  vibehackai:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: pentest-agent
+    container_name: vibehackai
     stdin_open: true
     tty: true
     volumes:
@@ -22,7 +22,7 @@ services:
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN:-}
       - WHOISXMLAPI_API_KEY=${WHOISXMLAPI_API_KEY:-}
     networks:
-      - pentest-network
+      - vibehackai-network
     depends_on:
       - mcp-filesystem
 
@@ -34,7 +34,7 @@ services:
     volumes:
       - ./workspace:/workspace
     networks:
-      - pentest-network
+      - vibehackai-network
 
   # GitHub MCP Server (optional)
   mcp-github:
@@ -43,7 +43,7 @@ services:
     environment:
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN:-}
     networks:
-      - pentest-network
+      - vibehackai-network
     profiles:
       - github
 
@@ -60,7 +60,7 @@ services:
     ports:
       - "55553:55553"
     networks:
-      - pentest-network
+      - vibehackai-network
     profiles:
       - exploitation
     cap_add:
@@ -74,12 +74,12 @@ services:
     ports:
       - "5000:5000"
     networks:
-      - pentest-network
+      - vibehackai-network
     profiles:
       - cve
 
 networks:
-  pentest-network:
+  vibehackai-network:
     driver: bridge
 
 volumes:

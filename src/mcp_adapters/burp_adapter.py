@@ -1,5 +1,5 @@
 """
-Burpsuite MCP Adapter for PentestAgent.
+Burpsuite MCP Adapter for VibeHackAI.
 
 Provides interface to Burpsuite MCP for web application enumeration.
 """

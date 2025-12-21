@@ -1,5 +1,5 @@
 """
-Reporting Agent for PentestAgent.
+Reporting Agent for VibeHackAI.
 
 Generates final penetration testing reports from findings.
 """
@@ -72,7 +72,7 @@ class ReportSection:
 
 
 @dataclass
-class PentestReport:
+class SecurityReport:
     """Complete penetration testing report."""
 
     report_id: str
@@ -257,7 +257,7 @@ class ReportingAgent(BaseAgent):
         # Results storage
         self._findings: List[Finding] = []
         self._observations: List[Dict[str, Any]] = []
-        self._report: Optional[PentestReport] = None
+        self._report: Optional[SecurityReport] = None
 
     def _execute(self, context: AgentContext) -> AgentOutput:
         """
@@ -347,7 +347,7 @@ class ReportingAgent(BaseAgent):
                     {"finding_id": finding.finding_id, "severity": finding.severity},
                 )
 
-    def _generate_report(self, context: AgentContext) -> PentestReport:
+    def _generate_report(self, context: AgentContext) -> SecurityReport:
         """Generate the complete report."""
         scope = context.scope or {}
 
@@ -370,7 +370,7 @@ class ReportingAgent(BaseAgent):
         scope_tag = context.scope_tag or "Penetration Test"
         title = f"Penetration Testing Report - {scope_tag}"
 
-        return PentestReport(
+        return SecurityReport(
             report_id=f"report-{uuid.uuid4().hex[:8]}",
             title=title,
             executive_summary=executive_summary,
@@ -382,12 +382,12 @@ class ReportingAgent(BaseAgent):
             sections=sections,
         )
 
-    def _create_empty_report(self, context: AgentContext) -> PentestReport:
+    def _create_empty_report(self, context: AgentContext) -> SecurityReport:
         """Create an empty report when no findings."""
         scope = context.scope or {}
         scope_tag = context.scope_tag or "Penetration Test"
 
-        return PentestReport(
+        return SecurityReport(
             report_id=f"report-{uuid.uuid4().hex[:8]}",
             title=f"Penetration Testing Report - {scope_tag}",
             executive_summary="No security vulnerabilities were identified during this assessment.",
@@ -691,7 +691,7 @@ class ReportingAgent(BaseAgent):
 
         return None
 
-    def get_report(self) -> Optional[PentestReport]:
+    def get_report(self) -> Optional[SecurityReport]:
         """Get the generated report."""
         return self._report
 

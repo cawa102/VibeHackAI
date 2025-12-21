@@ -1,5 +1,5 @@
 """
-Nmap MCP Adapter for PentestAgent.
+Nmap MCP Adapter for VibeHackAI.
 
 Provides interface to Nmap MCP for active reconnaissance.
 """

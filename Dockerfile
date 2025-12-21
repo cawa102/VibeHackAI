@@ -1,4 +1,4 @@
-# PentestAgent Dockerfile
+# VibeHackAI Dockerfile
 # Multi-stage build for optimized image size
 
 # Stage 1: Builder
@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir build && \
 # Stage 2: Runtime
 FROM python:3.11-slim as runtime
 
-LABEL maintainer="PentestAgent Team"
+LABEL maintainer="VibeHackAI Team"
 LABEL description="MCP-Integrated Multi-Agent Penetration Testing Support System"
 LABEL version="0.1.0"
 

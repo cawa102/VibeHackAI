@@ -1,5 +1,5 @@
 """
-Base schema definitions for PentestAgent.
+Base schema definitions for VibeHackAI.
 
 Provides the base class with common fields for all schema objects.
 """

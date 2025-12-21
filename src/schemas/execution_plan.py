@@ -1,5 +1,5 @@
 """
-Execution Plan schema for PentestAgent.
+Execution Plan schema for VibeHackAI.
 
 Defines the plan for executing exploits with approval gates.
 """

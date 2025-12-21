@@ -1,7 +1,7 @@
 """
-Scope schema for PentestAgent.
+Scope schema for VibeHackAI.
 
-Defines the allowed target range and operations for a pentest session.
+Defines the allowed target range and operations for a security testing session.
 """
 
 from __future__ import annotations
@@ -66,7 +66,7 @@ class AllowedOperation(str, Enum):
 
 class Scope(BaseSchema):
     """
-    Scope definition for a pentest session.
+    Scope definition for a security testing session.
 
     Defines what targets are allowed and what operations can be performed.
     All agent actions must be validated against this scope.

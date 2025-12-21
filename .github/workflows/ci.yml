@@ -127,6 +127,6 @@ jobs:
         with:
           context: .
           push: false
-          tags: pentest-agent:test
+          tags: vibehackai:test
           cache-from: type=gha
           cache-to: type=gha,mode=max

@@ -1,5 +1,5 @@
 """
-Main Orchestrator for PentestAgent.
+Main Orchestrator for VibeHackAI.
 
 Coordinates agents, manages workflow, and handles state updates.
 """

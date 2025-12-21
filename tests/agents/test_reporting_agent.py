@@ -10,7 +10,7 @@ import pytest
 from src.agents.base_agent import AgentConfig, AgentContext, AgentType
 from src.agents.reporting_agent import (
     Finding,
-    PentestReport,
+    SecurityReport,
     ReportingAgent,
     ReportSection,
 )
@@ -132,8 +132,8 @@ class TestReportSection:
         assert data["subsections"] == []
 
 
-class TestPentestReport:
-    """Tests for PentestReport dataclass."""
+class TestSecurityReport:
+    """Tests for SecurityReport dataclass."""
 
     @pytest.fixture
     def sample_finding(self):
@@ -153,7 +153,7 @@ class TestPentestReport:
     @pytest.fixture
     def sample_report(self, sample_finding):
         """Create a sample report."""
-        return PentestReport(
+        return SecurityReport(
             report_id="report-001",
             title="Test Report",
             executive_summary="Test summary",

@@ -1,5 +1,5 @@
 """
-Schemas module for PentestAgent.
+Schemas module for VibeHackAI.
 
 Provides Pydantic models for all data structures used in the system.
 """

@@ -1,5 +1,5 @@
 """
-Validators for PentestAgent schemas.
+Validators for VibeHackAI schemas.
 
 Provides validation functions for cross-schema validation and
 evidence requirements.

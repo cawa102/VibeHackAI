@@ -1,5 +1,5 @@
 """
-CVE Research MCP Adapter for PentestAgent.
+CVE Research MCP Adapter for VibeHackAI.
 
 Provides interface to CVE Research MCP for vulnerability lookup.
 """

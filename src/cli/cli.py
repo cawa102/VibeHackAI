@@ -1,5 +1,5 @@
 """
-Main CLI for PentestAgent.
+Main CLI for VibeHackAI.
 
 Provides command-line interface for interacting with the orchestrator.
 """
@@ -26,14 +26,14 @@ if TYPE_CHECKING:
 class CLIConfig:
     """Configuration for CLI."""
 
-    workspace_path: str = ".pentest_workspace"
+    workspace_path: str = ".vibehackai_workspace"
     use_colors: bool = True
     verbose: bool = False
 
 
 class CLI:
     """
-    Command-line interface for PentestAgent.
+    Command-line interface for VibeHackAI.
 
     Provides user interaction for:
     - Session management
@@ -69,13 +69,13 @@ class CLI:
         Returns:
             Exit code.
         """
-        self.print(self.display.header("PentestAgent CLI"))
+        self.print(self.display.header("VibeHackAI CLI"))
         self.print("Type 'help' for available commands.\n")
 
         try:
             while True:
                 try:
-                    command = input("pentest> ").strip()
+                    command = input("vibe> ").strip()
                     if not command:
                         continue
 

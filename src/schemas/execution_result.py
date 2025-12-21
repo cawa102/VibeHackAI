@@ -1,5 +1,5 @@
 """
-Execution Result schema for PentestAgent.
+Execution Result schema for VibeHackAI.
 
 Defines the result of executing a step in an execution plan.
 """

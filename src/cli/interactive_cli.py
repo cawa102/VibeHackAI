@@ -1,5 +1,5 @@
 """
-Interactive CLI for PentestAgent.
+Interactive CLI for VibeHackAI.
 
 Provides a step-by-step interface for penetration testing workflow.
 """

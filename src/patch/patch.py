@@ -1,5 +1,5 @@
 """
-Patch and PatchOperation classes for PentestAgent.
+Patch and PatchOperation classes for VibeHackAI.
 
 Defines the structure of state update proposals.
 """

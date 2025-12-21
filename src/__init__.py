@@ -1,1 +1,1 @@
-# PentestAgent source package
+# VibeHackAI source package

@@ -1,5 +1,5 @@
 """
-Evidence Item schema for PentestAgent.
+Evidence Item schema for VibeHackAI.
 
 Defines the metadata for evidence stored in the Evidence Ledger.
 """

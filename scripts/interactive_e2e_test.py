@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Interactive E2E Test Script for PentestAgent.
+Interactive E2E Test Script for VibeHackAI.
 
 Demonstrates the step-by-step workflow:
 1. User provides IP
@@ -245,7 +245,7 @@ def main():
     cli = InteractiveCLI()
 
     print("\n" + "=" * 60)
-    print("PentestAgent Interactive E2E Test")
+    print("VibeHackAI Interactive E2E Test")
     print("=" * 60)
 
     # Get target IP from user

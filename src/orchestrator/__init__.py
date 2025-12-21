@@ -1,5 +1,5 @@
 """
-Orchestrator module for PentestAgent.
+Orchestrator module for VibeHackAI.
 
 Provides the control plane connecting human interface with agents,
 handling approval, routing, and state management.

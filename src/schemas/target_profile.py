@@ -1,5 +1,5 @@
 """
-Target Profile schema for PentestAgent.
+Target Profile schema for VibeHackAI.
 
 Defines the detailed information about targets discovered during reconnaissance.
 """

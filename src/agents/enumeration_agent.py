@@ -1,5 +1,5 @@
 """
-Enumeration Agent for PentestAgent.
+Enumeration Agent for VibeHackAI.
 
 Performs application-layer enumeration to discover input points,
 authentication mechanisms, and attack surface.

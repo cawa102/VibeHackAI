@@ -1,5 +1,5 @@
 """
-MCP Adapters module for PentestAgent.
+MCP Adapters module for VibeHackAI.
 
 Provides adapters for various MCP (Model Context Protocol) tools.
 """

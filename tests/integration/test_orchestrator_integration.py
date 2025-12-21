@@ -42,7 +42,7 @@ class TestOrchestratorIntegration:
     @pytest.fixture
     def temp_workspace(self):
         """Create temporary workspace directory."""
-        workspace = tempfile.mkdtemp(prefix="pentest_integration_")
+        workspace = tempfile.mkdtemp(prefix="vibehackai_integration_")
         yield workspace
         shutil.rmtree(workspace, ignore_errors=True)
 

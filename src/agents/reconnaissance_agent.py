@@ -1,5 +1,5 @@
 """
-Reconnaissance Agent for PentestAgent.
+Reconnaissance Agent for VibeHackAI.
 
 Performs passive OSINT and minimal active reconnaissance.
 """

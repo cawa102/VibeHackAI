@@ -1,6 +1,6 @@
-# Contributing to PentestAgent
+# Contributing to VibeHackAI
 
-Thank you for your interest in contributing to PentestAgent! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to VibeHackAI! This document provides guidelines and instructions for contributing.
 
 ## Table of Contents
 
@@ -39,8 +39,8 @@ Thank you for your interest in contributing to PentestAgent! This document provi
 
 ```bash
 # Fork and clone the repository
-git clone https://github.com/YOUR_USERNAME/PentestAgent.git
-cd PentestAgent
+git clone https://github.com/YOUR_USERNAME/VibeHackAI.git
+cd VibeHackAI
 
 # Create virtual environment
 python -m venv venv

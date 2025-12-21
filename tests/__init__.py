@@ -1,1 +1,1 @@
-# PentestAgent tests package
+# VibeHackAI tests package

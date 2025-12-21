@@ -75,7 +75,7 @@ pip install -e .
 ### Launch
 
 ```bash
-pentest-agent
+vibehackai
 ```
 
 ---
@@ -95,12 +95,12 @@ The current release runs in **demo mode** with simulated responses. This allows 
 
 ### Basic Commands
 
-After launching `pentest-agent`, you can use the following commands:
+After launching `vibehackai`, you can use the following commands:
 
 | Command | Description |
 |---------|-------------|
 | `help` | Display available commands and usage |
-| `start <session-name>` | Create a new pentest session |
+| `start <session-name>` | Create a new security testing session |
 | `scope set <target>` | Define authorized target scope |
 | `status` | Show current session and phase status |
 | `approve` / `deny` | Respond to approval requests |
@@ -110,7 +110,7 @@ After launching `pentest-agent`, you can use the following commands:
 ### Example Session
 
 ```
-$ pentest-agent
+$ vibehackai
 
 [*] VibeHackAI v0.1.0 initialized
 [*] Type 'help' for available commands

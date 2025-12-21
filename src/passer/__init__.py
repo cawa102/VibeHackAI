@@ -1,5 +1,5 @@
 """
-Passer - MCP output normalization engine for PentestAgent.
+Passer - MCP output normalization engine for VibeHackAI.
 
 Converts various MCP server outputs into common schema objects.
 """

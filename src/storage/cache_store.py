@@ -1,5 +1,5 @@
 """
-Cache Store for PentestAgent.
+Cache Store for VibeHackAI.
 
 Provides caching for MCP query results with TTL support and query hashing.
 """

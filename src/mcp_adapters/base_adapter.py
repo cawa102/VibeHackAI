@@ -1,5 +1,5 @@
 """
-Base MCP Adapter for PentestAgent.
+Base MCP Adapter for VibeHackAI.
 
 Provides common functionality for all MCP adapters.
 """

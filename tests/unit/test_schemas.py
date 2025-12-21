@@ -1,5 +1,5 @@
 """
-Unit tests for PentestAgent schemas.
+Unit tests for VibeHackAI schemas.
 """
 
 from datetime import datetime, timedelta

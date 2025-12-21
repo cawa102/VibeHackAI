@@ -1,5 +1,5 @@
 """
-State Store for PentestAgent.
+State Store for VibeHackAI.
 
 Provides JSON and JSONL file operations for session state management.
 Includes state versioning for optimistic locking.

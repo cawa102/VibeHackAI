@@ -1,5 +1,5 @@
 """
-Session Manager for PentestAgent.
+Session Manager for VibeHackAI.
 
 Manages session lifecycle including creation, directory structure initialization,
 and session listing.
@@ -20,7 +20,7 @@ from .state_store import StateStore
 
 class SessionManager:
     """
-    Manages pentest sessions and their workspace directories.
+    Manages security testing sessions and their workspace directories.
 
     Each session has a unique ID and a dedicated directory structure containing:
     - state/: JSON files for session state
@@ -117,7 +117,7 @@ class SessionManager:
 
         # Create initial report placeholder
         (session_path / "reports" / "draft.md").write_text(
-            f"# Pentest Report - Session {session_id}\n\n"
+            f"# Security Report - Session {session_id}\n\n"
             f"Created: {datetime.utcnow().isoformat()}Z\n\n"
             "## Findings\n\n*No findings yet.*\n"
         )

@@ -1,5 +1,5 @@
 """
-Storage module for PentestAgent.
+Storage module for VibeHackAI.
 
 Provides session management, evidence storage, state management, and caching.
 """

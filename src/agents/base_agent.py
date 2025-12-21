@@ -1,5 +1,5 @@
 """
-Base Agent class for PentestAgent.
+Base Agent class for VibeHackAI.
 
 Provides common functionality for all agents.
 """

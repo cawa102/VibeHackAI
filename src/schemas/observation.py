@@ -1,5 +1,5 @@
 """
-Observation schema for PentestAgent.
+Observation schema for VibeHackAI.
 
 Defines the record of MCP tool executions and their results.
 """

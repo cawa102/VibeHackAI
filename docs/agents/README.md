@@ -1,8 +1,8 @@
-# PentestAgent - Agent Definitions
+# VibeHackAI - Agent Definitions
 
 ## Overview
 
-PentestAgent is a multi-agent penetration testing support system consisting of 4 specialized agents.
+VibeHackAI is a multi-agent penetration testing support system consisting of 4 specialized agents.
 Each agent has clearly defined roles and responsibilities, operating cooperatively under the control of the Orchestrator.
 
 ## Agent Architecture
@@ -80,7 +80,7 @@ All agents receive a Context Bundle from the Orchestrator:
 
 ```json
 {
-  "session_id": "pentest-20251219-123456",
+  "session_id": "vibe-20251219-123456",
   "scope": { ... },
   "target_profile": { ... },
   "key_evidence_refs": ["ev-..."],

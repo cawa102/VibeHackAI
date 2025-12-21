@@ -1,5 +1,5 @@
 """
-Agents module for PentestAgent.
+Agents module for VibeHackAI.
 
 Contains specialized agents for each phase of penetration testing.
 """

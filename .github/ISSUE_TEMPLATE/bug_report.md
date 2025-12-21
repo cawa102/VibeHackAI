@@ -12,7 +12,7 @@ A clear and concise description of the bug.
 
 ## Steps to Reproduce
 
-1. Start PentestAgent with '...'
+1. Start VibeHackAI with '...'
 2. Run command '...'
 3. See error
 
@@ -28,7 +28,7 @@ What actually happened.
 
 - OS: [e.g., Ubuntu 22.04, macOS 14]
 - Python version: [e.g., 3.11]
-- PentestAgent version: [e.g., 0.1.0]
+- VibeHackAI version: [e.g., 0.1.0]
 - MCP servers in use: [e.g., nmap, shodan]
 
 ## Logs/Error Output

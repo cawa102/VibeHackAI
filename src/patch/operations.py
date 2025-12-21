@@ -1,5 +1,5 @@
 """
-Patch Operation Types for PentestAgent.
+Patch Operation Types for VibeHackAI.
 
 Defines the types of operations that can be performed through patches.
 """

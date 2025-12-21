@@ -1,5 +1,5 @@
 """
-Finding Candidate schema for PentestAgent.
+Finding Candidate schema for VibeHackAI.
 
 Defines potential findings that may be included in the final report.
 """
@@ -26,7 +26,7 @@ class FindingSeverity(str, Enum):
 
 class FindingCandidate(BaseSchema):
     """
-    A potential finding for the pentest report.
+    A potential finding for the security report.
 
     Findings must be backed by evidence. High/critical severity
     findings require at least 2 pieces of evidence.

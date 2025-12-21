@@ -1,5 +1,5 @@
 """
-Patch Protocol module for PentestAgent.
+Patch Protocol module for VibeHackAI.
 
 Provides state update proposal mechanism with optimistic locking
 and validation for safe state modifications.

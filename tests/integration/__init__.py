@@ -1,1 +1,1 @@
-"""Integration tests for PentestAgent."""
+"""Integration tests for VibeHackAI."""

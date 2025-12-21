@@ -1,5 +1,5 @@
 """
-Patch Audit Log for PentestAgent.
+Patch Audit Log for VibeHackAI.
 
 Records all patch application attempts for audit and debugging.
 """

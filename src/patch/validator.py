@@ -1,5 +1,5 @@
 """
-Patch Validator for PentestAgent.
+Patch Validator for VibeHackAI.
 
 Validates patches before application to ensure safety and correctness.
 """

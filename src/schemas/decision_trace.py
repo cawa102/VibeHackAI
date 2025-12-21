@@ -1,5 +1,5 @@
 """
-Decision Trace schema for PentestAgent.
+Decision Trace schema for VibeHackAI.
 
 Records decision-making processes for audit and explainability.
 """
@@ -66,7 +66,7 @@ class DecisionOption(BaseModel):
 
 class DecisionTrace(BaseSchema):
     """
-    Record of a decision made during the pentest process.
+    Record of a decision made during the security testing process.
 
     Captures what options were considered, what was selected,
     and the rationale for the decision.

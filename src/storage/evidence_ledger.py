@@ -1,5 +1,5 @@
 """
-Evidence Ledger for PentestAgent.
+Evidence Ledger for VibeHackAI.
 
 Provides append-only storage for evidence with SHA256 integrity verification.
 Evidence cannot be modified or deleted once stored.

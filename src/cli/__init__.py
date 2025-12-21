@@ -1,5 +1,5 @@
 """
-CLI module for PentestAgent.
+CLI module for VibeHackAI.
 
 Provides command-line interface for human interaction with the orchestrator.
 """
