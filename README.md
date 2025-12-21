@@ -1,43 +1,53 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=rect&color=0:000000,100:0a0a0a&height=1&section=header" width="100%"/>
-
 ```
-
-   ██╗   ██╗██╗██████╗ ███████╗██╗  ██╗ █████╗  ██████╗██╗  ██╗ █████╗ ██╗
-   ██║   ██║██║██╔══██╗██╔════╝██║  ██║██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██║
-   ██║   ██║██║██████╔╝█████╗  ███████║███████║██║     █████╔╝ ███████║██║
-   ╚██╗ ██╔╝██║██╔══██╗██╔══╝  ██╔══██║██╔══██║██║     ██╔═██╗ ██╔══██║██║
-    ╚████╔╝ ██║██████╔╝███████╗██║  ██║██║  ██║╚██████╗██║  ██╗██║  ██║██║
-     ╚═══╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝
-
-   ┌──────────────────────────────────────────────────────────────────────┐
-   │  [■] AI-POWERED PENTEST SYSTEM          [HUMAN-IN-THE-LOOP ENABLED] │
-   │  ════════════════════════════════════════════════════════════════   │
-   │  STATUS: OPERATIONAL    MODE: COLLABORATIVE    SAFETY: ENFORCED     │
-   └──────────────────────────────────────────────────────────────────────┘
-
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                  │
+│  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  │
+│  ░██╗░░░██╗░██╗░██████╗░░███████╗░██╗░░██╗░░█████╗░░░█████╗░██╗░░██╗░█████╗░██╗░  │
+│  ░██║░░░██║░██║░██╔══██╗░██╔════╝░██║░░██║░██╔══██╗░██╔══██╗██║░██╔╝██╔══██╗██║░  │
+│  ░╚██╗░██╔╝░██║░██████╦╝░█████╗░░░███████║░███████║░██║░░╚═╝█████═╝░███████║██║░  │
+│  ░░╚████╔╝░░██║░██╔══██╗░██╔══╝░░░██╔══██║░██╔══██║░██║░░██╗██╔═██╗░██╔══██║██║░  │
+│  ░░░╚██╔╝░░░██║░██████╦╝░███████╗░██║░░██║░██║░░██║░╚█████╔╝██║░╚██╗██║░░██║██║░  │
+│  ░░░░╚═╝░░░░╚═╝░╚═════╝░░╚══════╝░╚═╝░░╚═╝░╚═╝░░╚═╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░  │
+│  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  │
+│                                                                                  │
+│══════════════════════════════════════════════════════════════════════════════════│
+│                                                                                  │
+│    ╔═══════════════════════════════════════════════════════════════════════╗    │
+│    ║  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ║    │
+│    ║  ▓                                                                 ▓  ║    │
+│    ║  ▓   [SYS]  AI-POWERED PENETRATION TESTING FRAMEWORK               ▓  ║    │
+│    ║  ▓   [MOD]  HUMAN-IN-THE-LOOP COLLABORATIVE SECURITY               ▓  ║    │
+│    ║  ▓                                                                 ▓  ║    │
+│    ║  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ║    │
+│    ╚═══════════════════════════════════════════════════════════════════════╝    │
+│                                                                                  │
+│    ┌─────────────────────────────────────────────────────────────────────┐      │
+│    │ > INIT SEQUENCE                                            [OK]    │      │
+│    │ > LOADING AGENTS: RECON | ENUM | PLAN | EXPLOIT | REPORT   [OK]    │      │
+│    │ > SAFETY PROTOCOLS: APPROVAL_GATE | SCOPE_LOCK | AUTO_STOP [OK]    │      │
+│    │ > SYSTEM STATUS: ████████████████████████████████████████  [READY] │      │
+│    └─────────────────────────────────────────────────────────────────────┘      │
+│                                                                                  │
+│    ◄ AI THAT LISTENS ══════════════════════════════ HUMANS WHO DECIDE ►         │
+│                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 <br>
 
-[![CI](https://img.shields.io/github/actions/workflow/status/cawa102/VibeHackAI/ci.yml?style=flat-square&logo=github&logoColor=white&label=BUILD&labelColor=000000&color=00ff00)](https://github.com/cawa102/VibeHackAI/actions)
-[![Python](https://img.shields.io/badge/PYTHON-3.10+-00ff00?style=flat-square&logo=python&logoColor=00ff00&labelColor=000000)](https://python.org)
-[![Status](https://img.shields.io/badge/STATUS-EARLY_DEV-ff6600?style=flat-square&labelColor=000000)](https://github.com/cawa102/VibeHackAI)
-[![License](https://img.shields.io/badge/LICENSE-MIT-00ff00?style=flat-square&labelColor=000000)](LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/cawa102/VibeHackAI/ci.yml?style=flat-square&logo=github&logoColor=white&label=BUILD&labelColor=0d1117&color=238636)](https://github.com/cawa102/VibeHackAI/actions)
+[![Python](https://img.shields.io/badge/PYTHON-3.10+-58a6ff?style=flat-square&logo=python&logoColor=58a6ff&labelColor=0d1117)](https://python.org)
+[![Status](https://img.shields.io/badge/STATUS-EARLY__DEV-f0883e?style=flat-square&labelColor=0d1117)](https://github.com/cawa102/VibeHackAI)
+[![License](https://img.shields.io/badge/LICENSE-MIT-238636?style=flat-square&labelColor=0d1117)](LICENSE)
 
 <br>
 
-```
- ╔═══════════════════════════════════════════════════════════════════════════╗
- ║                    AI THAT LISTENS. HUMANS WHO DECIDE.                    ║
- ╚═══════════════════════════════════════════════════════════════════════════╝
-```
-
-[<kbd>⚡ QUICK START</kbd>](#-quick-start)&nbsp;&nbsp;
-[<kbd>🔧 HOW IT WORKS</kbd>](#-how-it-works)&nbsp;&nbsp;
-[<kbd>📁 DOCS</kbd>](docs/)&nbsp;&nbsp;
-[<kbd>🤝 CONTRIBUTE</kbd>](CONTRIBUTING.md)
+[<kbd> <br> ⚡ QUICK START <br> </kbd>](#-quick-start)&nbsp;&nbsp;&nbsp;
+[<kbd> <br> 🔧 HOW IT WORKS <br> </kbd>](#-how-it-works)&nbsp;&nbsp;&nbsp;
+[<kbd> <br> 📁 DOCS <br> </kbd>](docs/)&nbsp;&nbsp;&nbsp;
+[<kbd> <br> 🤝 CONTRIBUTE <br> </kbd>](CONTRIBUTING.md)
 
 </div>
 
