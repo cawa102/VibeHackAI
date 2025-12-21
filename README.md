@@ -1,285 +1,323 @@
 <div align="center">
 
-```
-┌──────────────────────────────────────────────────────────────────────────────────┐
-│                                                                                  │
-│  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  │
-│  ░██╗░░░██╗░██╗░██████╗░░███████╗░██╗░░██╗░░█████╗░░░█████╗░██╗░░██╗░█████╗░██╗░  │
-│  ░██║░░░██║░██║░██╔══██╗░██╔════╝░██║░░██║░██╔══██╗░██╔══██╗██║░██╔╝██╔══██╗██║░  │
-│  ░╚██╗░██╔╝░██║░██████╦╝░█████╗░░░███████║░███████║░██║░░╚═╝█████═╝░███████║██║░  │
-│  ░░╚████╔╝░░██║░██╔══██╗░██╔══╝░░░██╔══██║░██╔══██║░██║░░██╗██╔═██╗░██╔══██║██║░  │
-│  ░░░╚██╔╝░░░██║░██████╦╝░███████╗░██║░░██║░██║░░██║░╚█████╔╝██║░╚██╗██║░░██║██║░  │
-│  ░░░░╚═╝░░░░╚═╝░╚═════╝░░╚══════╝░╚═╝░░╚═╝░╚═╝░░╚═╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░  │
-│  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  │
-│                                                                                  │
-│══════════════════════════════════════════════════════════════════════════════════│
-│                                                                                  │
-│    ╔═══════════════════════════════════════════════════════════════════════╗    │
-│    ║  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ║    │
-│    ║  ▓                                                                 ▓  ║    │
-│    ║  ▓   [SYS]  AI-POWERED PENETRATION TESTING FRAMEWORK               ▓  ║    │
-│    ║  ▓   [MOD]  HUMAN-IN-THE-LOOP COLLABORATIVE SECURITY               ▓  ║    │
-│    ║  ▓                                                                 ▓  ║    │
-│    ║  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ║    │
-│    ╚═══════════════════════════════════════════════════════════════════════╝    │
-│                                                                                  │
-│    ┌─────────────────────────────────────────────────────────────────────┐      │
-│    │ > INIT SEQUENCE                                            [OK]    │      │
-│    │ > LOADING AGENTS: RECON | ENUM | PLAN | EXPLOIT | REPORT   [OK]    │      │
-│    │ > SAFETY PROTOCOLS: APPROVAL_GATE | SCOPE_LOCK | AUTO_STOP [OK]    │      │
-│    │ > SYSTEM STATUS: ████████████████████████████████████████  [READY] │      │
-│    └─────────────────────────────────────────────────────────────────────┘      │
-│                                                                                  │
-│    ◄ AI THAT LISTENS ══════════════════════════════ HUMANS WHO DECIDE ►         │
-│                                                                                  │
-└──────────────────────────────────────────────────────────────────────────────────┘
-```
+# VibeHackAI
 
-<br>
+**AI-Assisted Penetration Testing Framework with Human-in-the-Loop Control**
 
-[![CI](https://img.shields.io/github/actions/workflow/status/cawa102/VibeHackAI/ci.yml?style=flat-square&logo=github&logoColor=white&label=BUILD&labelColor=0d1117&color=238636)](https://github.com/cawa102/VibeHackAI/actions)
-[![Python](https://img.shields.io/badge/PYTHON-3.10+-58a6ff?style=flat-square&logo=python&logoColor=58a6ff&labelColor=0d1117)](https://python.org)
-[![Status](https://img.shields.io/badge/STATUS-EARLY__DEV-f0883e?style=flat-square&labelColor=0d1117)](https://github.com/cawa102/VibeHackAI)
-[![License](https://img.shields.io/badge/LICENSE-MIT-238636?style=flat-square&labelColor=0d1117)](LICENSE)
-
-<br>
-
-[<kbd> <br> ⚡ QUICK START <br> </kbd>](#-quick-start)&nbsp;&nbsp;&nbsp;
-[<kbd> <br> 🔧 HOW IT WORKS <br> </kbd>](#-how-it-works)&nbsp;&nbsp;&nbsp;
-[<kbd> <br> 📁 DOCS <br> </kbd>](docs/)&nbsp;&nbsp;&nbsp;
-[<kbd> <br> 🤝 CONTRIBUTE <br> </kbd>](CONTRIBUTING.md)
+[![CI](https://img.shields.io/github/actions/workflow/status/cawa102/VibeHackAI/ci.yml?style=flat-square&logo=github&label=build)](https://github.com/cawa102/VibeHackAI/actions)
+[![Python](https://img.shields.io/badge/python-3.10+-blue?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Status](https://img.shields.io/badge/status-early_development-orange?style=flat-square)](https://github.com/cawa102/VibeHackAI)
 
 </div>
 
-<br>
+---
+
+## Overview
+
+VibeHackAI is a conversational penetration testing assistant that combines AI reasoning with mandatory human oversight. Unlike fully autonomous security tools, VibeHackAI requires explicit human approval before executing any potentially dangerous actions.
+
+**Core Philosophy: AI proposes, humans decide.**
+
+The system is designed for security professionals who want AI assistance for reconnaissance, enumeration, and vulnerability analysis while maintaining full control over what actions are taken against target systems.
+
+### Why Human-in-the-Loop?
+
+Fully autonomous penetration testing tools face fundamental limitations:
+
+| Problem | Impact |
+|---------|--------|
+| Scope violations | AI scans unrelated hosts without understanding authorization boundaries |
+| False confidence | AI reports "confirmed" vulnerabilities that don't exist |
+| Dangerous actions | AI executes destructive payloads without understanding consequences |
+| Context loss | AI forgets previous findings and repeats failed approaches |
+
+VibeHackAI addresses these issues by keeping humans in the decision loop. The AI handles analysis and suggestions; you make the final call on every significant action.
 
 ---
 
-## ⚠️ The Problem
+## Features
 
-```
-[!] CRITICAL: Autonomous AI pentest tools don't know when they're wrong.
+### Implemented (v0.1.0)
 
-    → Wrong targets scanned
-    → Rabbit holes pursued
-    → Dangerous payloads executed without understanding
-    → False positives reported with full confidence
-```
+- **5 Specialized Agents** — Reconnaissance, Enumeration, Planner, Exploitation, Reporting
+- **Approval Gates** — Dangerous operations require explicit human approval
+- **Scope Enforcement** — Out-of-scope targets are automatically blocked
+- **Evidence Storage** — Append-only storage with SHA256 verification
+- **Conversation Interface** — Natural language interaction for course correction
+- **Auto-Stop** — Consecutive errors pause execution and await human decision
 
-**VibeHackAI is different.** `AI proposes` → `You review` → `You correct` → `You approve`
+### Planned (Requires MCP Integration)
 
----
-
-## ⚠️ Development Status
-
-```
-┌──────────────────────────────────────────────────────────────────────────┐
-│  [!] EARLY DEVELOPMENT - v0.1.0                                          │
-│                                                                          │
-│  Current Status:                                                         │
-│  ├─ Core Architecture    [DONE]  Orchestrator, Agents, Schemas           │
-│  ├─ CLI Interface        [DONE]  Interactive conversation UI             │
-│  ├─ Safety Controls      [DONE]  Approval gates, scope lock, auto-stop   │
-│  ├─ MCP Adapters         [WIP]   Mock mode only - real integration TBD   │
-│  └─ External Tools       [TBD]   Shodan, Metasploit, Burp integration    │
-│                                                                          │
-│  The tool currently runs in DEMO MODE with simulated responses.          │
-│  Full MCP integration is under active development.                       │
-└──────────────────────────────────────────────────────────────────────────┘
-```
+- External tool integration (Nmap, Shodan, Metasploit, Burp Suite, Snyk)
+- Real-time vulnerability scanning
+- Automated evidence collection from live systems
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 ### Prerequisites
 
-```
-[*] Python 3.10+     Required
-```
+- Python 3.10 or higher
+- pip package manager
 
-### Install & Run (Demo Mode)
+### Installation
 
 ```bash
-$ git clone https://github.com/cawa102/VibeHackAI.git
-$ cd VibeHackAI
-$ python -m venv venv && source venv/bin/activate
-$ pip install -e .
+git clone https://github.com/cawa102/VibeHackAI.git
+cd VibeHackAI
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -e .
+```
+
+### Launch
+
+```bash
+pentest-agent
+```
+
+---
+
+## Usage (Demo Mode)
+
+The current release runs in **demo mode** with simulated responses. This allows you to explore the interface and workflow without connecting to external tools or scanning real targets.
+
+### Demo Mode Characteristics
+
+| Aspect | Behavior |
+|--------|----------|
+| **Network activity** | None — all responses are simulated |
+| **External APIs** | Not called — no API keys required |
+| **Target systems** | Not contacted — safe to run anywhere |
+| **Data persistence** | Local only — session data stored in `./workspace/` |
+
+### Basic Commands
+
+After launching `pentest-agent`, you can use the following commands:
+
+| Command | Description |
+|---------|-------------|
+| `help` | Display available commands and usage |
+| `start <session-name>` | Create a new pentest session |
+| `scope set <target>` | Define authorized target scope |
+| `status` | Show current session and phase status |
+| `approve` / `deny` | Respond to approval requests |
+| `stop` | Pause current operation |
+| `exit` | End session and exit |
+
+### Example Session
+
+```
 $ pentest-agent
 
-[*] VibeHackAI v0.1.0 initialized (demo mode)
-[*] Awaiting target scope...
+[*] VibeHackAI v0.1.0 initialized
+[*] Type 'help' for available commands
+
+vibehack> start demo-session
+
+[*] Session created: demo-session
+[?] What targets are you authorized to test?
+
+vibehack> scope set 192.168.1.0/24
+
+[*] Scope configured: 192.168.1.0/24
+[*] Starting reconnaissance phase...
+
+vibehack> status
+
+Session: demo-session
+Phase: RECON
+Scope: 192.168.1.0/24
+Findings: 0
+Pending approvals: 0
 ```
 
-### Full Setup (When MCP Integration is Complete)
+### Expected Behavior
 
-> 📖 See [INSTALLATION.md](INSTALLATION.md) for MCP server configuration.
->
-> **Required API Keys** (for future releases):
-> - `SHODAN_API_KEY` — https://account.shodan.io/
-> - `SNYK_TOKEN` — https://app.snyk.io/account
-> - `GITHUB_PERSONAL_ACCESS_TOKEN` — https://github.com/settings/tokens
+When functioning correctly, you should see:
+
+- `[*]` prefix for informational messages
+- `[?]` prefix for questions requiring input
+- `[!]` prefix for approval requests
+- `[✓]` prefix for completed actions
+- Clear indication of current phase (RECON → ENUM → PLAN → EXPLOIT → REPORT)
+
+### Demo vs. Full MCP Mode
+
+| Capability | Demo Mode | With MCP Integration |
+|------------|-----------|---------------------|
+| Interface exploration | ✓ | ✓ |
+| Workflow validation | ✓ | ✓ |
+| Simulated findings | ✓ | Real findings |
+| Network scanning | — | ✓ (Nmap, Shodan) |
+| Vulnerability lookup | — | ✓ (Snyk, CVE databases) |
+| Active exploitation | — | ✓ (Metasploit, with approval) |
 
 ---
 
-## 🔧 How It Works
+## Scope & Safety
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ vibehack> scan 192.168.1.0/24                                               │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  [*] RECON COMPLETE                                                         │
-│                                                                             │
-│      Found: Apache Struts 2.3.31 @ 192.168.1.50:8080                        │
-│      CVE:   CVE-2017-5638 (RCE) - CRITICAL                                  │
-│                                                                             │
-│  [?] Enumerate /admin path? [Y/n]                                           │
-│                                                                             │
-│  vibehack> focus on /api first                                              │
-│                                                                             │
-│  [*] REDIRECTING: /api endpoints prioritized                                │
-│  [*] ENUMERATION COMPLETE                                                   │
-│                                                                             │
-│      Endpoint: /api/v1/users - SQLi potential                               │
-│      Endpoint: /api/v1/upload - Unrestricted file upload                    │
-│                                                                             │
-│  [!] APPROVAL REQUIRED                                                      │
-│  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │  ACTION:  Verify CVE-2017-5638 exploitability                       │    │
-│  │  METHOD:  Non-destructive payload (echo test)                       │    │
-│  │  RISK:    LOW - Read-only verification                              │    │
-│  │                                                                     │    │
-│  │  [A]pprove  [D]eny  [?]Explain                                      │    │
-│  └─────────────────────────────────────────────────────────────────────┘    │
-│                                                                             │
-│  vibehack> A                                                                │
-│                                                                             │
-│  [✓] EXECUTING: APR-2025-0142                                               │
-│  [✓] VULNERABILITY CONFIRMED                                                │
-│  [✓] EVIDENCE SAVED: evidence/CVE-2017-5638/                                │
-│  [✓] SHA256: a3f2b8c9d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9   │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+### Authorization Requirements
 
-**`When AI is wrong, you tell it. No restart. No config. Just conversation.`**
+**VibeHackAI must only be used against systems you are explicitly authorized to test.**
 
----
+Before using this tool:
 
-## 🏗️ Architecture
+1. Obtain written authorization from the system owner
+2. Define clear scope boundaries (IP ranges, domains, excluded systems)
+3. Understand and comply with applicable laws and regulations
 
-```
-                         ┌─────────────────────────────┐
-                         │         👤 OPERATOR         │
-                         │   REVIEW ─ CORRECT ─ APPROVE│
-                         └──────────────┬──────────────┘
-                                        │
-                    ╔═══════════════════╧═══════════════════╗
-                    ║            ORCHESTRATOR               ║
-                    ║  ┌──────┬──────┬──────┬──────┐       ║
-                    ║  │ CONV │ GATE │ STATE│ STOP │       ║
-                    ║  │  💬  │  🔒  │  🧠  │  ⛔  │       ║
-                    ║  └──────┴──────┴──────┴──────┘       ║
-                    ╚═══════════════════╤═══════════════════╝
-                                        │
-       ┌──────────┬──────────┬──────────┼──────────┬──────────┐
-       ▼          ▼          ▼          ▼          ▼          ▼
-   ┌───────┐  ┌───────┐  ┌───────┐  ┌───────┐  ┌───────┐
-   │ RECON │  │ ENUM  │  │ PLAN  │  │EXPLOIT│  │REPORT │
-   │  🔍   │  │  🎯   │  │  📋   │  │  💥   │  │  📄   │
-   └───┬───┘  └───┬───┘  └───┬───┘  └───┬───┘  └───┬───┘
-       └──────────┴──────────┴──────────┴──────────┘
-                             │
-                ╔════════════╧════════════╗
-                ║    🗄️ EVIDENCE STORE    ║
-                ║  APPEND-ONLY │ SHA256   ║
-                ╚═════════════════════════╝
-```
+### Prohibited Actions
 
-<table>
-<tr>
-<td align="center">
+The following are strictly prohibited:
 
-**`5 AGENTS`**<br>
-<sub>Recon • Enum • Planner • Exploit • Report</sub>
+- Scanning or testing systems without explicit written authorization
+- Indiscriminate scanning of public IP ranges
+- Using the tool for denial-of-service attacks
+- Data exfiltration beyond proof-of-concept
+- Establishing persistence on target systems
+- Lateral movement without explicit approval per hop
 
-</td>
-<td align="center">
+### Destructive Action Controls
 
-**`11+ TOOLS`**<br>
-<sub>Nmap • Shodan • Burp • Metasploit • Kali • Snyk</sub>
+| Control | Status | Description |
+|---------|--------|-------------|
+| Approval gates | Implemented | All exploitation actions require explicit approval |
+| Scope lock | Implemented | Out-of-scope targets blocked automatically |
+| Dry-run mode | Implemented | Preview commands before execution |
+| Rollback | Implemented | Revert to previous phase on failure |
+| Destructive payload block | Planned | Block payloads that modify target filesystem |
+| Rate limiting | Planned | Prevent accidental DoS through request flooding |
 
-</td>
-<td align="center">
+### Project Philosophy
 
-**`EVIDENCE`**<br>
-<sub>SHA256 Verified • Court-Ready Audit</sub>
+VibeHackAI is intentionally **not** a fully autonomous attack tool. We believe:
 
-</td>
-</tr>
-</table>
+1. **Humans must remain accountable** — Security testing carries legal and ethical responsibilities that cannot be delegated to AI
+2. **Context matters** — AI cannot fully understand authorization boundaries, business impact, or engagement rules
+3. **Errors require judgment** — When something goes wrong, human expertise is needed to decide next steps
+4. **Trust must be earned** — Each action builds (or breaks) trust with the target organization
+
+The human-in-the-loop design is a feature, not a limitation.
 
 ---
 
-## 🛡️ Safety Controls
+## Architecture
 
 ```
-┌──────────────────────────────────────────────────────────────────────────┐
-│  CONTROL           │  STATUS   │  DESCRIPTION                           │
-├──────────────────────────────────────────────────────────────────────────┤
-│  Approval Gates    │  [ON]     │  Dangerous actions require approval    │
-│  Scope Lock        │  [ON]     │  Out-of-scope targets auto-blocked     │
-│  Course Correct    │  [ON]     │  Natural language redirection          │
-│  Auto-Stop         │  [ON]     │  Consecutive errors pause execution    │
-│  Rollback          │  [ON]     │  Failed exploits revert to safe state  │
-└──────────────────────────────────────────────────────────────────────────┘
+                    ┌─────────────────────────┐
+                    │      Human Operator     │
+                    │  Review → Correct →     │
+                    │       Approve           │
+                    └───────────┬─────────────┘
+                                │
+                    ╔═══════════╧═══════════╗
+                    ║     Orchestrator      ║
+                    ║  Routing │ Approval   ║
+                    ║  State   │ Safety     ║
+                    ╚═══════════╤═══════════╝
+                                │
+        ┌───────┬───────┬───────┼───────┬───────┐
+        ▼       ▼       ▼       ▼       ▼       ▼
+    ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
+    │ Recon ││ Enum  ││Planner││Exploit││Report │
+    └───┬───┘└───┬───┘└───┬───┘└───┬───┘└───┬───┘
+        └────────┴────────┴───┬────┴────────┘
+                              │
+                    ╔═════════╧═════════╗
+                    ║  Evidence Store   ║
+                    ║ Append-only │ SHA256
+                    ╚═══════════════════╝
 ```
+
+### Components
+
+| Component | Responsibility |
+|-----------|---------------|
+| **Orchestrator** | Coordinates agents, enforces approvals, manages state |
+| **Recon Agent** | Passive information gathering (OSINT, DNS, Shodan) |
+| **Enum Agent** | Active enumeration (ports, services, endpoints) |
+| **Planner Agent** | CVE mapping, exploit selection, attack planning |
+| **Exploit Agent** | Controlled exploitation with approval gates |
+| **Report Agent** | Finding consolidation and report generation |
+| **Evidence Store** | Immutable storage with cryptographic verification |
 
 ---
 
-## 📚 Documentation
+## Roadmap
 
-| | Resource | Description |
-|:--|:---------|:------------|
-| `📦` | [INSTALLATION.md](INSTALLATION.md) | Setup guide + MCP config |
-| `📁` | [docs/](docs/) | Technical specifications |
-| `🎓` | [examples/](examples/) | Tutorials |
-| `🤝` | [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guide |
-| `🔒` | [SECURITY.md](SECURITY.md) | Security policy |
+### Current Release (v0.1.0)
+
+- [x] Core architecture (Orchestrator, Agents, Schemas)
+- [x] CLI interface with conversation support
+- [x] Safety controls (approval gates, scope lock, auto-stop)
+- [x] Demo mode with simulated responses
+- [x] Evidence storage framework
+
+### Next Milestone (v0.2.0)
+
+- [ ] MCP adapter integration
+- [ ] Nmap MCP support
+- [ ] Basic Shodan integration
+- [ ] Session persistence and resume
+
+### Future
+
+- [ ] Metasploit MCP integration
+- [ ] Burp Suite MCP integration
+- [ ] Report generation (PDF, Markdown)
+- [ ] Multi-session management
 
 ---
 
-## 🤝 Contributing
+## Documentation
+
+| Resource | Description |
+|----------|-------------|
+| [INSTALLATION.md](INSTALLATION.md) | Full setup guide including MCP configuration |
+| [docs/](docs/) | Technical specifications and design documents |
+| [examples/](examples/) | Usage examples and tutorials |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines |
+| [SECURITY.md](SECURITY.md) | Security policy and vulnerability reporting |
+
+---
+
+## Contributing
+
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting pull requests.
 
 ```bash
-$ git checkout -b feature/your-feature
-$ pytest
-$ # Submit PR
+git checkout -b feature/your-feature
+pytest  # Ensure tests pass
+# Submit pull request
 ```
 
-**`WANTED:`** MCP adapters • i18n • Report templates • Test coverage
+### Areas of Interest
+
+- MCP adapter implementations
+- Test coverage improvements
+- Documentation and examples
+- Internationalization
 
 ---
 
-## ⚖️ Legal
+## License
 
-```
-[!] AUTHORIZED SECURITY TESTING ONLY
-    You are responsible for every action you approve.
-```
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+## Acknowledgments
+
+- Built on [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) by Anthropic
+- Inspired by [PentestGPT](https://github.com/GreyDGL/PentestGPT)
 
 ---
 
 <div align="center">
 
-```
-───────────────────────────────────────────────────────────────────────────────
-  MIT License │ Built on MCP │ Inspired by PentestGPT
-───────────────────────────────────────────────────────────────────────────────
-```
-
-[![Star](https://img.shields.io/github/stars/cawa102/VibeHackAI?style=flat-square&logo=github&label=STARS&labelColor=000000&color=00ff00)](https://github.com/cawa102/VibeHackAI)
-[![Forks](https://img.shields.io/github/forks/cawa102/VibeHackAI?style=flat-square&logo=github&label=FORKS&labelColor=000000&color=00ffff)](https://github.com/cawa102/VibeHackAI/fork)
+**⚠️ Use responsibly. You are accountable for every action you approve.**
 
 </div>
