@@ -73,8 +73,10 @@ target-version = "py310"
 select = ["E", "F", "W"]
 ignore = [
     "E501",  # Line too long
+    "E402",  # Module level import not at top of file
     "F401",  # Unused imports - will fix in future PR
     "F541",  # f-string without placeholders
+    "F811",  # Redefinition of unused name
     "F841",  # Local variable assigned but never used
 ]
 

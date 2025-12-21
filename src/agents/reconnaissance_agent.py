@@ -9,7 +9,7 @@ from __future__ import annotations
 import ipaddress
 import uuid
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from ..mcp_adapters.base_adapter import MCPResult
 from ..mcp_adapters.nmap_adapter import NmapAdapter
