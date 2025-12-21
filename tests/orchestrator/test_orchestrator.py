@@ -304,13 +304,25 @@ class TestOrchestratorWorkflow:
             config=config,
         )
 
+        # Phase-specific results needed for can_advance checks
+        phase_results = {
+            "recon_agent": {"success": True, "targets_found": 1},
+            "enum_agent": {"success": True, "services_found": 1},
+            "planner_agent": {"success": True, "plans_created": 1},
+            "exploit_agent": {"success": True, "exploits_run": 1},
+            "reporter_agent": {"success": True, "report_generated": True},
+        }
+
         # Register handlers for all phases
-        def success_handler(context):
-            return AgentResult(
-                agent_type=context.agent_type,
-                success=True,
-                phase_result={"success": True},
-            )
+        def make_handler(agent_type):
+            def handler(context):
+                return AgentResult(
+                    agent_type=agent_type,
+                    success=True,
+                    phase_result=phase_results.get(agent_type, {"success": True}),
+                )
+
+            return handler
 
         for agent_type in [
             "recon_agent",
@@ -319,7 +331,7 @@ class TestOrchestratorWorkflow:
             "exploit_agent",
             "reporter_agent",
         ]:
-            orchestrator.register_agent_handler(agent_type, success_handler)
+            orchestrator.register_agent_handler(agent_type, make_handler(agent_type))
 
         # Run workflow
         result = orchestrator.run_workflow()
