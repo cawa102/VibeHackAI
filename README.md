@@ -15,11 +15,25 @@
 
 ## Overview
 
-VibeHackAI is a conversational penetration testing assistant that combines AI reasoning with mandatory human oversight. Unlike fully autonomous security tools, VibeHackAI requires explicit human approval before executing any potentially dangerous actions.
+VibeHackAI is a conversational penetration testing assistant that combines AI reasoning with mandatory human oversight.
 
 **Core Philosophy: AI proposes, humans decide.**
 
-The system is designed for security professionals who want AI assistance for reconnaissance, enumeration, and vulnerability analysis while maintaining full control over what actions are taken against target systems.
+### What Makes VibeHackAI Different
+
+| | Autonomous Tools | PentestGPT | VibeHackAI |
+|---|---|---|---|
+| **Execution** | AI runs everything | Human types commands | AI executes with human approval |
+| **Control** | Minimal oversight | Full manual control | Human validates AI reasoning |
+| **Risk** | AI may go rogue | Slow, human bottleneck | Balanced safety and efficiency |
+
+**Two key differentiators:**
+
+1. **vs. Autonomous penetration tools** — VibeHackAI combines AI and human reasoning to prevent uncontrolled AI behavior. The human reviews the AI's plan, validates the logic, and provides course corrections before any action is taken.
+
+2. **vs. PentestGPT-style tools** — While PentestGPT requires humans to manually type and execute every command, VibeHackAI's AI handles command execution across all testing phases. Humans focus on strategic decisions rather than operational details.
+
+**The result:** Higher success rates through collaborative intelligence. Humans contribute domain expertise and judgment; AI contributes speed, consistency, and comprehensive analysis. Neither works alone—both work together.
 
 ### Why Human-in-the-Loop?
 
