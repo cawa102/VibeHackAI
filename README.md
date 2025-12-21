@@ -568,6 +568,12 @@ We thank all the developers and maintainers of these projects for their contribu
 
 ---
 
+## Contact
+
+**Kyosuke Kawai** — [LinkedIn](https://linkedin.com/in/kyosuke-kawai-68919b389)
+
+---
+
 <div align="center">
 
 **⚠️ Use responsibly. You are accountable for every action you approve.**
