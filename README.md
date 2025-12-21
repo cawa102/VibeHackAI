@@ -23,7 +23,7 @@
 
 [![CI](https://img.shields.io/github/actions/workflow/status/cawa102/VibeHackAI/ci.yml?style=flat-square&logo=github&logoColor=white&label=BUILD&labelColor=000000&color=00ff00)](https://github.com/cawa102/VibeHackAI/actions)
 [![Python](https://img.shields.io/badge/PYTHON-3.10+-00ff00?style=flat-square&logo=python&logoColor=00ff00&labelColor=000000)](https://python.org)
-[![MCP](https://img.shields.io/badge/MCP-INTEGRATED-00ffff?style=flat-square&labelColor=000000)](https://modelcontextprotocol.io/)
+[![Status](https://img.shields.io/badge/STATUS-EARLY_DEV-ff6600?style=flat-square&labelColor=000000)](https://github.com/cawa102/VibeHackAI)
 [![License](https://img.shields.io/badge/LICENSE-MIT-00ff00?style=flat-square&labelColor=000000)](LICENSE)
 
 <br>
@@ -60,50 +60,55 @@
 
 ---
 
+## ⚠️ Development Status
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│  [!] EARLY DEVELOPMENT - v0.1.0                                          │
+│                                                                          │
+│  Current Status:                                                         │
+│  ├─ Core Architecture    [DONE]  Orchestrator, Agents, Schemas           │
+│  ├─ CLI Interface        [DONE]  Interactive conversation UI             │
+│  ├─ Safety Controls      [DONE]  Approval gates, scope lock, auto-stop   │
+│  ├─ MCP Adapters         [WIP]   Mock mode only - real integration TBD   │
+│  └─ External Tools       [TBD]   Shodan, Metasploit, Burp integration    │
+│                                                                          │
+│  The tool currently runs in DEMO MODE with simulated responses.          │
+│  Full MCP integration is under active development.                       │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## ⚡ Quick Start
 
 ### Prerequisites
 
 ```
 [*] Python 3.10+     Required
-[*] Node.js 18+      Required (for MCP servers)
-[*] nmap             Recommended
-[*] Docker           Optional (for some MCP servers)
 ```
 
-### 1. Install
+### Install & Run (Demo Mode)
 
 ```bash
 $ git clone https://github.com/cawa102/VibeHackAI.git
 $ cd VibeHackAI
 $ python -m venv venv && source venv/bin/activate
 $ pip install -e .
-```
-
-### 2. Configure MCP Servers
-
-```bash
-$ cp .env.example .env
-$ vim .env  # Add your API keys
-```
-
-```
-# .env - Required API keys for full functionality
-SHODAN_API_KEY=your_key        # https://account.shodan.io/
-SNYK_TOKEN=your_token          # https://app.snyk.io/account
-GITHUB_PERSONAL_ACCESS_TOKEN=  # https://github.com/settings/tokens
-```
-
-### 3. Run
-
-```bash
 $ pentest-agent
 
-[*] VibeHackAI v0.1.0 initialized
+[*] VibeHackAI v0.1.0 initialized (demo mode)
 [*] Awaiting target scope...
 ```
 
-> 📖 **Full setup guide:** [INSTALLATION.md](INSTALLATION.md)
+### Full Setup (When MCP Integration is Complete)
+
+> 📖 See [INSTALLATION.md](INSTALLATION.md) for MCP server configuration.
+>
+> **Required API Keys** (for future releases):
+> - `SHODAN_API_KEY` — https://account.shodan.io/
+> - `SNYK_TOKEN` — https://app.snyk.io/account
+> - `GITHUB_PERSONAL_ACCESS_TOKEN` — https://github.com/settings/tokens
 
 ---
 
