@@ -202,17 +202,88 @@ Edit `.mcp.json` in the repository root. The table below shows what you need to 
 
 | Server | User Action Required | Prerequisites |
 |--------|---------------------|---------------|
-| **nmap** | None (works as-is) | Install nmap on system |
+| **nmap** | None (works as-is) | [Install nmap](#install-nmap) |
 | **gitlab** | None (works as-is) | None |
-| **shodan** | Replace `YOUR_SHODAN_API_KEY` | [Get API key](https://account.shodan.io/) |
-| **whoisxmlapi** | Replace `YOUR_WHOISXMLAPI_API_KEY` | [Get API key](https://whoisxmlapi.com/) |
-| **snyk** | Replace `YOUR_SNYK_TOKEN` | Install snyk CLI: `npm i -g snyk` |
-| **github** | Replace `YOUR_GITHUB_PERSONAL_ACCESS_TOKEN` | Install Docker |
+| **shodan** | Replace `YOUR_SHODAN_API_KEY` | [Get API key](https://account.shodan.io/) (free tier available) |
+| **whoisxmlapi** | Replace `YOUR_WHOISXMLAPI_API_KEY` | [Get API key](https://whoisxmlapi.com/) (free tier: 500 queries/month) |
+| **snyk** | Replace `YOUR_SNYK_TOKEN` | [Install Snyk CLI](#install-snyk) |
+| **github** | Replace `YOUR_GITHUB_PERSONAL_ACCESS_TOKEN` | [Install Docker](#install-docker) + [Create token](https://github.com/settings/tokens) |
 | **filesystem** | Replace `/path/to/your/workspace` | None |
-| **burpsuite** | Replace `${BURP_MCP_PROXY_JAR_PATH}` | Burp Suite Pro + Java 11+ |
-| **cve-search** | Replace `${CVE_SEARCH_MCP_DIR}` | Clone CVE-search MCP + uv |
-| **metasploit** | Replace `${METASPLOIT_MCP_DIR}` and `YOUR_MSF_PASSWORD` | Metasploit + msfrpcd running |
-| **kali** | Full setup required | Kali Linux + mcp-server |
+| **burpsuite** | Replace `${BURP_MCP_PROXY_JAR_PATH}` | [Setup Burp MCP](#setup-burp-suite-mcp) |
+| **cve-search** | Replace `${CVE_SEARCH_MCP_DIR}` | [Setup CVE-Search MCP](#setup-cve-search-mcp) |
+| **metasploit** | Replace `${METASPLOIT_MCP_DIR}` and `YOUR_MSF_PASSWORD` | [Setup Metasploit MCP](#setup-metasploit-mcp) |
+| **kali** | Full setup required | [Setup Kali MCP](#setup-kali-mcp) |
+
+<details>
+<summary><strong>Prerequisites Installation Guide</strong></summary>
+
+##### Install nmap
+
+```bash
+# macOS
+brew install nmap
+
+# Ubuntu/Debian
+sudo apt update && sudo apt install nmap
+
+# Windows (run as Administrator)
+choco install nmap
+```
+
+##### Install Snyk
+
+```bash
+npm install -g snyk
+snyk auth  # Follow browser prompt to authenticate
+```
+
+##### Install Docker
+
+- **macOS/Windows**: Download [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- **Linux**: Follow [official guide](https://docs.docker.com/engine/install/)
+
+##### Setup Burp Suite MCP
+
+1. Install [Burp Suite Professional](https://portswigger.net/burp/pro) and Java 11+
+2. Download MCP extension from [PortSwigger BApp Store](https://portswigger.net/bappstore/9952290f04ed4f628e624d0aa9dccebc)
+3. Download proxy JAR from [GitHub releases](https://github.com/PortSwigger/mcp-server/releases)
+4. Update `${BURP_MCP_PROXY_JAR_PATH}` in `.mcp.json`
+
+##### Setup CVE-Search MCP
+
+```bash
+git clone https://github.com/roadwy/cve-search_mcp.git
+cd cve-search_mcp
+pip install uv  # or: brew install uv
+```
+Update `${CVE_SEARCH_MCP_DIR}` in `.mcp.json` to the cloned directory path.
+
+##### Setup Metasploit MCP
+
+1. Install [Metasploit Framework](https://docs.metasploit.com/docs/using-metasploit/getting-started/nightly-installers.html)
+2. Start msfrpcd:
+   ```bash
+   msfrpcd -P your_password -S -a 127.0.0.1
+   ```
+3. Clone MCP server:
+   ```bash
+   git clone https://github.com/GH05TCREW/MetasploitMCP.git
+   ```
+4. Update `${METASPLOIT_MCP_DIR}` and `YOUR_MSF_PASSWORD` in `.mcp.json`
+
+##### Setup Kali MCP
+
+1. Install [Kali Linux](https://www.kali.org/get-kali/) (VM or native)
+2. Clone and start MCP server:
+   ```bash
+   git clone https://github.com/Wh0am123/MCP-Kali-Server.git
+   cd MCP-Kali-Server
+   pip install -r requirements.txt
+   python server.py
+   ```
+3. Update the server URL in `.mcp.json` if not using localhost
+
+</details>
 
 #### Minimal Setup (Recommended for beginners)
 
