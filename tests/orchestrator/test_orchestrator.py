@@ -305,12 +305,13 @@ class TestOrchestratorWorkflow:
         )
 
         # Phase-specific results needed for can_advance checks
+        # Agent names must match PHASE_AGENTS in router.py
         phase_results = {
             "recon_agent": {"success": True, "targets_found": 1},
-            "enum_agent": {"success": True, "services_found": 1},
+            "enumeration_agent": {"success": True, "services_found": 1},
             "planner_agent": {"success": True, "plans_created": 1},
-            "exploit_agent": {"success": True, "exploits_run": 1},
-            "reporter_agent": {"success": True, "report_generated": True},
+            "exploitation_agent": {"success": True, "exploits_run": 1},
+            "reporting_agent": {"success": True, "report_generated": True},
         }
 
         # Register handlers for all phases
@@ -324,12 +325,13 @@ class TestOrchestratorWorkflow:
 
             return handler
 
+        # Agent names must match PHASE_AGENTS in router.py
         for agent_type in [
             "recon_agent",
-            "enum_agent",
+            "enumeration_agent",
             "planner_agent",
-            "exploit_agent",
-            "reporter_agent",
+            "exploitation_agent",
+            "reporting_agent",
         ]:
             orchestrator.register_agent_handler(agent_type, make_handler(agent_type))
 
