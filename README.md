@@ -1,21 +1,44 @@
 <div align="center">
 
-# VibeHackAI v2.0
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,14,16,18,20&height=180&section=header&text=VibeHackAI%20v2.0&fontSize=42&fontColor=fff&animation=fadeIn&fontAlignY=32&desc=AI-Assisted%20Penetration%20Testing%20Framework&descSize=16&descAlignY=52"/>
 
-**AI-Assisted Penetration Testing Framework with Human-in-the-Loop Control**
+<br/>
 
 [![CI](https://img.shields.io/github/actions/workflow/status/cawa102/VibeHackAI/ci.yml?style=flat-square&logo=github&label=build)](https://github.com/cawa102/VibeHackAI/actions)
 [![Python](https://img.shields.io/badge/python-3.10+-blue?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 [![Status](https://img.shields.io/badge/status-early_development-orange?style=flat-square)](https://github.com/cawa102/VibeHackAI)
 
+**🔍 Reconnaissance** · **📋 Enumeration** · **⚡ Exploitation** · **🛡️ Human Control**
+
 </div>
 
 ## Overview
 
+This system provides an agentic AI experience as if you were leading an Penetration Test Team!
+
 VibeHackAI is an interactive penetration testing support system that leverages Claude Code's agent capabilities and MCP (Model Context Protocol). Four specialized agents (Planner, Reconnaissance, Enumeration, Exploitation) work in coordination with an Orchestrator to execute safe and efficient security assessments under human supervision.
 
-This system provides an agentic AI experience as if you were leading an Penetration Test Team!
+### Two key differentiators
+
+1. **vs. Autonomous penetration tools** — VibeHackAI combines AI and human reasoning to prevent uncontrolled AI behavior. The human reviews the AI's plan, validates the logic, and provides course corrections before any action is taken.
+
+2. **vs. PentestGPT-style tools** — While PentestGPT requires humans to manually type and execute every command, VibeHackAI's AI handles command execution across all testing phases. Humans focus on strategic decisions rather than operational details.
+
+**The result:** Higher success rates through collaborative intelligence. Humans contribute domain expertise and judgment; AI contributes speed, consistency, and comprehensive analysis. Neither works alone—both work together.
+
+### Why Human-in-the-Loop?
+
+Fully autonomous penetration testing tools face fundamental limitations:
+
+| Problem | Impact |
+|---------|--------|
+| Scope violations | AI scans unrelated hosts without understanding authorization boundaries |
+| False confidence | AI reports "confirmed" vulnerabilities that don't exist |
+| Dangerous actions | AI executes destructive payloads without understanding consequences |
+| Context loss | AI forgets previous findings and repeats failed approaches |
+
+VibeHackAI addresses these issues by keeping humans in the decision loop. The AI handles analysis and suggestions; you make the final call on every significant action.
 
 ## Architecture
 
