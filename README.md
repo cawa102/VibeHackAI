@@ -13,53 +13,34 @@
 
 ## Overview
 
-VibeHackAI is an interactive penetration testing support system that leverages Claude Code's agent capabilities and MCP (Model Context Protocol). Four specialized agents (Reconnaissance, Enumeration, Planner, Exploitation) work in coordination with an Orchestrator to execute safe and efficient security assessments under human supervision.
+VibeHackAI is an interactive penetration testing support system that leverages Claude Code's agent capabilities and MCP (Model Context Protocol). Four specialized agents (Planner, Reconnaissance, Enumeration, Exploitation) work in coordination with an Orchestrator to execute safe and efficient security assessments under human supervision.
 
 **Important**: This system is designed to support penetration testing with **scope compliance, safety, evidence collection, and reproducibility** as top priorities—not to automate attacks.
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    Human Interface                          │
-│              (Approval, Interaction, Oversight)             │
-└─────────────────────────────────┬───────────────────────────┘
-                                  │
-┌─────────────────────────────────▼───────────────────────────┐
-│                 Orchestrator Agent                          │
-│            (Control Plane - Single Writer)                  │
-│  ┌─────────────┬─────────────┬─────────────┐               │
-│  │    State    │  Approval   │    Agent    │               │
-│  │  Management │    Gates    │   Routing   │               │
-│  └─────────────┴─────────────┴─────────────┘               │
-└─────────────────────────────────┬───────────────────────────┘
-                                  │
-        ┌─────────────────────────┼─────────────────────────┐
-        │                         │                         │
-┌───────▼───────┐   ┌─────────────▼─────────────┐   ┌───────▼───────┐
-│ Reconnaissance │   │      Enumeration         │   │   Planner     │
-│    Agent      │   │        Agent             │   │    Agent      │
-└───────────────┘   └──────────────────────────┘   └───────────────┘
-                                  │
-                    ┌─────────────▼─────────────┐
-                    │     Exploitation          │
-                    │       Agent               │
-                    └──────────────────────────┘
-                                  │
-┌─────────────────────────────────▼───────────────────────────┐
-│                    Shared Workspace                         │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐            │
-│  │State Store │  │Evidence    │  │Retrieval   │            │
-│  │(Normalized)│  │Store       │  │Cache       │            │
-│  └────────────┘  └────────────┘  └────────────┘            │
-└─────────────────────────────────────────────────────────────┘
-                                  │
-┌─────────────────────────────────▼───────────────────────────┐
-│                    MCP Servers                              │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐            │
-│  │  GitHub    │  │hexstrike-ai│  │ Filesystem │            │
-│  └────────────┘  └────────────┘  └────────────┘            │
-└─────────────────────────────────────────────────────────────┘
+               ┌──────────────────────────────────────────────────────┐
+               │                   Human Interface                    │
+               │          (Approval, Interaction, Oversight)          │
+               └──────────────────────────┬───────────────────────────┘
+                                          │          
+               ┌──────────────────────────▼────────────────────────────┐
+               │                  Orchestrator Agent                   │         　┌──────────────────────────────────────────────────┐          
+               │                (Control Plane - Writer)               │        　 │                Shared Workspace                  │
+               │      ┌─────────────┬─────────────┬─────────────┐      │        　 │  ┌────────────┐  ┌────────────┐  ┌────────────┐  │
+               │      │    State    │  Approval   │    Agent    │      │ ───────▶︎ │  │State Store │  │Evidence    │  │Retrieval   │  │
+               │      │  Management │    Gates    │   Routing   │      │         　│  │(Normalized)│  │Store       │  │Cache       │  │
+               │      └─────────────┴─────────────┴─────────────┘      │      　   │  └────────────┘  └────────────┘  └────────────┘  │
+               └──────────────────────────┬────────────────────────────┘   　      └──────────────────────────────────────────────────┘
+                                          │
+        ┌──────────────────────┬────────────────────┬────────────────────┐
+        │                      │                    │                    │
+┌───────▼────────┐   ┌─────────▼────────┐   ┌───────▼────────┐   ┌───────▼───────┐
+│ Reconnaissance │   │   Enumeration    │   │  Exploitation  │   │    Planner    │
+│     Agent      │   │      Agent       │   │      Agent     │   │     Agent     │
+└────────────────┘   └──────────────────┘   └────────────────┘   └───────────────┘
+
 ```
 
 ## Key Features
@@ -69,9 +50,9 @@ VibeHackAI is an interactive penetration testing support system that leverages C
 | Agent | Role |
 |-------|------|
 | **Orchestrator** | Control plane responsible for phase transitions, approval gates, and state management |
+| **Planner** | CVE research, attack planning, and CVSS evaluation |
 | **Reconnaissance** | Passive/active information gathering (OSINT, Nmap, Shodan, etc.) |
 | **Enumeration** | Service enumeration and vulnerability candidate identification |
-| **Planner** | CVE research, attack planning, and CVSS evaluation |
 | **Exploitation** | Exploit execution based on approved plans |
 
 ### Safety Features
