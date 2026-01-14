@@ -313,6 +313,23 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 MIT License - See [LICENSE](LICENSE) for details.
 
+## Acknowledgments
+
+- Built on [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) by Anthropic
+- Inspired by [PentestGPT](https://github.com/GreyDGL/PentestGPT), [Hexstrike](https://github.com/0x4m4/hexstrike-ai)
+
+### MCP Servers
+
+This project integrates with the following open-source MCP servers:
+
+| Server | Repository | Description |
+|--------|-----------|-------------|
+| **GitHub MCP** | [github/github-mcp-server](https://github.com/github/github-mcp-server) | GitHub's official MCP server |
+| **Filesystem MCP** | [@modelcontextprotocol/server-filesystem](https://github.com/modelcontextprotocol/servers) | Anthropic's official filesystem server |
+| **Hexstrike MCP** | [github/github-mcp-server](https://github.com/github/github-mcp-server) | 150+ Tools Integration |
+
+We thank all the developers and maintainers of these projects for their contributions to the security community!
+
 ---
 
 <div align="center">
