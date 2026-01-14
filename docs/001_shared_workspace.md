@@ -56,54 +56,9 @@ Implements a session data persistence layer and tamper-resistant storage mechani
     draft.md
 ```
 
-## Implementation Tasks
-
-- [x] Session management class implementation
-  - [x] Session ID generation (UUID v4)
-  - [x] Directory structure initialization
-  - [x] Session list retrieval
-- [x] Evidence Ledger implementation
-  - [x] Evidence storage (raw + meta.json)
-  - [x] sha256 hash calculation and storage
-  - [x] Evidence retrieval (by ID)
-  - [x] Evidence list retrieval
-  - [x] Deletion prohibition enforcement (referential integrity)
-- [x] State Store implementation
-  - [x] JSON file read/write
-  - [x] JSONL file append/read
-  - [x] state_version management
-- [x] Cache Store implementation
-  - [x] Query hash calculation
-  - [x] Cache save/retrieve
-  - [x] TTL management (optional)
-- [x] Filesystem MCP Adapter implementation
-  - [x] File read/write wrapper
-  - [x] Error handling
-- [x] Unit tests
-  - [x] Session creation/deletion tests
-  - [x] Evidence save/retrieve/hash verification tests
-  - [x] State read/write tests
-  - [x] Cache tests
-
 ## Acceptance Criteria
 
 - [x] [AC-2] Evidence is stored with sha256 in append-only manner and can be referenced from State
-
-## Dependencies
-
-- None (implemented first)
-
-## Related Files
-
-```
-/src/storage/
-  session_manager.py
-  evidence_ledger.py
-  state_store.py
-  cache_store.py
-/src/mcp_adapters/
-  filesystem_adapter.py
-```
 
 ## Notes
 
