@@ -65,47 +65,6 @@ class PatchOperation:
 5. **Approval Requirement Validation**: `requires_approval` is set for dangerous operations
 6. **Duplicate Validation**: Object with same ID does not already exist
 
-## Implementation Tasks
-
-- [x] Patch structure definition
-  - [x] Patch class implementation
-  - [x] PatchOperation class implementation
-  - [x] Operation type Enum definition
-- [x] Optimistic lock implementation
-  - [x] state_version management
-  - [x] Rejection on version mismatch
-  - [x] Error message on conflict
-- [x] Validation engine implementation
-  - [x] Scope validation
-  - [x] Required field validation
-  - [x] Evidence existence validation
-  - [x] Approval requirement validation
-  - [x] Duplicate validation
-- [x] Patch application engine implementation
-  - [x] add_evidence application
-  - [x] add_observation application
-  - [x] update_target_profile application
-  - [x] add_vuln_candidate application
-  - [x] add_exploit_candidate application
-  - [x] propose_execution_plan application
-  - [x] record_execution_result application
-  - [x] add_finding_candidate application
-  - [x] promote_finding_candidate application
-  - [x] add_decision_trace application
-- [x] Atomic updates
-  - [x] Transaction-like application
-  - [x] Rollback on failure
-  - [x] Version increment
-- [x] Audit log
-  - [x] Record Patch application history
-  - [x] Record rejection reasons
-- [x] Unit tests
-  - [x] Each operation application test
-  - [x] Version mismatch test
-  - [x] Scope violation test
-  - [x] Evidence missing test
-  - [x] Approval requirement missing test
-
 ## Acceptance Criteria
 
 - [x] [AC-3] Patches are rejected on base_state_version mismatch (conflict avoidance)
@@ -114,25 +73,6 @@ class PatchOperation:
 
 - 001_shared_workspace (State Store)
 - 002_common_schema (schema definitions)
-
-## Related Files
-
-```
-/src/patch/
-  __init__.py
-  patch.py
-  operations.py
-  validator.py
-  applier.py
-  audit_log.py
-
-/tests/patch/
-  __init__.py
-  test_patch.py
-  test_validator.py
-  test_applier.py
-  test_audit_log.py
-```
 
 ## Notes
 
