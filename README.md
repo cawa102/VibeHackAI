@@ -1,8 +1,15 @@
-# VibeHackAI v2
+<div align="center">
 
-MCP-Integrated Multi-Agent Penetration Testing Support System
+# VibeHackAI V2.0
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+**AI-Assisted Penetration Testing Framework with Human-in-the-Loop Control**
+
+[![CI](https://img.shields.io/github/actions/workflow/status/cawa102/VibeHackAI/ci.yml?style=flat-square&logo=github&label=build)](https://github.com/cawa102/VibeHackAI/actions)
+[![Python](https://img.shields.io/badge/python-3.10+-blue?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Status](https://img.shields.io/badge/status-early_development-orange?style=flat-square)](https://github.com/cawa102/VibeHackAI)
+
+</div>
 
 ## Overview
 
