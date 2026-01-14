@@ -12,6 +12,24 @@
 .claude/plans/
 
 # ===================
+# Session/Work Data
+# ===================
+# Penetration test session data (keep folder structure, ignore contents)
+sessions/*
+!sessions/.gitkeep
+workspace/*
+!workspace/.gitkeep
+!workspace/sessions/
+!workspace/state/
+workspace/sessions/*
+!workspace/sessions/.gitkeep
+workspace/state/*
+!workspace/state/.gitkeep
+reports/*
+!reports/.gitkeep
+tmp/
+
+# ===================
 # OS Generated
 # ===================
 .DS_Store
