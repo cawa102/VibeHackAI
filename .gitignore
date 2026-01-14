@@ -12,15 +12,6 @@
 .claude/plans/
 
 # ===================
-# Session/Work Data
-# ===================
-# Penetration test session data
-sessions/
-workspace/
-reports/
-tmp/
-
-# ===================
 # OS Generated
 # ===================
 .DS_Store
