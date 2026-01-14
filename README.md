@@ -1,6 +1,6 @@
 <div align="center">
 
-# VibeHackAI V2.0
+# VibeHackAI v2.0
 
 **AI-Assisted Penetration Testing Framework with Human-in-the-Loop Control**
 
