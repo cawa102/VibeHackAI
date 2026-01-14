@@ -1,30 +1,30 @@
 # 001: Shared Workspace + Evidence Ledger
 
-## 概要
+## Overview
 
-セッションデータの永続化基盤とEvidence（証跡）の改ざん耐性を持つ保存機構を実装する。
+Implements a session data persistence layer and tamper-resistant storage mechanism for Evidence.
 
-## 目的
+## Purpose
 
-- セッション単位でState/Evidence/Cacheを管理
-- Evidenceの追記専用（append-only）保存とsha256ハッシュによる整合性保証
-- Filesystem MCPとの連携
+- Manage State/Evidence/Cache on a per-session basis
+- Append-only Evidence storage with sha256 hash integrity guarantee
+- Integration with Filesystem MCP
 
-## スコープ
+## Scope
 
-### インスコープ
+### In Scope
 
-- セッションディレクトリ構造の作成・管理
-- Evidence Ledger（追記専用、sha256付き）
-- State/Evidence/Cacheの基本CRUD操作
-- Filesystem MCP連携
+- Session directory structure creation and management
+- Evidence Ledger (append-only, with sha256)
+- Basic CRUD operations for State/Evidence/Cache
+- Filesystem MCP integration
 
-### アウトオブスコープ
+### Out of Scope
 
-- State更新ロジック（Patchプロトコルで実装）
-- 正規化処理（Passerで実装）
+- State update logic (implemented in Patch Protocol)
+- Normalization processing (implemented in Passer)
 
-## ディレクトリ構造
+## Directory Structure
 
 ```
 /workspace/sessions/<session_id>/
@@ -56,44 +56,44 @@
     draft.md
 ```
 
-## 実装タスク
+## Implementation Tasks
 
-- [x] セッション管理クラスの実装
-  - [x] セッションID生成（UUID v4）
-  - [x] ディレクトリ構造の初期化
-  - [x] セッション一覧取得
-- [x] Evidence Ledger実装
-  - [x] Evidence保存（raw + meta.json）
-  - [x] sha256ハッシュ計算・保存
-  - [x] Evidence取得（ID指定）
-  - [x] Evidence一覧取得
-  - [x] 削除禁止の強制（参照整合性）
-- [x] State Store実装
-  - [x] JSONファイルの読み書き
-  - [x] JSONLファイルの追記・読み取り
-  - [x] state_version管理
-- [x] Cache Store実装
-  - [x] クエリハッシュ計算
-  - [x] キャッシュ保存・取得
-  - [x] TTL管理（オプション）
-- [x] Filesystem MCP Adapter実装
-  - [x] ファイル読み書きのラッパー
-  - [x] エラーハンドリング
-- [x] 単体テスト
-  - [x] セッション作成・削除テスト
-  - [x] Evidence保存・取得・ハッシュ検証テスト
-  - [x] State読み書きテスト
-  - [x] キャッシュテスト
+- [x] Session management class implementation
+  - [x] Session ID generation (UUID v4)
+  - [x] Directory structure initialization
+  - [x] Session list retrieval
+- [x] Evidence Ledger implementation
+  - [x] Evidence storage (raw + meta.json)
+  - [x] sha256 hash calculation and storage
+  - [x] Evidence retrieval (by ID)
+  - [x] Evidence list retrieval
+  - [x] Deletion prohibition enforcement (referential integrity)
+- [x] State Store implementation
+  - [x] JSON file read/write
+  - [x] JSONL file append/read
+  - [x] state_version management
+- [x] Cache Store implementation
+  - [x] Query hash calculation
+  - [x] Cache save/retrieve
+  - [x] TTL management (optional)
+- [x] Filesystem MCP Adapter implementation
+  - [x] File read/write wrapper
+  - [x] Error handling
+- [x] Unit tests
+  - [x] Session creation/deletion tests
+  - [x] Evidence save/retrieve/hash verification tests
+  - [x] State read/write tests
+  - [x] Cache tests
 
-## 受け入れ基準
+## Acceptance Criteria
 
-- [x] [AC-2] Evidenceがsha256付きで追記保存され、Stateから参照できる
+- [x] [AC-2] Evidence is stored with sha256 in append-only manner and can be referenced from State
 
-## 依存関係
+## Dependencies
 
-- なし（最初に実装）
+- None (implemented first)
 
-## 関連ファイル
+## Related Files
 
 ```
 /src/storage/
@@ -105,7 +105,7 @@
   filesystem_adapter.py
 ```
 
-## メモ
+## Notes
 
-- Evidence保存時は必ずmeta.jsonにtimestamp、source_tool、query_params、response_codeを記録
-- 大容量出力（>10MB）は分割保存を検討
+- When storing Evidence, always record timestamp, source_tool, query_params, response_code in meta.json
+- Consider split storage for large outputs (>10MB)

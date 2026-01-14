@@ -1,102 +1,102 @@
 # 006: Reconnaissance Agent
 
-## 概要
+## Overview
 
-受動OSINT＋必要最小限のアクティブ調査を行い、ターゲットの基本情報を収集するAgentを実装する。
+Implements an Agent that performs passive OSINT plus minimal active investigation to collect basic target information.
 
-## 目的
+## Purpose
 
-- ターゲットの外部露出情報を収集
-- ポート/サービス/技術スタックの初期把握
-- 後続フェーズに必要な基礎データの提供
+- Collect external exposure information about targets
+- Initial identification of ports/services/technology stack
+- Provide foundational data for subsequent phases
 
-## 責務
+## Responsibilities
 
-### 担当範囲
+### In Scope
 
-- Shodanによる受動的ホスト情報収集
-- OSINTによるドメイン/組織情報収集
-- 必要最小限のNmapスキャン
+- Passive host information gathering via Shodan
+- Domain/organization information gathering via OSINT
+- Minimal Nmap scanning when necessary
 
-### 非担当
+### Out of Scope
 
-- アプリケーション層の詳細調査（Enumerationで実施）
-- 脆弱性評価（Plannerで実施）
-- Exploit実行（Exploitationで実施）
+- Detailed application layer investigation (done in Enumeration)
+- Vulnerability assessment (done in Planner)
+- Exploit execution (done in Exploitation)
 
-## 使用MCP
+## MCP Usage
 
-| MCP | 用途 | 優先度 |
-|-----|------|--------|
-| hexstrike-ai | ホスト/ポート/バナー情報、ドメイン/DNS/WHOIS情報、ポートスキャン | 高 |
+| MCP | Purpose | Priority |
+|-----|---------|----------|
+| hexstrike-ai | Host/port/banner info, domain/DNS/WHOIS info, port scanning | High |
 
-## 入力（Context Bundle）
+## Input (Context Bundle)
 
 ```python
 class ReconContextBundle:
     session_id: str
     state_version: int
-    scope: Scope  # 必須
-    target_profile: TargetProfile  # 初期状態または前回結果
-    previous_observations: List[Observation]  # 既存の観測記録
+    scope: Scope  # Required
+    target_profile: TargetProfile  # Initial state or previous results
+    previous_observations: List[Observation]  # Existing observation records
 ```
 
-## 出力（Patch）
+## Output (Patch)
 
-- `add_evidence`: MCP実行結果の保存
-- `add_observation`: 実行記録
-- `update_target_profile`: 発見した情報の追加
+- `add_evidence`: Save MCP execution results
+- `add_observation`: Execution record
+- `update_target_profile`: Add discovered information
 
-## 処理フロー
+## Processing Flow
 
-1. Scope確認（ターゲットリスト取得）
-2. 各ターゲットに対して:
-   a. Shodan照会（受動）→ Evidence保存 → TargetProfile更新
-   b. OSINT照会 → Evidence保存 → TargetProfile更新
-   c. 必要に応じてNmapスキャン → Evidence保存 → TargetProfile更新
-3. Patch生成・返却
+1. Confirm Scope (get target list)
+2. For each target:
+   a. Shodan query (passive) → Save Evidence → Update TargetProfile
+   b. OSINT query → Save Evidence → Update TargetProfile
+   c. Nmap scan if necessary → Save Evidence → Update TargetProfile
+3. Generate and return Patch
 
-## 実装タスク
+## Implementation Tasks
 
-- [x] Agent基盤
-  - [x] ReconAgentクラス実装
-  - [x] Context Bundle受信処理
-  - [x] Patch生成処理
-- [x] Shodan連携
-  - [x] Shodan MCPアダプター実装
-  - [x] ホスト情報取得
-  - [x] 結果のEvidence保存
-  - [x] Passer経由でTargetProfile変換
-- [x] OSINT連携
-  - [x] OSINT MCPアダプター実装
-  - [x] ドメイン/DNS情報取得
-  - [x] 結果のEvidence保存
-  - [x] Passer経由でTargetProfile変換
-- [x] Nmap連携
-  - [x] Nmap MCPアダプター実装
-  - [x] スキャン実行（最小限のポート）
-  - [x] 結果のEvidence保存
-  - [x] Passer経由でTargetProfile変換
-- [x] スキップ判定
-  - [x] Shodan/OSINTで十分な場合のNmapスキップ
-  - [x] スキップ理由のDecisionTrace記録
-- [x] エラーハンドリング
-  - [x] MCP失敗時のリトライ
-  - [x] タイムアウト処理
-  - [x] 部分的成功の処理
-- [x] 単体テスト
-  - [x] 各MCP連携テスト（モック）
-  - [x] Patch生成テスト
-  - [x] スキップ判定テスト
-  - [x] エラーハンドリングテスト
+- [x] Agent foundation
+  - [x] ReconAgent class implementation
+  - [x] Context Bundle reception processing
+  - [x] Patch generation processing
+- [x] Shodan integration
+  - [x] Shodan MCP adapter implementation
+  - [x] Host information retrieval
+  - [x] Evidence storage of results
+  - [x] TargetProfile conversion via Passer
+- [x] OSINT integration
+  - [x] OSINT MCP adapter implementation
+  - [x] Domain/DNS information retrieval
+  - [x] Evidence storage of results
+  - [x] TargetProfile conversion via Passer
+- [x] Nmap integration
+  - [x] Nmap MCP adapter implementation
+  - [x] Scan execution (minimal ports)
+  - [x] Evidence storage of results
+  - [x] TargetProfile conversion via Passer
+- [x] Skip determination
+  - [x] Skip Nmap when Shodan/OSINT is sufficient
+  - [x] Record skip reason in DecisionTrace
+- [x] Error handling
+  - [x] Retry on MCP failure
+  - [x] Timeout handling
+  - [x] Partial success handling
+- [x] Unit tests
+  - [x] Each MCP integration test (mock)
+  - [x] Patch generation test
+  - [x] Skip determination test
+  - [x] Error handling test
 
-## 実装完了メモ
+## Implementation Completion Notes
 
-**完了日**: 2024-12-18
+**Completion Date**: 2024-12-18
 
-**テスト結果**: 64 tests passed
+**Test Results**: 64 tests passed
 
-**実装ファイル**:
+**Implementation Files**:
 - `src/agents/__init__.py` - Agent exports
 - `src/agents/base_agent.py` - BaseAgent, AgentConfig, AgentContext, AgentOutput, DecisionTrace
 - `src/agents/reconnaissance_agent.py` - ReconnaissanceAgent with full workflow
@@ -110,25 +110,25 @@ class ReconContextBundle:
 - `tests/agents/test_mcp_adapters.py` - 32 tests for MCP adapters
 - `tests/agents/test_reconnaissance_agent.py` - 14 tests for reconnaissance agent
 
-## 停止条件
+## Stop Conditions
 
-- Scope外ターゲットの検出
-- 連続MCP失敗（2回）
-- タイムアウト（デフォルト10分）
+- Out-of-scope target detected
+- Consecutive MCP failures (2 times)
+- Timeout (default 10 minutes)
 
-## 品質ゲート
+## Quality Gates
 
-- 最低1つのEvidenceを伴うTargetProfile更新
-- Observation記録の完全性
+- At least one Evidence accompanying TargetProfile update
+- Completeness of Observation records
 
-## 依存関係
+## Dependencies
 
-- 001_shared_workspace（Evidence保存）
-- 002_common_schema（スキーマ）
-- 003_passer（正規化）
-- 005_orchestrator（呼び出し元）
+- 001_shared_workspace (Evidence storage)
+- 002_common_schema (schemas)
+- 003_passer (normalization)
+- 005_orchestrator (caller)
 
-## 関連ファイル
+## Related Files
 
 ```
 /src/agents/
@@ -141,8 +141,8 @@ class ReconContextBundle:
   nmap_adapter.py
 ```
 
-## メモ
+## Notes
 
-- Nmapは `-T2`以下の速度で実行（ステルス重視）
-- 大規模CIDR（/16以上）はサンプリング提案
-- 受動調査を優先し、アクティブは最小限に
+- Nmap runs at `-T2` or lower speed (stealth priority)
+- Large CIDRs (/16 or larger) suggest sampling
+- Prioritize passive investigation, minimize active scanning

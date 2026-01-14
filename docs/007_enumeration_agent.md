@@ -1,143 +1,143 @@
 # 007: Enumeration Agent
 
-## 概要
+## Overview
 
-アプリケーション層の詳細調査を行い、入力点・認可境界・攻撃面を把握するAgentを実装する。
+Implements an Agent that performs detailed application layer investigation to understand entry points, authorization boundaries, and attack surfaces.
 
-## 目的
+## Purpose
 
-- Webアプリケーションのサイトマップ収集
-- 入力点（フォーム、API等）の特定
-- 認証/認可境界の把握
-- 後続のPlanner/Exploitationに必要な詳細データ提供
+- Collect web application sitemaps
+- Identify entry points (forms, APIs, etc.)
+- Understand authentication/authorization boundaries
+- Provide detailed data needed for Planner/Exploitation
 
-## 責務
+## Responsibilities
 
-### 担当範囲
+### In Scope
 
-- Burpsuiteによるサイトマップ/req-res収集
-- アプリケーション構造の把握
-- 入力点・パラメータの列挙
-- 認証機構の特定
+- Sitemap/request-response collection via Burpsuite
+- Understanding application structure
+- Enumeration of entry points and parameters
+- Identification of authentication mechanisms
 
-### 非担当
+### Out of Scope
 
-- 脆弱性評価（Plannerで実施）
-- Exploit実行（Exploitationで実施）
-- インフラ層調査（Reconで実施）
+- Vulnerability assessment (done in Planner)
+- Exploit execution (done in Exploitation)
+- Infrastructure layer investigation (done in Recon)
 
-## 使用MCP
+## MCP Usage
 
-| MCP | 用途 | 優先度 |
-|-----|------|--------|
-| hexstrike-ai | サイトマップ/req-res収集、サービス詳細、既知パス情報 | 高 |
-| GitHub | 設定例/既知パス（補助） | 低 |
+| MCP | Purpose | Priority |
+|-----|---------|----------|
+| hexstrike-ai | Sitemap/req-res collection, service details, known path information | High |
+| GitHub | Configuration examples/known paths (auxiliary) | Low |
 
-## 入力（Context Bundle）
+## Input (Context Bundle)
 
 ```python
 class EnumerationContextBundle:
     session_id: str
     state_version: int
     scope: Scope
-    target_profile: TargetProfile  # Recon結果を含む
+    target_profile: TargetProfile  # Includes Recon results
     previous_observations: List[Observation]
 ```
 
-## 出力（Patch）
+## Output (Patch)
 
-- `add_evidence`: HTTP req/res、サイトマップ等
-- `add_observation`: 実行記録
-- `update_target_profile`: 入力点、認証情報等の追加
+- `add_evidence`: HTTP req/res, sitemaps, etc.
+- `add_observation`: Execution record
+- `update_target_profile`: Add entry points, authentication info, etc.
 
-## 処理フロー
+## Processing Flow
 
-1. TargetProfileからWebサービスを抽出
-2. 各Webサービスに対して:
-   a. Burpでサイトマップ取得 → Evidence保存
-   b. 入力点の列挙 → TargetProfile更新
-   c. 認証機構の特定 → TargetProfile更新
-3. 必要に応じて補助MCP呼び出し
-4. Patch生成・返却
+1. Extract web services from TargetProfile
+2. For each web service:
+   a. Get sitemap with Burp → Save Evidence
+   b. Enumerate entry points → Update TargetProfile
+   c. Identify authentication mechanism → Update TargetProfile
+3. Call auxiliary MCPs as needed
+4. Generate and return Patch
 
-## 実装タスク
+## Implementation Tasks
 
-- [x] Agent基盤
-  - [x] EnumerationAgentクラス実装
-  - [x] Context Bundle受信処理
-  - [x] Patch生成処理
-- [x] Burpsuite連携
-  - [x] Burpsuite MCPアダプター実装
-  - [x] サイトマップ取得
-  - [x] req/resペア取得
-  - [x] 結果のEvidence保存
-  - [x] Passer経由で変換
-- [x] 入力点解析
-  - [x] フォーム検出
-  - [x] APIエンドポイント検出
-  - [x] パラメータ列挙
-  - [x] ファイルアップロード検出
-- [x] 認証解析
-  - [x] ログインフォーム検出
-  - [x] セッション管理方式特定
-  - [x] 認可境界の推定
-- [x] 補助MCP連携
-  - [x] Nmap詳細スキャン（必要時）
-  - [ ] OSINT既知パス（必要時）- 将来実装
-  - [ ] GitHub/GitLab設定例（必要時）- 将来実装
-- [x] エラーハンドリング
-  - [x] MCP失敗時のリトライ
-  - [x] タイムアウト処理
-  - [x] 認証要求時の処理
-- [x] 単体テスト
-  - [x] Burp連携テスト（モック）
-  - [x] 入力点解析テスト
-  - [x] 認証解析テスト
-  - [x] Patch生成テスト
+- [x] Agent foundation
+  - [x] EnumerationAgent class implementation
+  - [x] Context Bundle reception processing
+  - [x] Patch generation processing
+- [x] Burpsuite integration
+  - [x] Burpsuite MCP adapter implementation
+  - [x] Sitemap retrieval
+  - [x] Request/response pair retrieval
+  - [x] Evidence storage of results
+  - [x] Conversion via Passer
+- [x] Entry point analysis
+  - [x] Form detection
+  - [x] API endpoint detection
+  - [x] Parameter enumeration
+  - [x] File upload detection
+- [x] Authentication analysis
+  - [x] Login form detection
+  - [x] Session management method identification
+  - [x] Authorization boundary estimation
+- [x] Auxiliary MCP integration
+  - [x] Nmap detailed scan (when needed)
+  - [ ] OSINT known paths (when needed) - Future implementation
+  - [ ] GitHub/GitLab configuration examples (when needed) - Future implementation
+- [x] Error handling
+  - [x] Retry on MCP failure
+  - [x] Timeout handling
+  - [x] Authentication required handling
+- [x] Unit tests
+  - [x] Burp integration test (mock)
+  - [x] Entry point analysis test
+  - [x] Authentication analysis test
+  - [x] Patch generation test
 
-## 実装完了メモ
+## Implementation Completion Notes
 
-**完了日**: 2024-12-18
+**Completion Date**: 2024-12-18
 
-**テスト結果**: 105 tests passed (全agentテスト)
+**Test Results**: 105 tests passed (all agent tests)
 
-**実装ファイル**:
+**Implementation Files**:
 - `src/agents/enumeration_agent.py` - EnumerationAgent with full workflow
 - `src/mcp_adapters/burp_adapter.py` - BurpAdapter with mock mode
 - `tests/agents/test_burp_adapter.py` - 18 tests for Burp adapter
 - `tests/agents/test_enumeration_agent.py` - 23 tests for Enumeration agent
 
-**主な機能**:
-- Webターゲット抽出（URL、ドメイン、ターゲットプロファイルから）
-- サイトマップ収集（spider, get_sitemap）
-- フォーム検出（ログインフォーム、ファイルアップロード含む）
-- APIエンドポイント検出（認証要否、パラメータ情報）
-- 認証機構検出（form_based, session_cookie, api_token）
-- パッシブスキャン結果収集
-- Cookie/ヘッダー解析
+**Main Features**:
+- Web target extraction (from URL, domain, target profile)
+- Sitemap collection (spider, get_sitemap)
+- Form detection (including login forms, file uploads)
+- API endpoint detection (authentication requirements, parameter information)
+- Authentication mechanism detection (form_based, session_cookie, api_token)
+- Passive scan results collection
+- Cookie/header analysis
 
-## 停止条件
+## Stop Conditions
 
-- Scope外URLへのリクエスト検出
-- 認証必須で認証情報なし
-- 連続MCP失敗（2回）
-- タイムアウト（デフォルト15分）
+- Out-of-scope URL request detected
+- Authentication required but no credentials
+- Consecutive MCP failures (2 times)
+- Timeout (default 15 minutes)
 
-## 品質ゲート
+## Quality Gates
 
-- 各入力点にreq/resのEvidence
-- サイトマップの完全性
-- 認証境界の明確化
+- req/res Evidence for each entry point
+- Sitemap completeness
+- Clear authentication boundary definition
 
-## 依存関係
+## Dependencies
 
-- 001_shared_workspace（Evidence保存）
-- 002_common_schema（スキーマ）
-- 003_passer（正規化）
-- 005_orchestrator（呼び出し元）
-- 006_reconnaissance_agent（前フェーズ）
+- 001_shared_workspace (Evidence storage)
+- 002_common_schema (schemas)
+- 003_passer (normalization)
+- 005_orchestrator (caller)
+- 006_reconnaissance_agent (previous phase)
 
-## 関連ファイル
+## Related Files
 
 ```
 /src/agents/
@@ -146,8 +146,8 @@ class EnumerationContextBundle:
   burp_adapter.py
 ```
 
-## メモ
+## Notes
 
-- クローリング深度はデフォルト3に制限
-- 同一ドメイン外へのリクエストは禁止
-- 大量リクエストは承認ゲート対象の可能性
+- Crawling depth limited to 3 by default
+- Requests outside the same domain are prohibited
+- High-volume requests may be subject to approval gate

@@ -1,152 +1,153 @@
-# 005: Orchestrator（制御プレーン）
+# 005: Orchestrator (Control Plane)
 
-## 概要
+## Overview
 
-Human InterfaceとAgent群を繋ぎ、承認・順序制御・状態管理を担う制御プレーンを実装する。
+Implements the control plane that connects the Human Interface with Agents, handling approval, sequence control, and state management.
 
-## 目的
+## Purpose
 
-- テスターとシステムの対話インターフェース
-- Agentへのルーティングと実行制御
-- 承認ゲートによる安全性確保
-- State/Evidenceの一元管理
+- Interface for tester-system interaction
+- Routing and execution control for Agents
+- Safety assurance through approval gates
+- Centralized State/Evidence management
 
-## スコープ
+## Scope
 
-### インスコープ
+### In Scope
 
-- Human Interface（CLI）
-- Agent呼び出し・ルーティング
-- Context Bundle生成
-- 承認ゲート
-- 停止条件の監視
-- Patch検証・適用（004_patch_protocolを利用）
+- Human Interface (CLI)
+- Agent invocation and routing
+- Context Bundle generation
+- Approval gates
+- Stop condition monitoring
+- Patch validation and application (using 004_patch_protocol)
 
-### アウトオブスコープ
+### Out of Scope
 
-- 個別Agentのロジック（各Agentチケットで実装）
-- MCP直接呼び出し（Agentを介する）
+- Individual Agent logic (implemented in each Agent ticket)
+- Direct MCP calls (through Agents)
 
-## フェーズ遷移
+## Phase Transitions
 
 ```
 Recon → Enumeration → Planner → Exploitation → [Post-Exploitation Loop] → Reporting
 ```
 
-### 差し戻し条件
+### Rollback Conditions
 
-- version未確定 → Reconへ
-- 再現手順不足（req/res欠落）→ Enumerationへ
-- Exploit失敗が前提不一致 → Planner/Enumerationへ
+- Version uncertain → Rollback to Recon
+- Insufficient reproduction steps (missing req/res) → Rollback to Enumeration
+- Exploit failure due to premise mismatch → Rollback to Planner/Enumeration
 
-### スキップ条件
+### Skip Conditions
 
-- Shodan/OSINTで十分な確証 → Nmap省略可
-- 攻撃面なし → Planner「候補なし」で停止提案
+- Sufficient evidence from Shodan/OSINT → Nmap scan can be skipped
+- No attack surface → Planner proposes stop with "no candidates"
 
-### FR-10: Post-Exploitationループ（継続的テスト評価）
+### FR-10: Post-Exploitation Loop (Continuous Test Evaluation)
 
-**重要: Exploitationフェーズ終了後、即座にレポート作成に移行しない。**
+**Important: Do not immediately transition to report creation after the Exploitation phase ends.**
 
 ```
 ┌────────────────────────────────────────────────────────┐
-│              Post-Exploitation ループ                   │
+│              Post-Exploitation Loop                     │
 ├────────────────────────────────────────────────────────┤
-│  1. Exploitation結果をOrchestratorが受け取る            │
-│                        ↓                               │
-│  2. OrchestratorがPlannerに結果を提供                   │
-│                        ↓                               │
-│  3. Plannerが追加テストの可能性を深く検討               │
-│                        ↓                               │
-│  4. Plannerが追加テスト計画をOrchestratorに提案         │
-│                        ↓                               │
-│  5. Orchestratorが人間に次フェーズを提案し承認を取得    │
-│                        ↓                               │
-│  6. 承認 → 追加テスト実行（1に戻る）                    │
-│     拒否/スキップ → 最終レポート作成へ                  │
+│  1. Orchestrator receives Exploitation results          │
+│                        ↓                                │
+│  2. Orchestrator provides results to Planner            │
+│                        ↓                                │
+│  3. Planner thoroughly considers additional tests       │
+│                        ↓                                │
+│  4. Planner proposes additional test plan to Orchestrator│
+│                        ↓                                │
+│  5. Orchestrator proposes next phase to human, obtains  │
+│     approval                                            │
+│                        ↓                                │
+│  6. Approved → Execute additional tests (return to 1)   │
+│     Rejected/Skipped → Proceed to final report creation │
 └────────────────────────────────────────────────────────┘
 ```
 
-**終了条件（以下のすべてが満たされた場合のみ）:**
-1. Plannerが全追加テスト項目を検討済み
-2. 人間が追加テストを明示的に拒否/スキップ
-3. または Plannerが「これ以上のテストなし」と判断
+**Termination Conditions (only when all of the following are met):**
+1. Planner has considered all additional test items
+2. Human explicitly rejected/skipped additional tests
+3. Or Planner determines "no further tests available"
 
-## 承認ゲート対象
+## Approval Gate Targets
 
-- Metasploit実行（モジュール実行）
-- ペイロード配送、永続化関連操作
-- 高頻度リクエスト、ブルートフォース
-- ファイル改変、設定変更、権限昇格
+- Metasploit execution (module execution)
+- Payload delivery, persistence-related operations
+- High-frequency requests, brute force
+- File modification, configuration changes, privilege escalation
 
-## 停止条件
+## Stop Conditions
 
-- 連続エラー閾値（同一error_class 2回）
-- スコープ疑義検出
-- DoS兆候検出
-- 未知の破壊的挙動
+- Consecutive error threshold (same error_class 2 times)
+- Scope violation detected
+- DoS indicators detected
+- Unknown destructive behavior
 
-## 実装タスク
+## Implementation Tasks
 
-- [x] CLI実装
-  - [x] セッション開始/終了
-  - [x] Scope入力・確認
-  - [x] フェーズ進行表示
-  - [x] 承認プロンプト
-  - [x] 結果表示
-- [x] ルーティングエンジン
-  - [x] 現在フェーズの管理
-  - [x] 次フェーズの決定
-  - [x] 差し戻し判定
-  - [x] スキップ判定
-- [x] Context Bundle生成
-  - [x] Agent別の必要情報抽出
-  - [x] state_version付与
-  - [x] 最小化（不要情報除外）
-- [x] 承認ゲート
-  - [x] requires_approvalの検出
-  - [x] 承認プロンプト表示
-  - [x] 承認/拒否の記録
-  - [x] タイムアウト処理
-- [x] 停止条件監視
-  - [x] エラーカウント管理
-  - [x] スコープ違反検出
-  - [x] 異常挙動検出
-  - [x] 緊急停止処理
-- [x] Patch処理統合
-  - [x] Agent応答の受信
-  - [x] Patch検証呼び出し
-  - [x] Patch適用呼び出し
-  - [x] 結果のフィードバック
-- [x] 監査ログ
-  - [x] 全操作の記録
-  - [x] 承認/拒否の記録
-  - [x] フェーズ遷移の記録
-- [x] 単体テスト
-  - [x] ルーティングテスト
-  - [x] Context Bundle生成テスト
-  - [x] 承認ゲートテスト
-  - [x] 停止条件テスト
-- [x] 統合テスト
-  - [x] フェーズ一巡テスト（モックAgent）
-  - [x] Metasploit承認テスト
-  - [x] State/Evidence永続化テスト
-  - [x] フェーズロールバックテスト
-  - [x] 停止条件テスト
-  - [x] Context Bundle受け渡しテスト
+- [x] CLI implementation
+  - [x] Session start/end
+  - [x] Scope input and confirmation
+  - [x] Phase progress display
+  - [x] Approval prompt
+  - [x] Result display
+- [x] Routing engine
+  - [x] Current phase management
+  - [x] Next phase determination
+  - [x] Rollback determination
+  - [x] Skip determination
+- [x] Context Bundle generation
+  - [x] Extract required information per Agent
+  - [x] Attach state_version
+  - [x] Minimize (exclude unnecessary information)
+- [x] Approval gate
+  - [x] requires_approval detection
+  - [x] Approval prompt display
+  - [x] Approval/rejection recording
+  - [x] Timeout handling
+- [x] Stop condition monitoring
+  - [x] Error count management
+  - [x] Scope violation detection
+  - [x] Anomalous behavior detection
+  - [x] Emergency stop processing
+- [x] Patch processing integration
+  - [x] Receive Agent response
+  - [x] Invoke Patch validation
+  - [x] Invoke Patch application
+  - [x] Result feedback
+- [x] Audit log
+  - [x] Record all operations
+  - [x] Record approvals/rejections
+  - [x] Record phase transitions
+- [x] Unit tests
+  - [x] Routing tests
+  - [x] Context Bundle generation tests
+  - [x] Approval gate tests
+  - [x] Stop condition tests
+- [x] Integration tests
+  - [x] Full phase cycle test (mock Agents)
+  - [x] Metasploit approval test
+  - [x] State/Evidence persistence test
+  - [x] Phase rollback test
+  - [x] Stop condition test
+  - [x] Context Bundle handoff test
 
-## 受け入れ基準
+## Acceptance Criteria
 
-- [x] [AC-1] Recon→Enumeration→Planner→Exploitation が最小ケースで一巡し、State/Evidenceが保存される
-- [x] [AC-4] Metasploit実行は承認なしでは実行不可
+- [x] [AC-1] Recon→Enumeration→Planner→Exploitation completes a full cycle in minimal case, with State/Evidence saved
+- [x] [AC-4] Metasploit execution cannot proceed without approval
 
-## 依存関係
+## Dependencies
 
-- 001_shared_workspace（State/Evidence管理）
-- 002_common_schema（スキーマ）
-- 004_patch_protocol（Patch処理）
+- 001_shared_workspace (State/Evidence management)
+- 002_common_schema (schemas)
+- 004_patch_protocol (Patch processing)
 
-## 関連ファイル
+## Related Files
 
 ```
 /src/orchestrator/
@@ -164,8 +165,8 @@ Recon → Enumeration → Planner → Exploitation → [Post-Exploitation Loop] 
   display.py          # Display utilities (colors, tables, etc.)
 ```
 
-## メモ
+## Notes
 
-- OrchestratorのみがStateを書き込む（Single Writer）
-- 承認タイムアウトはデフォルト5分
-- 緊急停止時はStateスナップショットを保存
+- Only Orchestrator writes to State (Single Writer)
+- Approval timeout defaults to 5 minutes
+- Save State snapshot on emergency stop

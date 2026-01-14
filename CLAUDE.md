@@ -1,122 +1,90 @@
 # CLAUDE.md
 
-MCP統合型マルチエージェント・ペネトレーションテスト支援システムのガイダンス。
+Guidance for the MCP-integrated multi-agent penetration testing support system.
 
 ---
 
-## 0. GitHub v2 アップロード用TODOリスト
+## 1. Quick Start
 
-> **注意**: このセクションはGitHubアップロード完了後に削除してください。
+### What Is This System?
 
-### タスク一覧
+An interactive penetration testing support system consisting of 4 agents (Planner / Reconnaissance / Enumeration / Exploitation) + Orchestrator with human oversight.
 
-- [x] **1. .gitignoreファイルの作成** ✅
-  - センシティブファイル（.mcp.json, sessions/, workspace/, reports/, tmp/）を除外
-  - .DS_Store, .pytest_cache/, .claude/settings.local.json を除外
+**Purpose**: Rather than "attack automation," this system prioritizes **scope compliance, safety, evidence collection, and reproducibility** by governing LLM reasoning and tool execution for efficient penetration testing.
 
-- [x] **2. CLAUDE.mdの外部パス参照を修正** ✅
-  - `/Users/kawaikyousuke/...` への絶対パス参照を相対パスに変更
-  - VibeHackAI_Hexstrike_skillsへの外部参照を削除し、このリポジトリ内に統合
+### Session Initialization
 
-- [x] **3. README.mdの作成** ✅
-  - プロジェクト概要、セットアップ手順、使用方法を記載
-  - アーキテクチャ図を含める
-
-- [x] **4. .mcp.json.exampleの作成** ✅
-  - 実際のトークンを除去したテンプレートファイル
-  - セットアップ手順の説明
-
-- [x] **5. エージェント定義の参照パスを統合** ✅
-  - .claude/agents/ 内のファイルパス参照を確認・修正
-  - docs/ 内のtool_manifest.yaml参照を確認
-
-- [x] **6. git status確認とコミット** ✅
-  - 変更内容の最終確認
-  - v2としてコミット・プッシュ
+After the human provides target information, launch the Orchestrator to begin the penetration test.
 
 ---
 
-## 1. クイックスタート
+## 2. System Overview
 
-### このシステムとは
-
-4エージェント（Planner / Reconnaissance / Enumeration / Exploitation）+ Orchestratorと人間による対話型ペネトレーションテスト支援システム。
-
-**目的**: 「攻撃の自動化」ではなく、**スコープ・安全性・証跡・再現性**を優先にLLMの推論とツール実行を統制することで、効率的なペネトレーションテストの実行。
-
-### セッション開始手順
-
-人間がターゲット情報を提供したのち、Orchestratorを起動し、ペネトレーションテストを実行。
-
----
-
-## 2. システム概要
-
-### アーキテクチャ
+### Architecture
 
 ```
-Orchestrator（制御プレーン - Single Writer）
-├── Human Interface（承認・対話）
-├── Routing/Coordination（フェーズ遷移）
-└── State/Evidence管理（唯一の書き込み権限）
+Orchestrator (Control Plane - Single Writer)
+├── Human Interface (Approval & Interaction)
+├── Routing/Coordination (Phase Transitions)
+└── State/Evidence Management (Sole Write Authority)
 
-Agents（4つ）
+Agents (4 total)
 ├── Planner Agent
 ├── Reconnaissance Agent
 ├── Enumeration Agent
 └── Exploitation Agent
 
-Shared Workspace（共通領域）
-├── State Store（正規化状態）
-├── Evidence Store（生データ・追記専用）
-└── Retrieval Cache（照会結果キャッシュ）
+Shared Workspace (Common Area)
+├── State Store (Normalized State)
+├── Evidence Store (Raw Data - Append-Only)
+└── Retrieval Cache (Query Result Cache)
 
 MCP Servers
 ├── GitHub
 ├── hexstrike-ai
 └── Filesystem
 
-**hexstrike-aiによって使用可能なツールは[docs/tool_manifest.yaml](docs/tool_manifest.yaml)に記載されている**
+**Available tools via hexstrike-ai are documented in [docs/tool_manifest.yaml](docs/tool_manifest.yaml)**
 ```
 
-### 適用範囲
+### Scope
 
-**インスコープ**:
-- テスターが許可したターゲット（IP/CIDR/ドメイン）に対する偵察・列挙・脆弱性評価・Exploitation
-- PoCプログラムの作成・テスト（承認必須）
-- 証跡収集・レポート生成
+**In Scope**:
+- Reconnaissance, enumeration, vulnerability assessment, and exploitation against tester-authorized targets (IP/CIDR/Domain)
+- PoC program creation and testing (approval required)
+- Evidence collection and report generation
 
-**アウトオブスコープ**:
-- 無差別・大規模スキャン、DoS、永続化、データ持ち出し、自律実行
-- 人間承認なしの破壊的操作・ペイロード配布
-
----
-
-## 3. 安全性ルール
-
-### 絶対遵守事項
-
-1. **スコープ厳守**: 全行動に `scope_tag` を付与、スコープ外検知で即停止
-2. **証跡義務**: Evidenceは追記専用、Findingは必ずevidence_idで裏付け
-
-### 停止条件
-
-| 条件 | アクション |
-|------|----------|
-| 連続エラー閾値（同一error_class 2回） | 停止→人間エスカレーション |
-| スコープ疑義 | 即停止→人間通知 |
-| DoS兆候 | 即停止→人間通知 |
-| 未知の破壊的挙動 | 即停止→人間通知 |
+**Out of Scope**:
+- Indiscriminate/large-scale scanning, DoS, persistence, data exfiltration, autonomous execution
+- Destructive operations or payload distribution without human approval
 
 ---
 
-## 5. データ仕様
+## 3. Safety Rules
 
-### Shared Workspace構成
+### Mandatory Requirements
+
+1. **Scope Enforcement**: Attach `scope_tag` to all actions; immediately halt upon out-of-scope detection
+2. **Evidence Obligation**: Evidence is append-only; Findings must be backed by evidence_id
+
+### Stop Conditions
+
+| Condition | Action |
+|-----------|--------|
+| Consecutive error threshold (same error_class 2 times) | Halt → Human escalation |
+| Scope ambiguity | Immediate halt → Human notification |
+| DoS indicators | Immediate halt → Human notification |
+| Unknown destructive behavior | Immediate halt → Human notification |
+
+---
+
+## 5. Data Specifications
+
+### Shared Workspace Structure
 
 ```
 /workspace/sessions/<session_id>/
-  state/          # 正規化状態（Orchestratorのみ書き込み）
+  state/          # Normalized state (Orchestrator write-only)
     scope.json
     target_profile.json
     candidates_vuln.json
@@ -124,92 +92,92 @@ MCP Servers
     execution_plans.json
     findings.json
     state_version.json
-  evidence/       # 生データ（追記専用、sha256付き）
+  evidence/       # Raw data (append-only, with sha256)
     <evidence_id>/
       raw.<ext>
       meta.json
-  cache/          # 照会結果キャッシュ
-  reports/        # レポート出力
+  cache/          # Query result cache
+  reports/        # Report output
 ```
 
-### 共通スキーマ一覧
-エージェント間での情報の受け渡しを安全に行うための共通スキーマが`docs/002_common_schema.md`に記載されている。
-全スキーマの共通フィールド: `id`, `session_id`, `created_at`, `created_by`, `scope_tag`, `schema_version`
+### Common Schema Reference
+Common schemas for safe inter-agent data exchange are documented in `docs/002_common_schema.md`.
+Common fields across all schemas: `id`, `session_id`, `created_at`, `created_by`, `scope_tag`, `schema_version`
 
-### Patchプロトコル
+### Patch Protocol
 
-**原則**: Agentは**Patchのみ**返す。State直接更新禁止。
+**Principle**: Agents return **Patches only**. Direct state updates are prohibited.
 
-**操作一覧**:
-- `add_evidence` - 証跡追加
-- `add_observation` - MCP実行記録
-- `update_target_profile` - ターゲット情報更新
-- `add_vuln_candidate` - 脆弱性候補追加
-- `add_exploit_candidate` - Exploit候補追加
-- `propose_execution_plan` - 実行計画提案
-- `record_execution_result` - 実行結果記録
-- `add_finding_candidate` - 発見追加
-- `promote_finding_candidate` - 発見昇格
-- `add_decision_trace` - 決定理由記録
+**Operations**:
+- `add_evidence` - Add evidence
+- `add_observation` - Record MCP execution
+- `update_target_profile` - Update target information
+- `add_vuln_candidate` - Add vulnerability candidate
+- `add_exploit_candidate` - Add exploit candidate
+- `propose_execution_plan` - Propose execution plan
+- `record_execution_result` - Record execution result
+- `add_finding_candidate` - Add finding
+- `promote_finding_candidate` - Promote finding
+- `add_decision_trace` - Record decision rationale
 
 
 ---
 
-## 6. 行動規範
+## 6. Code of Conduct
 
-**この行動規範はすべてのサブエージェント(Orchestrator, Planner, Reconnaissance, Enumeration, Exploitation)に適応させる**
+**This code of conduct applies to all sub-agents (Orchestrator, Planner, Reconnaissance, Enumeration, Exploitation)**
 
-### 粘り強さポリシー
+### Persistence Policy
 
-**原則**: 1度の失敗ですぐに諦めない
+**Principle**: Do not give up after a single failure
 
-**失敗時の対応フロー**:
-1. 失敗した理由を深く分析し、根本原因を特定
-2. 別のアプローチ、ツール、ペイロードを検討
-3. 段階的にエスカレーション:
-   - 1回目の失敗: 別の方法を試す
-   - 2回目の失敗: さらに別のアプローチを検討
-   - 3回目以降: 相談し、戦略を再検討
+**Failure Response Flow**:
+1. Deeply analyze the reason for failure and identify the root cause
+2. Consider alternative approaches, tools, or payloads
+3. Escalate progressively:
+   - 1st failure: Try a different method
+   - 2nd failure: Consider yet another approach
+   - 3rd+ failures: Consult and re-evaluate strategy
 
-**禁止事項**:
-- 1度の失敗で「この脆弱性は存在しない」と断定しない
-- 代替手段を検討せずにフェーズを終了しない
-- 承認なしにテスト計画を変更しない
+**Prohibited Actions**:
+- Do not conclude "this vulnerability does not exist" after a single failure
+- Do not end a phase without considering alternatives
+- Do not modify the test plan without approval
 
-### Post-Exploitationループ
+### Post-Exploitation Loop
 
-**原則**: Exploitation成功後、即座にレポート作成に移行しない
+**Principle**: Do not immediately proceed to report generation after successful exploitation
 
-**ワークフロー**:
+**Workflow**:
 ```
-Exploitation結果 → Orchestrator → Planner
+Exploitation Result → Orchestrator → Planner
     ↓
-Plannerが追加テストを検討
+Planner considers additional tests
     ↓
-追加テスト計画 → Orchestrator → 人間承認
+Additional Test Plan → Orchestrator → Human Approval
     ↓
-承認 → 追加テスト実行（ループ）
-拒否/スキップ → 最終レポート作成
+Approved → Execute additional tests (loop)
+Rejected/Skipped → Generate final report
 ```
 
-**終了条件**（すべて満たした場合のみ終了）:
-- 取得したアクセスを活用した追加攻撃をすべて検討済み
-- 人間が追加テストを明示的に拒否/スキップ
+**Exit Conditions** (exit only when all conditions are met):
+- All additional attacks leveraging obtained access have been considered
+- Human explicitly rejected/skipped additional tests
 
 ---
 
-## 7. 参照情報
+## 7. Reference Information
 
-### 詳細仕様リンク
+### Detailed Specification Links
 
-| ドキュメント | 内容 |
-|-------------|------|
-| [docs/001_shared_workspace.md](docs/001_shared_workspace.md) | Shared Workspace + Evidence Ledger仕様 |
-| [docs/002_common_schema.md](docs/002_common_schema.md) | 共通スキーマ型定義 |
-| [docs/003_passer.md](docs/003_passer.md) | 正規化エンジン仕様 |
-| [docs/004_patch_protocol.md](docs/004_patch_protocol.md) | Patchプロトコル仕様 |
-| [.claude/agents/pentest-orchestrator.md](.claude/agents/pentest-orchestrator.md) | Orchestrator仕様 |
-| [.claude/agents/reconnaissance-agent.md](.claude/agents/reconnaissance-agent.md) | Reconnaissance Agent仕様 |
-| [.claude/agents/enumeration-agent.md](.claude/agents/enumeration-agent.md) | Enumeration Agent仕様 |
-| [.claude/agents/planner-agent.md](.claude/agents/planner-agent.md) | Planner Agent仕様 |
-| [.claude/agents/exploitation-agent.md](.claude/agents/exploitation-agent.md) | Exploitation Agent仕様 |
+| Document | Contents |
+|----------|----------|
+| [docs/001_shared_workspace.md](docs/001_shared_workspace.md) | Shared Workspace + Evidence Ledger Specification |
+| [docs/002_common_schema.md](docs/002_common_schema.md) | Common Schema Type Definitions |
+| [docs/003_passer.md](docs/003_passer.md) | Normalization Engine Specification |
+| [docs/004_patch_protocol.md](docs/004_patch_protocol.md) | Patch Protocol Specification |
+| [.claude/agents/pentest-orchestrator.md](.claude/agents/pentest-orchestrator.md) | Orchestrator Specification |
+| [.claude/agents/reconnaissance-agent.md](.claude/agents/reconnaissance-agent.md) | Reconnaissance Agent Specification |
+| [.claude/agents/enumeration-agent.md](.claude/agents/enumeration-agent.md) | Enumeration Agent Specification |
+| [.claude/agents/planner-agent.md](.claude/agents/planner-agent.md) | Planner Agent Specification |
+| [.claude/agents/exploitation-agent.md](.claude/agents/exploitation-agent.md) | Exploitation Agent Specification |

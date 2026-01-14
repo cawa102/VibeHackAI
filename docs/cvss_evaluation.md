@@ -1,36 +1,36 @@
-**このドキュメントは、CVSS 3.1 に基づいた評価基準を示す**
+**This document provides evaluation criteria based on CVSS 3.1**
 
 ---
 
 ## CVSS Evaluation Guidelines
 
-### CVSS 3.1 評価ガイド
+### CVSS 3.1 Evaluation Guide
 
-| メトリクス | 評価質問 | 値 |
-|-----------|---------|-----|
-| Attack Vector (AV) | 攻撃元はどこか？ | N=Network, A=Adjacent, L=Local, P=Physical |
-| Attack Complexity (AC) | 特殊条件が必要か？ | L=Low, H=High |
-| Privileges Required (PR) | 認証が必要か？ | N=None, L=Low, H=High |
-| User Interaction (UI) | ユーザー操作が必要か？ | N=None, R=Required |
-| Scope (S) | 影響範囲が変化するか？ | U=Unchanged, C=Changed |
-| Confidentiality (C) | 機密性への影響 | N=None, L=Low, H=High |
-| Integrity (I) | 完全性への影響 | N=None, L=Low, H=High |
-| Availability (A) | 可用性への影響 | N=None, L=Low, H=High |
+| Metric | Evaluation Question | Values |
+|--------|---------------------|--------|
+| Attack Vector (AV) | Where is the attack originating from? | N=Network, A=Adjacent, L=Local, P=Physical |
+| Attack Complexity (AC) | Are special conditions required? | L=Low, H=High |
+| Privileges Required (PR) | Is authentication required? | N=None, L=Low, H=High |
+| User Interaction (UI) | Is user action required? | N=None, R=Required |
+| Scope (S) | Does the impact scope change? | U=Unchanged, C=Changed |
+| Confidentiality (C) | Impact on confidentiality | N=None, L=Low, H=High |
+| Integrity (I) | Impact on integrity | N=None, L=Low, H=High |
+| Availability (A) | Impact on availability | N=None, L=Low, H=High |
 
-### 重大度スケール
+### Severity Scale
 
-| Base Score | 重大度 | 対応優先度 |
-|------------|--------|-----------|
-| 9.0 - 10.0 | Critical | 即時対応、最優先 |
-| 7.0 - 8.9 | High | 優先対応 |
-| 4.0 - 6.9 | Medium | 計画的対応 |
-| 0.1 - 3.9 | Low | 機会があれば対応 |
+| Base Score | Severity | Response Priority |
+|------------|----------|-------------------|
+| 9.0 - 10.0 | Critical | Immediate response, highest priority |
+| 7.0 - 8.9 | High | Priority response |
+| 4.0 - 6.9 | Medium | Planned response |
+| 0.1 - 3.9 | Low | Address when opportunity arises |
 
 ---
 
 ## Feasibility Scoring
 
-### スコア計算式
+### Score Calculation Formula
 
 ```
 Feasibility Score =
@@ -41,22 +41,21 @@ Feasibility Score =
     (Impact × 0.10)
 ```
 
-### 各要素の評価基準
+### Evaluation Criteria for Each Factor
 
-| 要素 | 1.0 | 0.7 | 0.4 | 0.0 |
-|------|-----|-----|-----|-----|
-| Version Match | 完全一致 | 範囲内 | 近いバージョン | 範囲外 |
-| PoC Availability | 動作確認済みPoC | 未確認PoC | 概念実証のみ | なし |
-| Prerequisites Met | すべて満たす | 大部分満たす | 一部満たす | 満たさない |
-| Attack Complexity | 自動化可能 | 手動で容易 | 専門知識必要 | 非常に困難 |
+| Factor | 1.0 | 0.7 | 0.4 | 0.0 |
+|--------|-----|-----|-----|-----|
+| Version Match | Exact match | Within range | Close version | Out of range |
+| PoC Availability | Verified working PoC | Unverified PoC | Proof of concept only | None |
+| Prerequisites Met | All met | Mostly met | Partially met | Not met |
+| Attack Complexity | Automatable | Manually easy | Expert knowledge required | Very difficult |
 | Impact | Critical | High | Medium | Low |
 
-### 優先度閾値
+### Priority Thresholds
 
-| スコア範囲 | 優先度 | アクション |
-|-----------|--------|-----------|
-| 0.80 - 1.00 | Critical | 即時ExecutionPlan作成 |
-| 0.60 - 0.79 | High | ExecutionPlanに含める |
-| 0.40 - 0.59 | Medium | 代替案として保留 |
-| 0.00 - 0.39 | Low | 記録のみ |
-
+| Score Range | Priority | Action |
+|-------------|----------|--------|
+| 0.80 - 1.00 | Critical | Create ExecutionPlan immediately |
+| 0.60 - 0.79 | High | Include in ExecutionPlan |
+| 0.40 - 0.59 | Medium | Hold as alternative |
+| 0.00 - 0.39 | Low | Record only |

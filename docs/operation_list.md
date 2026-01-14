@@ -1,17 +1,17 @@
-**このドキュメントは人間の承認が必要な操作をまとめたものである**
+**This document summarizes operations that require human approval**
 
-# 禁止事項
-- 無差別・大規模スキャン、DoS、永続化、データ持ち出し、自律実行
-- 人間承認なしの破壊的操作・ペイロード配布
+# Prohibited Actions
+- Indiscriminate/large-scale scanning, DoS, persistence, data exfiltration, autonomous execution
+- Destructive operations or payload distribution without human approval
 
-# 人間の承認必須
-- ペイロード配布・永続化
-- 高頻度リクエスト（>100 req/min）
-- Metasploit実行
-- PoCの実行
-- 特権昇格の可能性がある操作
-- Malwareプログラムの作成・テスト
-- 各フェーズの移行(Plannerから出力を受け取った時)
+# Human Approval Required
+- Payload distribution and persistence
+- High-frequency requests (>100 req/min)
+- Metasploit execution
+- PoC execution
+- Operations with potential for privilege escalation
+- Malware program creation and testing
+- Phase transitions (when receiving output from Planner)
 
 
 

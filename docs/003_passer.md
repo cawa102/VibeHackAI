@@ -1,91 +1,91 @@
-# 003: Passer（正規化エンジン）
+# 003: Passer (Normalization Engine)
 
-## 概要
+## Overview
 
-各MCPサーバーの出力を共通スキーマに正規化するエンジンを実装する。
+Implements an engine to normalize outputs from various MCP servers into common schemas.
 
-## 目的
+## Purpose
 
-- 異なるMCPの出力形式を統一されたスキーマに変換
-- Agent/Orchestratorが一貫したデータ構造を扱えるようにする
-- 出力の欠損・異常を検知
+- Convert different MCP output formats into unified schemas
+- Enable Agent/Orchestrator to handle consistent data structures
+- Detect missing or anomalous output data
 
-## スコープ
+## Scope
 
-### インスコープ
+### In Scope
 
-- 各MCP出力の正規化ルール定義
-- TargetProfile/Observationへの変換
-- 欠損値・異常値のハンドリング
+- Define normalization rules for each MCP output
+- Convert to TargetProfile/Observation
+- Handle missing and anomalous values
 
-### アウトオブスコープ
+### Out of Scope
 
-- MCP呼び出し自体（各Adapterで実装）
-- State更新（Patchプロトコルで実装）
+- MCP calls themselves (implemented in each Adapter)
+- State updates (implemented in Patch Protocol)
 
-## 対応MCP
+## Supported MCPs
 
-| MCP | 主な出力 | 変換先スキーマ |
-|-----|---------|---------------|
-| filesystem | ファイル管理 | filesystem operations |
-| GitHub | PoC/Exploit情報 | ExploitCandidate |
-| hexstrike-ai| ツール実行結果 | ExecutionResult |
+| MCP | Primary Output | Target Schema |
+|-----|----------------|---------------|
+| filesystem | File management | filesystem operations |
+| GitHub | PoC/Exploit info | ExploitCandidate |
+| hexstrike-ai | Tool execution results | ExecutionResult |
 
-## 実装タスク
+## Implementation Tasks
 
-- [x] Passer基盤実装
-  - [x] 正規化インターフェース定義
-  - [x] MCP種別の自動判定
-  - [x] エラーハンドリング共通処理
-- [x] Nmap正規化
-  - [x] XMLパース
-  - [x] ポート/サービス/OS情報の抽出
-  - [x] TargetProfile変換
-- [x] Shodan正規化
-  - [x] JSON応答パース
-  - [x] ホスト/ポート/バナー情報抽出
-  - [x] TargetProfile変換
-- [x] OSINT正規化
-  - [x] ドメイン情報抽出
-  - [x] DNS/WHOIS情報抽出
-  - [x] TargetProfile変換
-- [x] Burpsuite正規化
-  - [x] サイトマップ解析
-  - [x] req/resペア抽出
-  - [x] Observation/Evidence変換
-- [x] Snyk正規化
-  - [x] 脆弱性リスト解析
-  - [x] CVSS/重大度マッピング
-  - [x] VulnCandidate変換
-- [x] CVE-research正規化
-  - [x] CVE詳細解析
-  - [x] 影響範囲/対策情報抽出
-  - [x] VulnCandidate変換
-- [x] GitHub/GitLab正規化
-  - [x] リポジトリ/コード検索結果解析
-  - [x] PoC/Exploit候補抽出
-  - [x] ExploitCandidate変換
-- [x] Metasploit正規化
-  - [x] セッション/実行結果解析
-  - [x] 成功/失敗判定
-  - [x] ExecutionResult変換
-- [x] Kali正規化
-  - [x] コマンド出力解析
-  - [x] ExecutionResult変換
-- [x] 単体テスト
-  - [x] 各MCP正規化のテスト（正常系）
-  - [x] 欠損値ハンドリングテスト
-  - [x] 異常値ハンドリングテスト
+- [x] Passer foundation implementation
+  - [x] Normalization interface definition
+  - [x] Automatic MCP type detection
+  - [x] Common error handling
+- [x] Nmap normalization
+  - [x] XML parsing
+  - [x] Port/service/OS info extraction
+  - [x] TargetProfile conversion
+- [x] Shodan normalization
+  - [x] JSON response parsing
+  - [x] Host/port/banner info extraction
+  - [x] TargetProfile conversion
+- [x] OSINT normalization
+  - [x] Domain info extraction
+  - [x] DNS/WHOIS info extraction
+  - [x] TargetProfile conversion
+- [x] Burpsuite normalization
+  - [x] Sitemap analysis
+  - [x] req/res pair extraction
+  - [x] Observation/Evidence conversion
+- [x] Snyk normalization
+  - [x] Vulnerability list analysis
+  - [x] CVSS/severity mapping
+  - [x] VulnCandidate conversion
+- [x] CVE-research normalization
+  - [x] CVE detail analysis
+  - [x] Impact scope/remediation info extraction
+  - [x] VulnCandidate conversion
+- [x] GitHub/GitLab normalization
+  - [x] Repository/code search result analysis
+  - [x] PoC/Exploit candidate extraction
+  - [x] ExploitCandidate conversion
+- [x] Metasploit normalization
+  - [x] Session/execution result analysis
+  - [x] Success/failure determination
+  - [x] ExecutionResult conversion
+- [x] Kali normalization
+  - [x] Command output analysis
+  - [x] ExecutionResult conversion
+- [x] Unit tests
+  - [x] Each MCP normalization test (normal cases)
+  - [x] Missing value handling tests
+  - [x] Anomalous value handling tests
 
-## 受け入れ基準
+## Acceptance Criteria
 
-- [x] [AC-6] 各MCP出力がPasserで共通スキーマに正規化され、TargetProfile/Observationに反映される
+- [x] [AC-6] Each MCP output is normalized by Passer into common schema and reflected in TargetProfile/Observation
 
-## 依存関係
+## Dependencies
 
-- 002_common_schema（変換先スキーマ）
+- 002_common_schema (target schemas)
 
-## 関連ファイル
+## Related Files
 
 ```
 /src/passer/
@@ -112,8 +112,8 @@
   test_kali_passer.py
 ```
 
-## メモ
+## Notes
 
-- 各Passerはプラグイン形式で追加可能に
-- 未知のフィールドは警告を出しつつ保持（情報損失防止）
-- 正規化失敗時はエラーではなく部分的な結果を返す
+- Each Passer can be added in plugin format
+- Unknown fields are preserved with warnings (prevent info loss)
+- On normalization failure, return partial results instead of errors
