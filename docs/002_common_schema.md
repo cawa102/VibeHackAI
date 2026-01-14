@@ -203,26 +203,6 @@ class BaseSchema:
 
 - 001_shared_workspace (for EvidenceItem reference)
 
-## Related Files
-
-```
-/src/
-  schemas/
-    __init__.py
-    base.py
-    scope.py
-    target_profile.py
-    evidence.py
-    observation.py
-    vuln_candidate.py
-    exploit_candidate.py
-    execution_plan.py
-    execution_result.py
-    finding_candidate.py
-    decision_trace.py
-    validators.py
-```
-
 ## Notes
 
 - Use Pydantic to ensure type safety
