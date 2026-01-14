@@ -5,7 +5,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "./workspace"
+        "<YOUR_WORKSPACE_PATH>"
       ]
     },
     "github": {
@@ -19,13 +19,13 @@
         "ghcr.io/github/github-mcp-server"
       ],
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_TOKEN_HERE"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_GITHUB_TOKEN_HERE>"
       }
     },
     "hexstrike-ai": {
-      "command": "python",
+      "command": "<YOUR_.venv/bin_PATH>/python",
       "args": [
-        "/path/to/hexstrike-ai/hexstrike_mcp.py",
+        "<YOUR_hexstrike_mcp.py_PATH>",
         "--server",
         "http://YOUR_HEXSTRIKE_SERVER:8888"
       ]
