@@ -79,17 +79,30 @@ Scope: Web application assessment
 
 ## 📋 Prerequisites
 
-| Requirement | Version |
-|-------------|---------|
-| Claude Code CLI | Latest |
-| Docker | Latest |
-| Python | 3.10+ |
-| hexstrike-ai MCP Server | Required |
+| Requirement | Version | Link |
+|-------------|---------|------|
+| Claude Code CLI | Latest | [Installation Guide](https://docs.anthropic.com/en/docs/claude-code) |
+| Docker | Latest | [docker.com](https://www.docker.com/) |
+| Python | 3.10+ | [python.org](https://www.python.org/) |
+| hexstrike-ai MCP Server | Required | [**Setup Guide ↗**](https://github.com/0x4m4/hexstrike-ai) |
+
+> **Important**: hexstrike-ai MCP Server must be set up before using VibeHackAI.
+> 👉 Follow the instructions at [github.com/0x4m4/hexstrike-ai](https://github.com/0x4m4/hexstrike-ai)
 
 ## 🔧 Setup
 
 <details>
-<summary><b>1. Clone the Repository</b></summary>
+<summary><b>1. Setup hexstrike-ai MCP Server</b></summary>
+
+First, set up the hexstrike-ai MCP server by following the instructions at:
+
+👉 **[https://github.com/0x4m4/hexstrike-ai](https://github.com/0x4m4/hexstrike-ai)**
+
+Make sure the server is running before proceeding.
+</details>
+
+<details>
+<summary><b>2. Clone the Repository</b></summary>
 
 ```bash
 git clone https://github.com/cawa102/VibeHackAI.git
@@ -98,7 +111,7 @@ cd VibeHackAI
 </details>
 
 <details>
-<summary><b>2. MCP Configuration</b></summary>
+<summary><b>3. MCP Configuration</b></summary>
 
 Copy `.mcp.json.example` to `.mcp.json` and configure appropriately:
 
@@ -108,11 +121,11 @@ cp .mcp.json.example .mcp.json
 
 Set the required environment variables:
 - `GITHUB_PERSONAL_ACCESS_TOKEN`: Token for GitHub API
-- hexstrike-ai server endpoint configuration
+- hexstrike-ai server endpoint configuration (see [hexstrike-ai docs](https://github.com/0x4m4/hexstrike-ai))
 </details>
 
 <details>
-<summary><b>3. Install Dependencies</b></summary>
+<summary><b>4. Install Dependencies</b></summary>
 
 ```bash
 pip install -e .
