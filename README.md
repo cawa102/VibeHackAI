@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,14,16,18,20&height=180&section=header&text=VibeHackAI%20v2.0&fontSize=42&fontColor=fff&animation=fadeIn&fontAlignY=32&desc=AI-Assisted%20Penetration%20Testing%20Framework&descSize=16&descAlignY=52"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:00fff2,20:00b4d8,40:7b2cbf,70:c71585,100:ff00ff&height=180&section=header&text=VibeHackAI%E3%80%80v2.0&fontSize=42&fontColor=fff&animation=fadeIn&fontAlignY=32&desc=AI-Assisted%20Penetration%20Testing%20Framework&descSize=16&descAlignY=52&descColor=00ffff"/>
 
 <br/>
 
