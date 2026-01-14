@@ -1,0 +1,18 @@
+{
+  "pentest_agent": {
+    "version": "1.0.0",
+    "report": {
+      "output_directory": "./reports",
+      "formats": ["md", "json"],
+      "naming_convention": "{target}_pentest_report.{ext}"
+    },
+    "scan": {
+      "default_ports": "21,22,23,25,53,80,110,139,143,443,445,993,995,1433,1521,3306,3389,5432,5900,8080,8443",
+      "timeout": 300
+    },
+    "exploitation": {
+      "require_confirmation": true,
+      "auto_screenshot": false
+    }
+  }
+}

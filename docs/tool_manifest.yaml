@@ -1,0 +1,990 @@
+version: 2
+policy:
+  default_deny: true
+
+servers:
+  hexstrike-ai:
+    tools:
+      # =============================================================================
+      # NETWORK RECONNAISSANCE TOOLS
+      # Phase: recon | Agent: reconnaissance-agent
+      # =============================================================================
+      - name: nmap_scan
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: nmap_advanced_scan
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: rustscan_fast_scan
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: masscan_high_speed
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: autorecon_comprehensive
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: autorecon_scan
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: amass_scan
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: subfinder_scan
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: arp_scan_discovery
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: nbtscan_netbios
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: fierce_scan
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: dnsenum_scan
+        category: network
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # WEB DISCOVERY / ENUMERATION TOOLS
+      # Phase: enum | Agent: enumeration-agent
+      # =============================================================================
+      - name: gobuster_scan
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: feroxbuster_scan
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: ffuf_scan
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: dirb_scan
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: dirsearch_scan
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: nikto_scan
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: nuclei_scan
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: wpscan_analyze
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: wafw00f_scan
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: katana_crawl
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: gau_discovery
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: waybackurls_discovery
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: hakrawler_crawl
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: httpx_probe
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # PARAMETER DISCOVERY TOOLS
+      # Phase: enum | Agent: enumeration-agent
+      # =============================================================================
+      - name: arjun_parameter_discovery
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: arjun_scan
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: paramspider_mining
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: paramspider_discovery
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: x8_parameter_discovery
+        category: web
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # WEB EXPLOITATION TOOLS
+      # Phase: exploit | Agent: exploitation-agent
+      # =============================================================================
+      - name: sqlmap_scan
+        category: web
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      - name: xsser_scan
+        category: web
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: wfuzz_scan
+        category: web
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: dotdotpwn_scan
+        category: web
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: dalfox_xss_scan
+        category: web
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: jaeles_vulnerability_scan
+        category: web
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # SMB / WINDOWS ENUMERATION TOOLS
+      # Phase: enum | Agent: enumeration-agent
+      # =============================================================================
+      - name: enum4linux_scan
+        category: smb
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: enum4linux_ng_advanced
+        category: smb
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: smbmap_scan
+        category: smb
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: netexec_scan
+        category: smb
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: rpcclient_enumeration
+        category: smb
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: responder_credential_harvest
+        category: smb
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      # =============================================================================
+      # CLOUD SECURITY TOOLS
+      # Phase: recon, enum | Agent: reconnaissance-agent, enumeration-agent
+      # =============================================================================
+      - name: prowler_scan
+        category: cloud
+        phases: [recon, enum]
+        allowed_agents: [reconnaissance-agent, enumeration-agent]
+        requires_approval: false
+
+      - name: scout_suite_assessment
+        category: cloud
+        phases: [recon, enum]
+        allowed_agents: [reconnaissance-agent, enumeration-agent]
+        requires_approval: false
+
+      - name: cloudmapper_analysis
+        category: cloud
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: trivy_scan
+        category: cloud
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: kube_bench_cis
+        category: cloud
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: docker_bench_security_scan
+        category: cloud
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: clair_vulnerability_scan
+        category: cloud
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: falco_runtime_monitoring
+        category: cloud
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: checkov_iac_scan
+        category: cloud
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: terrascan_iac_scan
+        category: cloud
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: pacu_exploitation
+        category: cloud
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      - name: kube_hunter_scan
+        category: cloud
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      # =============================================================================
+      # BINARY ANALYSIS TOOLS
+      # Phase: plan, exploit | Agent: planner-agent, exploitation-agent
+      # =============================================================================
+      - name: ghidra_analysis
+        category: binary
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: radare2_analyze
+        category: binary
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: gdb_analyze
+        category: binary
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: gdb_peda_debug
+        category: binary
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: binwalk_analyze
+        category: binary
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: ropgadget_search
+        category: binary
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: checksec_analyze
+        category: binary
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: xxd_hexdump
+        category: binary
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: strings_extract
+        category: binary
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: objdump_analyze
+        category: binary
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: pwntools_exploit
+        category: binary
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      - name: one_gadget_search
+        category: binary
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: libc_database_lookup
+        category: binary
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: angr_symbolic_execution
+        category: binary
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: ropper_gadget_search
+        category: binary
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: pwninit_setup
+        category: binary
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # FORENSICS / CTF TOOLS
+      # Phase: plan, exploit | Agent: planner-agent, exploitation-agent
+      # =============================================================================
+      - name: volatility_analyze
+        category: forensics
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: volatility3_analyze
+        category: forensics
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: foremost_carving
+        category: forensics
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: steghide_analysis
+        category: forensics
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: exiftool_extract
+        category: forensics
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: hashpump_attack
+        category: forensics
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # PASSWORD / CREDENTIAL TOOLS
+      # Phase: exploit | Agent: exploitation-agent
+      # =============================================================================
+      - name: hydra_attack
+        category: password
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      - name: john_crack
+        category: password
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: hashcat_crack
+        category: password
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # PAYLOAD GENERATION / METASPLOIT
+      # Phase: exploit | Agent: exploitation-agent
+      # =============================================================================
+      - name: msfvenom_generate
+        category: payload
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      - name: metasploit_run
+        category: payload
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      - name: generate_payload
+        category: payload
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # API SECURITY TOOLS
+      # Phase: enum, exploit | Agent: enumeration-agent, exploitation-agent
+      # =============================================================================
+      - name: api_fuzzer
+        category: api
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: graphql_scanner
+        category: api
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: jwt_analyzer
+        category: api
+        phases: [enum, exploit]
+        allowed_agents: [enumeration-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: api_schema_analyzer
+        category: api
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: comprehensive_api_audit
+        category: api
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # AI-POWERED TOOLS
+      # Phase: all | Agent: all
+      # =============================================================================
+      - name: ai_generate_payload
+        category: ai
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      - name: ai_test_payload
+        category: ai
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      - name: ai_generate_attack_suite
+        category: ai
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      - name: analyze_target_intelligence
+        category: ai
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: select_optimal_tools_ai
+        category: ai
+        phases: [plan]
+        allowed_agents: [planner-agent]
+        requires_approval: false
+
+      - name: optimize_tool_parameters_ai
+        category: ai
+        phases: [plan]
+        allowed_agents: [planner-agent]
+        requires_approval: false
+
+      - name: create_attack_chain_ai
+        category: ai
+        phases: [plan]
+        allowed_agents: [planner-agent]
+        requires_approval: false
+
+      - name: intelligent_smart_scan
+        category: ai
+        phases: [recon, enum]
+        allowed_agents: [reconnaissance-agent, enumeration-agent]
+        requires_approval: false
+
+      - name: detect_technologies_ai
+        category: ai
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: ai_reconnaissance_workflow
+        category: ai
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: ai_vulnerability_assessment
+        category: ai
+        phases: [enum, plan]
+        allowed_agents: [enumeration-agent, planner-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # BUG BOUNTY WORKFLOW TOOLS
+      # Phase: recon, enum, exploit | Agent: all
+      # =============================================================================
+      - name: bugbounty_reconnaissance_workflow
+        category: bugbounty
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: bugbounty_vulnerability_hunting
+        category: bugbounty
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: bugbounty_business_logic_testing
+        category: bugbounty
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: bugbounty_osint_gathering
+        category: bugbounty
+        phases: [recon]
+        allowed_agents: [reconnaissance-agent]
+        requires_approval: false
+
+      - name: bugbounty_file_upload_testing
+        category: bugbounty
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: bugbounty_comprehensive_assessment
+        category: bugbounty
+        phases: [recon, enum]
+        allowed_agents: [reconnaissance-agent, enumeration-agent]
+        requires_approval: false
+
+      - name: bugbounty_authentication_bypass_testing
+        category: bugbounty
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # HTTP FRAMEWORK / PROXY TOOLS
+      # Phase: enum, exploit | Agent: enumeration-agent, exploitation-agent
+      # =============================================================================
+      - name: http_framework_test
+        category: http
+        phases: [enum, exploit]
+        allowed_agents: [enumeration-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: browser_agent_inspect
+        category: http
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: http_set_rules
+        category: http
+        phases: [enum, exploit]
+        allowed_agents: [enumeration-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: http_set_scope
+        category: http
+        phases: [enum, exploit]
+        allowed_agents: [enumeration-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: http_repeater
+        category: http
+        phases: [enum, exploit]
+        allowed_agents: [enumeration-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: http_intruder
+        category: http
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: burpsuite_alternative_scan
+        category: http
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: burpsuite_scan
+        category: http
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: zap_scan
+        category: http
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # CVE / THREAT INTELLIGENCE TOOLS
+      # Phase: plan | Agent: planner-agent
+      # =============================================================================
+      - name: monitor_cve_feeds
+        category: intel
+        phases: [plan]
+        allowed_agents: [planner-agent]
+        requires_approval: false
+
+      - name: generate_exploit_from_cve
+        category: intel
+        phases: [plan, exploit]
+        allowed_agents: [planner-agent, exploitation-agent]
+        requires_approval: true
+
+      - name: discover_attack_chains
+        category: intel
+        phases: [plan]
+        allowed_agents: [planner-agent]
+        requires_approval: false
+
+      - name: research_zero_day_opportunities
+        category: intel
+        phases: [plan]
+        allowed_agents: [planner-agent]
+        requires_approval: false
+
+      - name: correlate_threat_intelligence
+        category: intel
+        phases: [plan]
+        allowed_agents: [planner-agent]
+        requires_approval: false
+
+      - name: advanced_payload_generation
+        category: intel
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: true
+
+      - name: vulnerability_intelligence_dashboard
+        category: intel
+        phases: [plan]
+        allowed_agents: [planner-agent]
+        requires_approval: false
+
+      - name: threat_hunting_assistant
+        category: intel
+        phases: [plan]
+        allowed_agents: [planner-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # URL PROCESSING UTILITIES
+      # Phase: enum | Agent: enumeration-agent
+      # =============================================================================
+      - name: anew_data_processing
+        category: utility
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: qsreplace_parameter_replacement
+        category: utility
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      - name: uro_url_filtering
+        category: utility
+        phases: [enum]
+        allowed_agents: [enumeration-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # FILE OPERATIONS (Internal Use)
+      # Phase: all | Agent: all
+      # =============================================================================
+      - name: create_file
+        category: file
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [reconnaissance-agent, enumeration-agent, planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: modify_file
+        category: file
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [reconnaissance-agent, enumeration-agent, planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: delete_file
+        category: file
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [reconnaissance-agent, enumeration-agent, planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: list_files
+        category: file
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [reconnaissance-agent, enumeration-agent, planner-agent, exploitation-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # PYTHON EXECUTION
+      # Phase: all | Agent: all
+      # =============================================================================
+      - name: install_python_package
+        category: python
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [reconnaissance-agent, enumeration-agent, planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: execute_python_script
+        category: python
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [reconnaissance-agent, enumeration-agent, planner-agent, exploitation-agent]
+        requires_approval: false
+
+      # =============================================================================
+      # SYSTEM / DASHBOARD (Internal Use)
+      # Phase: all | Agent: orchestrator (internal)
+      # =============================================================================
+      - name: server_health
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      - name: get_cache_stats
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      - name: clear_cache
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      - name: get_telemetry
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      - name: list_active_processes
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      - name: get_process_status
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      - name: terminate_process
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      - name: pause_process
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      - name: resume_process
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      - name: get_process_dashboard
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      - name: execute_command
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      # =============================================================================
+      # REPORTING / VISUALIZATION
+      # Phase: all | Agent: all
+      # =============================================================================
+      - name: get_live_dashboard
+        category: reporting
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [reconnaissance-agent, enumeration-agent, planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: create_vulnerability_report
+        category: reporting
+        phases: [exploit]
+        allowed_agents: [exploitation-agent]
+        requires_approval: false
+
+      - name: format_tool_output_visual
+        category: reporting
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [reconnaissance-agent, enumeration-agent, planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: create_scan_summary
+        category: reporting
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [reconnaissance-agent, enumeration-agent, planner-agent, exploitation-agent]
+        requires_approval: false
+
+      - name: display_system_metrics
+        category: reporting
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      # =============================================================================
+      # ERROR HANDLING / TESTING
+      # Phase: all | Agent: orchestrator
+      # =============================================================================
+      - name: error_handling_statistics
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
+
+      - name: test_error_recovery
+        category: system
+        phases: [recon, enum, plan, exploit]
+        allowed_agents: [orchestrator]
+        requires_approval: false
