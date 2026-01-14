@@ -15,7 +15,7 @@
 
 VibeHackAI is an interactive penetration testing support system that leverages Claude Code's agent capabilities and MCP (Model Context Protocol). Four specialized agents (Planner, Reconnaissance, Enumeration, Exploitation) work in coordination with an Orchestrator to execute safe and efficient security assessments under human supervision.
 
-**Important**: This system is designed to support penetration testing with **scope compliance, safety, evidence collection, and reproducibility** as top priorities—not to automate attacks.
+This system provides an agentic AI experience as if you were leading an Penetration Test Team⭐️
 
 ## Architecture
 
