@@ -43,9 +43,9 @@ VibeHackAI is an interactive penetration testing support system that leverages C
 
 ```
 
-## Key Features
+## ✨ Key Features
 
-### Agent Configuration
+### 🤖 Agent Configuration
 
 | Agent | Role |
 |-------|------|
@@ -55,30 +55,50 @@ VibeHackAI is an interactive penetration testing support system that leverages C
 | **Enumeration** | Service enumeration and vulnerability candidate identification |
 | **Exploitation** | Exploit execution based on approved plans |
 
-### Safety Features
+### 🛡️ Safety Features
 
 - **Scope Enforcement**: All operations tagged with scope_tag to prevent out-of-scope access
 - **Approval Gates**: Dangerous operations require human approval
 - **Evidence Management**: All operation results stored in append-only Evidence Store
 - **Automatic Stop Conditions**: Auto-halt on consecutive errors or DoS indicators
 
-## Prerequisites
+## 🚀 Quick Start
 
-- **Claude Code CLI** (latest version)
-- **Docker** (for MCP Server execution)
-- **Python 3.10+**
-- **hexstrike-ai MCP Server** (penetration testing toolset)
+```bash
+# Clone and setup
+git clone https://github.com/cawa102/VibeHackAI.git
+cd VibeHackAI
+cp .mcp.json.example .mcp.json
+pip install -e .
 
-## Setup
+# Launch Claude Code and start
+Please launch pentest-orchestrator.
+Target: example.com
+Scope: Web application assessment
+```
 
-### 1. Clone the Repository
+## 📋 Prerequisites
+
+| Requirement | Version |
+|-------------|---------|
+| Claude Code CLI | Latest |
+| Docker | Latest |
+| Python | 3.10+ |
+| hexstrike-ai MCP Server | Required |
+
+## 🔧 Setup
+
+<details>
+<summary><b>1. Clone the Repository</b></summary>
 
 ```bash
 git clone https://github.com/cawa102/VibeHackAI.git
 cd VibeHackAI
 ```
+</details>
 
-### 2. MCP Configuration
+<details>
+<summary><b>2. MCP Configuration</b></summary>
 
 Copy `.mcp.json.example` to `.mcp.json` and configure appropriately:
 
@@ -89,14 +109,17 @@ cp .mcp.json.example .mcp.json
 Set the required environment variables:
 - `GITHUB_PERSONAL_ACCESS_TOKEN`: Token for GitHub API
 - hexstrike-ai server endpoint configuration
+</details>
 
-### 3. Install Dependencies
+<details>
+<summary><b>3. Install Dependencies</b></summary>
 
 ```bash
 pip install -e .
 ```
+</details>
 
-## Usage
+## 💡 Usage
 
 ### Starting a Session
 
@@ -112,17 +135,133 @@ Scope: Web application assessment
 
 ### Workflow
 
-1. **Reconnaissance Phase**: Information gathering
-2. **Enumeration Phase**: Service and vulnerability enumeration
-3. **Planning Phase**: Attack plan development
-4. **Exploitation Phase**: Exploit execution after approval
-5. **Reporting**: Report generation
+```
+                                    ┌─────────────────────────────────────────────────────────────┐
+                                    │                                                             │
+    ╔═══════════════╗               │    ╔═══════════════╗         ╔═══════════════╗             │
+    ║   👤 Human    ║───Target───▶──┼──▶║ 🎯 Orchestrator║────────▶║  📝 Planner   ║             │
+    ╚═══════════════╝               │    ╚═══════════════╝         ╚═══════════════╝             │
+            │                       │            │                         │                     │
+            │                       │            │                         │                     │
+    ┌───────▼───────┐               │    ┌───────▼───────┐         ┌───────▼───────┐             │
+    │   Approval    │◀──PhaseBrief──┼────│  State Mgmt   │◀─Patch──│   TestPlan    │             │
+    └───────────────┘               │    └───────────────┘         └───────────────┘             │
+                                    │                                                             │
+                                    └─────────────────────────────────────────────────────────────┘
+                                                          │
+                         ┌────────────────────────────────┼────────────────────────────────┐
+                         │                                │                                │
+                         ▼                                ▼                                ▼
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃    🔍 RECONNAISSANCE      ┃    ┃    📋 ENUMERATION         ┃    ┃    ⚡ EXPLOITATION        ┃
+    ┃  ┌─────────────────────┐  ┃    ┃  ┌─────────────────────┐  ┃    ┃  ┌─────────────────────┐  ┃
+    ┃  │ • OSINT / Shodan    │  ┃    ┃  │ • Service Analysis  │  ┃    ┃  │ • PoC Execution     │  ┃
+    ┃  │ • Nmap Scanning     │  ┃    ┃  │ • Entry Points      │  ┃    ┃  │ • Metasploit        │  ┃
+    ┃  │ • DNS Enumeration   │  ┃    ┃  │ • Auth Boundaries   │  ┃    ┃  │ • Custom Payloads   │  ┃
+    ┃  └─────────────────────┘  ┃    ┃  └─────────────────────┘  ┃    ┃  └─────────────────────┘  ┃
+    ┃           │               ┃    ┃           │               ┃    ┃           │               ┃
+    ┃     ┌─────▼─────┐         ┃    ┃     ┌─────▼─────┐         ┃    ┃     ┌─────▼─────┐         ┃
+    ┃     │  Result?  │         ┃    ┃     │  Result?  │         ┃    ┃     │  Result?  │         ┃
+    ┃     └───────────┘         ┃    ┃     └───────────┘         ┃    ┃     └───────────┘         ┃
+    ┃       │       │           ┃    ┃       │       │           ┃    ┃       │       │           ┃
+    ┃    Fail    Success        ┃    ┃    Fail    Success        ┃    ┃    Fail    Success        ┃
+    ┃       │       │           ┃    ┃       │       │           ┃    ┃       │       │           ┃
+    ┃   ┌───▼───┐   │           ┃    ┃   ┌───▼───┐   │           ┃    ┃   ┌───▼───┐   │           ┃
+    ┃   │ Retry │   │           ┃    ┃   │ Retry │   │           ┃    ┃   │ Retry │   │           ┃
+    ┃   │  🔄   │───┘           ┃    ┃   │  🔄   │───┘           ┃    ┃   │  🔄   │───┘           ┃
+    ┃   └───────┘               ┃    ┃   └───────┘               ┃    ┃   └───────┘               ┃
+    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                │                                │                                │
+                └────────────────────────────────┼────────────────────────────────┘
+                                                 │
+                                                 ▼
+                              ┌─────────────────────────────────────┐
+                              │       🔄 POST-EXPLOITATION LOOP     │
+                              │  ┌───────────────────────────────┐  │
+                              │  │  Planner evaluates:           │  │
+                              │  │  • Privilege escalation?      │  │
+                              │  │  • Lateral movement?          │  │
+                              │  │  • Additional attack vectors? │  │
+                              │  └───────────────────────────────┘  │
+                              │         │               │           │
+                              │     More Tests      Complete        │
+                              │         │               │           │
+                              │    ┌────▼────┐    ┌────▼────┐       │
+                              │    │ 👤 Ask  │    │ 📊 Report│       │
+                              │    │ Human   │    │ Generate │       │
+                              │    └────┬────┘    └──────────┘       │
+                              │         │                            │
+                              │    Approved ──▶ Back to Exploitation │
+                              └─────────────────────────────────────┘
+```
 
-Human approval is required between each phase.
+<table>
+<tr>
+<td width="50%">
 
-## Documentation
+**🔄 Never Give Up**
+- Each phase retries on failure
+- Alternative approaches on dead ends
+- Persistent until human says stop
 
-For detailed documentation, please refer to:
+</td>
+<td width="50%">
+
+**✅ Human Controls Everything**
+- Approval required at every phase
+- Full visibility into all operations
+- Override and halt at any time
+
+</td>
+</tr>
+</table>
+
+## 📁 Shared Workspace
+
+Each penetration testing session maintains an isolated workspace for state management, evidence collection, and reporting.
+
+### Directory Structure
+
+```
+/workspace/sessions/<session_id>/
+├── 📊 state/           # Normalized state (Orchestrator write-only)
+│   ├── scope.json              # Target scope definition
+│   ├── target_profile.json     # Discovered target information
+│   ├── candidates_vuln.json    # Vulnerability candidates
+│   ├── candidates_exploit.json # Exploit candidates
+│   ├── execution_plans.json    # Approved execution plans
+│   ├── findings.json           # Confirmed findings
+│   └── state_version.json      # State version tracking
+│
+├── 📦 evidence/        # Raw data (append-only, sha256 verified)
+│   └── <evidence_id>/
+│       ├── raw.<ext>           # Raw tool output
+│       └── meta.json           # Metadata (timestamp, tool, params)
+│
+├── 🗄️ cache/           # Query result cache
+│   ├── cve/                    # CVE lookup cache
+│   ├── snyk/                   # Snyk vulnerability cache
+│   └── git/                    # Git repository cache
+│
+└── 📝 reports/         # Final deliverables
+    └── draft.md                # Generated penetration test report
+```
+
+### Storage Roles
+
+| Directory | Purpose | Write Policy |
+|-----------|---------|--------------|
+| `state/` | Tracks current session state, targets, and findings | Orchestrator only |
+| `evidence/` | Stores all raw tool outputs with integrity verification | Append-only |
+| `cache/` | Caches external API responses (CVE, Snyk) | Read/Write |
+| `reports/` | Contains final penetration test reports | Write on completion |
+
+> **Note**: All evidence is stored with SHA-256 hash verification to ensure integrity and reproducibility.
+
+## 📚 Documentation
+
+<details>
+<summary><b>Core Documentation</b></summary>
 
 | Document | Contents |
 |----------|----------|
@@ -132,8 +271,10 @@ For detailed documentation, please refer to:
 | [docs/003_passer.md](docs/003_passer.md) | Normalization Engine Specification |
 | [docs/004_patch_protocol.md](docs/004_patch_protocol.md) | Patch Protocol Specification |
 | [docs/tool_manifest.yaml](docs/tool_manifest.yaml) | Available Tools List |
+</details>
 
-### Agent Specifications
+<details>
+<summary><b>Agent Specifications</b></summary>
 
 | Agent | Specification |
 |-------|---------------|
@@ -142,17 +283,40 @@ For detailed documentation, please refer to:
 | Enumeration | [.claude/agents/enumeration-agent.md](.claude/agents/enumeration-agent.md) |
 | Planner | [.claude/agents/planner-agent.md](.claude/agents/planner-agent.md) |
 | Exploitation | [.claude/agents/exploitation-agent.md](.claude/agents/exploitation-agent.md) |
+</details>
 
-## Important Notes
+## 🗺️ Roadmap
 
-- Use this system only against **authorized targets**
+- [ ] Web UI Dashboard
+- [ ] Multi-target parallel scanning
+- [ ] Custom plugin system
+- [ ] Report template customization
+- [ ] Integration with more MCP servers
+
+## ⚠️ Important Notes
+
+> **Warning**: Use this system only against **authorized targets**
+
 - Conduct all penetration tests with proper authorization
 - Indiscriminate scanning, DoS attacks, and data exfiltration are prohibited
+- This tool is for **educational and authorized security testing only**
 
-## License
+## 🤝 Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+- 🐛 [Report bugs](https://github.com/cawa102/VibeHackAI/issues)
+- 💡 [Request features](https://github.com/cawa102/VibeHackAI/issues)
+- 🔀 [Submit PRs](https://github.com/cawa102/VibeHackAI/pulls)
+
+## 📄 License
 
 MIT License - See [LICENSE](LICENSE) for details.
 
-## Contributing
+---
 
-Issues and Pull Requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+<div align="center">
+
+**If you find this project useful, please consider giving it a ⭐**
+
+</div>
